@@ -1,4 +1,4 @@
-import { Coment } from "src/comments/entities/coment.entity";
+import { Comment } from "src/comments/entities/comments.entity";
 import { status } from "src/common/enum/status.enum";
 import { File } from "src/files/entities/file.entity";
 import { UserInformation } from "src/user-information/entities/user-information.entity";
@@ -35,7 +35,7 @@ export class Event {
     @JoinColumn({ name: 'file_id' })
     files:File
 
-    @OneToMany(() => Coment, (coment) => coment.event)
+    @OneToMany(() => Comment, (comment) => comment.event)
     comments:Comment[]
 
     @ManyToOne(() => UserInformation, (userInformation) => userInformation.events)
