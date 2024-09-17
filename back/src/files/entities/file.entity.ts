@@ -1,5 +1,6 @@
-import { FileType } from "src/common/enum/file.enum";
+import { FileType } from "src/common/enum/fileType.enum";
 import { Event } from "src/events/entities/event.entity";
+import { Post } from "src/posts/entities/post.entity";
 import { UserInformation } from "src/user-information/entities/user-information.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 
@@ -30,4 +31,7 @@ export class File {
 
     @OneToMany(() => Event, (event) => event.files)
     events: Event[]
+
+    @OneToMany(() => Post, (post) => post.files)
+    posts: Post[]
 }

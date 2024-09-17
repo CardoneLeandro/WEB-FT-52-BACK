@@ -6,7 +6,7 @@ import { ProductsModule } from './products/products.module';
 import { PostsModule } from './posts/posts.module';
 import { EventsModule } from './events/events.module';
 import { UserInformationModule } from './user-information/user-information.module';
-import { ComentsModule } from './coments/coments.module';
+import { commentsModule } from './comments/comments.module';
 import { OrdersModule } from './orders/orders.module';
 import { OrderDetailsModule } from './order-details/order-details.module';
 import { PaymentsModule } from './payments/payments.module';
@@ -16,7 +16,7 @@ import { AuthModule } from './auth/auth.module';
 import { InformationModule } from './information/information.module';
 
 @Module({
-  imports: [UsersModule, ProductsModule, PostsModule, EventsModule, UserInformationModule, ComentsModule, OrdersModule, OrderDetailsModule, PaymentsModule, PaymentCredentialsModule, DonationsModule, AuthModule, InformationModule],
+  imports: [UsersModule, ProductsModule, PostsModule, EventsModule, UserInformationModule, commentsModule, OrdersModule, OrderDetailsModule, PaymentsModule, PaymentCredentialsModule, DonationsModule, AuthModule, InformationModule],
   controllers: [AppController],
   providers: [AppService],
 })

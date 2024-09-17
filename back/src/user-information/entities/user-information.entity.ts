@@ -1,6 +1,8 @@
-import { Coment } from "src/coments/entities/coment.entity";
+
+import { Comment } from "src/comments/entities/comments.entity";
 import { Event } from "src/events/entities/event.entity";
 import { File } from "src/files/entities/file.entity";
+import { Post } from "src/posts/entities/post.entity";
 import { User } from "src/users/entities/user.entity";
 import { Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -16,11 +18,14 @@ export class UserInformation {
     @OneToMany(() => Event, (event) => event.information)
     events: Event[];
 
-    @OneToMany(() => Coment, (coment) => coment.information)
-    comments: Coment[];
+    @OneToMany(() => Comment, (comment) => comment.information)
+    comments: Comment[];
 
     @OneToMany(() => File, (file) => file.information)
     files: File[]
+
+    @OneToMany(() => Post, (post) => post.information)
+    posts: Post[]
     
 }
 

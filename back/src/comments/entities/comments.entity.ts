@@ -3,8 +3,8 @@ import { status } from "src/common/enum/status.enum";
 import { UserInformation } from "src/user-information/entities/user-information.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 
-@Entity({name: 'coments'})
-export class Coment {
+@Entity({name: 'comments'})
+export class Comment {
 
     @PrimaryColumn('uuid')
     id: string;
@@ -23,7 +23,7 @@ export class Coment {
     @JoinColumn({ name: 'user_information_id' })
     information: UserInformation;
 
-    @ManyToOne(() => Event, (event) => event.coments)
+    @ManyToOne(() => Event, (event) => event.comments)
     @JoinColumn({ name: 'event_id' })
     event: Event;
 
