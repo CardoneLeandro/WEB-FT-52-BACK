@@ -10,8 +10,8 @@ export class OrderDetail {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
-    @OneToOne(() => Order, order => order.id)
-    order: Order
+    // @OneToOne(() => Order, order => order.id)
+    // order: Order
 
     @ManyToOne(() => Product, product => product.id)
     @JoinColumn({ name: 'product' })

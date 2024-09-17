@@ -1,6 +1,7 @@
 import { status } from "src/common/enum/status.enum";
 import { Donation } from "src/donations/entities/donation.entity";
 import { OrderDetail } from "src/order-details/entities/order-detail.entity";
+import { Order } from "src/orders/entities/order.entity";
 import { UserInformation } from "src/user-information/entities/user-information.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -31,4 +32,9 @@ export class Payment {
     @OneToOne(() => Donation, donation => donation.id)
     @JoinColumn({ name: 'donation' })
     donation: Donation
+
+    @OneToOne(() => Order, order => order.id)
+    @JoinColumn({ name: 'order'})
+    order: Order
+
 }
