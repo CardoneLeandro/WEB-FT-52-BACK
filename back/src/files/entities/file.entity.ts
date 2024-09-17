@@ -1,3 +1,4 @@
+import { FileType } from "src/common/enum/file.enum";
 import { Event } from "src/events/entities/event.entity";
 import { UserInformation } from "src/user-information/entities/user-information.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
@@ -7,6 +8,9 @@ export class File {
 
     @PrimaryColumn('uuid')
     id: string;
+
+    @Column({type: 'enum', enum: FileType, nullable: false})
+    type: FileType
 
     @Column({ type: 'varchar', length: 100, nullable: false })
     creator: string;
