@@ -1,6 +1,6 @@
 import { SuperAdminDto } from 'src/auth/dto/super-Admin.dto';
-import { UserRole } from 'src/common/enum/usersRole.enum';
 import {config as dotenvConfig} from "dotenv";
+import { UserRole } from 'src/common/enum/userRole.enum';
 
 dotenvConfig({path: './.env'});
 
