@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import { UserRole } from '../../common/enum/userRole.enum';
 import { status } from 'src/common/enum/status.enum';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
@@ -8,10 +14,10 @@ export class User {
   id: string;
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
-  role: UserRole
+  role: UserRole;
 
-  @Column({ type: 'enum', enum: status , default:status.ACTIVE })
-  status: status
+  @Column({ type: 'enum', enum: status, default: status.ACTIVE })
+  status: status;
 
   @Column({ type: 'varchar', length: 50, unique: true, nullable: false })
   email: string;
@@ -21,7 +27,7 @@ export class User {
 
   @Column({ type: 'varchar', length: 80, nullable: false })
   password: string;
-  
+
   @Column({ type: 'varchar', length: 100, nullable: true })
   profilePicture: string;
 
@@ -29,6 +35,6 @@ export class User {
   updateDate: Date;
 
   @OneToOne(() => UserInformation)
-  @JoinColumn({ name: 'user_information_id' })
-  userInformation: UserInformation
+  @JoinColumn({ name: 'userInformation_id' })
+  userInformation: UserInformation;
 }

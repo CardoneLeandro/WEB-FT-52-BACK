@@ -8,6 +8,6 @@ import { PaymentCredential } from './entities/payment-credential.entity';
 @Module({
   controllers: [PaymentCredentialsController],
   providers: [PaymentCredentialsService, PaymentCredentialsRepository],
-  imports: [TypeOrmModule.forFeature([PaymentCredential])]
+  imports: [TypeOrmModule.forFeature([PaymentCredential])],
 })
 export class PaymentCredentialsModule {}

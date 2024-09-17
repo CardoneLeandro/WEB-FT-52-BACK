@@ -21,13 +21,26 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [typeormConfig]
+      load: [typeormConfig],
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => configService.get('typeorm')
+      useFactory: (configService: ConfigService) =>
+        configService.get('typeorm'),
     }),
-    UsersModule, ProductsModule, PostsModule, EventsModule, UserInformationModule, CommentsModule, OrdersModule, OrderDetailsModule, PaymentsModule, PaymentCredentialsModule, DonationsModule, AuthModule],
+    UsersModule,
+    ProductsModule,
+    PostsModule,
+    EventsModule,
+    UserInformationModule,
+    CommentsModule,
+    OrdersModule,
+    OrderDetailsModule,
+    PaymentsModule,
+    PaymentCredentialsModule,
+    DonationsModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

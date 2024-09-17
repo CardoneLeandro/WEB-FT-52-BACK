@@ -8,6 +8,6 @@ import { UserInformation } from './entities/user-information.entity';
 @Module({
   controllers: [UserInformationController],
   providers: [UserInformationService, UserInformationRepository],
-  imports: [TypeOrmModule.forFeature([UserInformation])]
+  imports: [TypeOrmModule.forFeature([UserInformation])],
 })
 export class UserInformationModule {}
