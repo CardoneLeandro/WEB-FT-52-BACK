@@ -16,8 +16,10 @@ export class Comment {
     createDate: Date;
 
     @Column({type: 'enum', enum: status, default: status.ACTIVE})
+    status: status;
 
     @Column({ type: 'varchar', length: 140, nullable: false })
+    content: string;
 
     @ManyToOne(() => UserInformation, (userInformation) => userInformation.comments)
     @JoinColumn({ name: 'user_information_id' })

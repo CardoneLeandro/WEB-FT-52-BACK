@@ -27,7 +27,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => configService.get('typeorm')
     }),
-    UsersModule, ProductsModule, PostsModule, EventsModule, UserInformationModule, CommentsModule, OrdersModule, OrderDetailsModule, PaymentsModule, PaymentCredentialsModule, DonationsModule, AuthModule, InformationModule],
+    UsersModule, ProductsModule, PostsModule, EventsModule, UserInformationModule, CommentsModule, OrdersModule, OrderDetailsModule, PaymentsModule, PaymentCredentialsModule, DonationsModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
