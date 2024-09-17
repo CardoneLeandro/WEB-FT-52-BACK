@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Order } from '../../orders/entities/order.entity';
-import { UserRole } from '../../common/enum/usersRole.enum';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { UserRole } from '../../common/enum/userRole.enum';
+import { status } from 'src/common/enum/status.enum';
+import { UserInformation } from 'src/user-information/entities/user-information.entity';
 @Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -9,17 +10,25 @@ export class User {
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
   role: UserRole
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
-  name: string;
+  @Column({ type: 'enum', enum: status , default:status.ACTIVE })
+  status: status
 
   @Column({ type: 'varchar', length: 50, unique: true, nullable: false })
   email: string;
 
+  @Column({ type: 'varchar', length: 50, nullable: false })
+  name: string;
+
   @Column({ type: 'varchar', length: 80, nullable: false })
   password: string;
-
-  @Column({ type: 'bigint', nullable: true })
-  phone: number;
-
   
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  profilePicture: string;
+
+  @Column({ type: 'timestamp', length: 50, default: () => 'CURRENT_TIMESTAMP' })
+  updateDate: Date;
+
+  @OneToOne(() => UserInformation)
+  @JoinColumn({ name: 'user_information_id' })
+  userInformation: UserInformation
 }

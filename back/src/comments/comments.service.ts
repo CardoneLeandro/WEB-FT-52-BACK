@@ -1,22 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { CreateComentDto } from './dto/create-coment.dto';
-import { UpdateComentDto } from './dto/update-coment.dto';
+import { CreateCommentsDto } from './dto/create-comments.dto';
+import { UpdateCommentsDto } from './dto/update-comments.dto';
 
 @Injectable()
-export class ComentsService {
-  create(createComentDto: CreateComentDto) {
+export class commentsService {
+  create(CreateCommentsDto: CreateCommentsDto) {
     return 'This action adds a new coment';
   }
 
   findAll() {
-    return `This action returns all coments`;
+    return `This action returns all comments`;
   }
 
   findOne(id: number) {
     return `This action returns a #${id} coment`;
   }
 
-  update(id: number, updateComentDto: UpdateComentDto) {
+  update(id: number, UpdateCommentsDto: UpdateCommentsDto) {
     return `This action updates a #${id} coment`;
   }
 
