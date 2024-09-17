@@ -25,7 +25,7 @@ export class User {
   @Column({ type: 'varchar', length: 100, nullable: true })
   profilePicture: string;
 
-  @Column({ type: 'timestamp', length: 50, default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updateDate: Date;
 
   @OneToOne(() => UserInformation)

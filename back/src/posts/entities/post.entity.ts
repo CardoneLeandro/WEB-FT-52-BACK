@@ -12,7 +12,7 @@ export class Post {
     @PrimaryColumn('uuid')
     id: string;
 
-    @Column([{ type: 'uuid', length: 32, nullable: false }])
+    @Column([{ type: 'uuid', nullable: false }])
     creator: string;
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
@@ -21,7 +21,7 @@ export class Post {
     @Column({ type: 'enum', enum: status, default: status.ACTIVE })
     status: status;
 
-    @Column({ type: 'text', length: 500, nullable: false })
+    @Column({ type: 'text', nullable: false })
     content:string;
 
     @Column({type: 'enum', enum: FileType, nullable: true})

@@ -22,7 +22,7 @@ export class Event {
     @Column({ type: 'varchar', length: 50, nullable: false })
     title:string
 
-    @Column({ type: 'text', length: 255, nullable: false })
+    @Column({ type: 'text', nullable: false })
     description:string
 
     @Column({ type: 'timestamp', nullable: false })
