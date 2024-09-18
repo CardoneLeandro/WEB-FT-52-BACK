@@ -1,9 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsDate,
   IsEmail,
   IsNotEmpty,
-  IsOptional,
   IsString,
   IsStrongPassword,
   IsUrl,
@@ -72,22 +70,4 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsUrl()
   profilePicture: string;
-
-  @ApiProperty({
-    description: 'Fecha de creación del usuario',
-    example: '2020-10-10',
-    type: Date,
-  })
-  @IsNotEmpty()
-  @IsDate()
-  creationDate: Date;
-
-  @ApiProperty({
-    description: 'Fecha de actualización del perfil del usuario',
-    example: '2020-11-25',
-    type: Date,
-  })
-  @IsNotEmpty()
-  @IsDate()
-  updateDate: Date;
 }
