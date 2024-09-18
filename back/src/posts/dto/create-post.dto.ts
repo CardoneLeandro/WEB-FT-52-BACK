@@ -1,7 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsUrl, MaxLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsUrl,
+  IsUUID,
+  MaxLength,
+} from 'class-validator';
+import { UUID } from 'crypto';
 
 export class CreatePostDto {
+  @ApiProperty({
+    description: 'ID del usuario que sube el post',
+    example: 'a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a0',
+    type: String,
+  })
+  @IsNotEmpty()
+  @IsUUID()
+  creator: UUID;
+
   @ApiProperty({
     description: 'Titulo del post',
     example: 'Misa de la Congregación',
