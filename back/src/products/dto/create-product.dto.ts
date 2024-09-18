@@ -1,17 +1,27 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsDate,
   IsNotEmpty,
   IsNumber,
   IsString,
   IsUrl,
+  IsUUID,
   MaxLength,
 } from 'class-validator';
+import { UUID } from 'crypto';
 
 export class CreateProductDto {
   @ApiProperty({
+    description: 'ID del usuario que sube el producto',
+    example: 'a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a0',
+    type: String,
+  })
+  @IsNotEmpty()
+  @IsUUID()
+  creator: UUID;
+
+  @ApiProperty({
     description: 'Titulo del producto',
-    example: 'Anuncio del evento de parroquia san marcos de calamuchita',
+    example: 'Rosario',
     type: String,
   })
   @IsNotEmpty()
@@ -21,8 +31,7 @@ export class CreateProductDto {
 
   @ApiProperty({
     description: 'Descripción del producto',
-    example:
-      'Descripción del evento de parroquia san marcos de calamuchita que se realizará con el Movimiento Juvenil Peregrinos ',
+    example: 'Rosario de Movimiento Juvenil Peregrinos ',
     type: String,
   })
   @IsNotEmpty()
@@ -30,7 +39,7 @@ export class CreateProductDto {
   description: string;
 
   @ApiProperty({
-    description: 'Imagen del proyecto',
+    description: 'Imagen del producto',
     example: 'https://www.google.com',
     type: String,
   })
@@ -39,7 +48,7 @@ export class CreateProductDto {
   image: string;
 
   @ApiProperty({
-    description: 'Precio del proyecto',
+    description: 'Precio del producto',
     example: 1000,
     type: Number,
   })
@@ -48,7 +57,7 @@ export class CreateProductDto {
   price: number;
 
   @ApiProperty({
-    description: 'Stock del proyecto',
+    description: 'Stock del producto',
     example: 10,
     type: Number,
   })

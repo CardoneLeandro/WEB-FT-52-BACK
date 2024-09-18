@@ -8,8 +8,18 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { UUID } from 'crypto';
 
 export class CreateEventDto {
+  @ApiProperty({
+    description: 'ID del usuario que sube el evento',
+    example: 'a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a0',
+    type: String,
+  })
+  @IsNotEmpty()
+  @IsUUID()
+  creator: UUID;
+
   @ApiProperty({
     description: 'Fecha de creación del evento',
     example: '2022-01-01',
