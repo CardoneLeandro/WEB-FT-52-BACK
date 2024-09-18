@@ -1,11 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ParseUUIDPipe, UsePipes } from '@nestjs/common';
 import { CreateUserInformationDto } from './dto/create-user-information.dto';
 import { UpdateUserInformationDto } from './dto/update-user-information.dto';
+import { UserInformationRepository } from './user-information.repository';
 
 @Injectable()
 export class UserInformationService {
-  create(createUserInformationDto: CreateUserInformationDto) {
+  constructor(private readonly userInfoRepo: UserInformationRepository) {}
+
+  create(dto: CreateUserInformationDto) {
+    console.log(dto);
     return 'This action adds a new userInformation';
+  }
+
+  createUserInformationTable(id: CreateUserInformationDto) {
+    const createdUserInformationTable = this.userInfoRepo.createTable(id.id);
+
+    if (!createdUserInformationTable) {
+      throw new Error('Could not create userInformationTable');
+    }
+
+    const savedUserInfoTable = this.userInfoRepo.saveTable(
+      createdUserInformationTable,
+    );
+
+    if (!savedUserInfoTable) {
+      throw new Error('Could not save userInformationTable');
+    }
+
+    return savedUserInfoTable;
   }
 
   findAll() {

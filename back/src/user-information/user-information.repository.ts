@@ -8,4 +8,13 @@ export class UserInformationRepository extends Repository<UserInformation> {
   constructor(private readonly dSource: DataSource) {
     super(UserInformation, dSource.getRepository(UserInformation).manager);
   }
+
+  createTable(id: string) {
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    return this.create({ id: id });
+  }
+
+  saveTable(userInformation: UserInformation) {
+    return this.save(userInformation);
+  }
 }
