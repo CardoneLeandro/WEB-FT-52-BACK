@@ -12,7 +12,10 @@ export class AuthService {
     const existingSuperAdmin = await this.userRepo.findOne({
       where: { role: UserRole.SUPERADMIN },
     });
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', existingSuperAdmin);
+    console.log(
+      'GAMMA => authService, onApplicationBootstrap, existingSuperAdmin ',
+      existingSuperAdmin,
+    );
   }
 
   create(createAuthDto: CreateAuthDto) {
