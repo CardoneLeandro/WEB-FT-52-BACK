@@ -3,7 +3,6 @@ export class SuperAdminDto {
   email: string;
   password: string;
   confirmPassword: string;
-  phone: number;
-  address: string;
+  profilePicture: string;
   role: string;
 }

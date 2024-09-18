@@ -9,7 +9,6 @@ export const SUPERADMIN: SuperAdminDto = {
   email: process.env.SUPERADMIN_EMAIL,
   password: process.env.SUPERADMIN_PASSWORD,
   confirmPassword: process.env.SUPERADMIN_CONFIRMPASSWORD,
-  phone: Number(process.env.SUPERADMIN_PHONE),
-  address: process.env.SUPERADMIN_ADDRESS,
+  profilePicture: process.env.SUPERADMIN_PROFILEPICTURE,
   role: UserRole.SUPERADMIN,
 };
