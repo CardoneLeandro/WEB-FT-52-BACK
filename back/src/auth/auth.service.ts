@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { UsersRepository } from 'src/users/users.repository';
 import { UserRole } from 'src/common/enum/userRole.enum';
 
@@ -18,7 +16,18 @@ export class AuthService {
     );
   }
 
-  create(createAuthDto: CreateAuthDto) {
+  async login(loginUserDto) {
+    const user = await this.userRepo.findUser(loginUserDto.email);
+    if (!user) {
+      return null;
+    }
+    if (user.password !== loginUserDto.password) {
+      return null;
+    }
+    return user;
+  }
+
+  create(createAuthDto) {
     return 'This action adds a new auth';
   }
 
@@ -30,7 +39,7 @@ export class AuthService {
     return `This action returns a #${id} auth`;
   }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
+  update(id: number, updateAuthDto) {
     return `This action updates a #${id} auth`;
   }
 
