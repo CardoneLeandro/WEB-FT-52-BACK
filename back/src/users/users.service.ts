@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
 import { User } from './entities/user.entity';
 import { UserInformationService } from 'src/user-information/user-information.service';
-import { DataSource, getConnection } from 'typeorm';
+import { DataSource } from 'typeorm';
+import { UserRole } from 'src/common/enum/userRole.enum';
 
 @Injectable()
 export class UsersService {
@@ -13,40 +13,16 @@ export class UsersService {
     private readonly userRepo: UsersRepository,
     private readonly userInfoservice: UserInformationService,
   ) {}
-  async createNewUser(createUserData: CreateUserDto): Promise<User> {
+  async createNewUser(createUserData): Promise<Partial<User>> {
     return await this.dsource.transaction(async (manager) => {
       const createdUser = this.userRepo.createUser(createUserData);
+
       const savedUser = await this.userRepo.saveUser(createdUser);
-      const userInformationTable =
-        await this.userInfoservice.createUserInformationTable(
-          savedUser,
-          manager,
-        );
-      await this.userRepo.update(savedUser.id, {
-        userInformation: userInformationTable,
-      });
+
+      await this.userInfoservice.createUserInformationTable(savedUser, manager);
       return savedUser;
     });
   }
-
-  /*async createNewUser(createUserData: CreateUserDto): Promise<User> {
-    const createdUser = this.userRepo.createUser(createUserData);
-    if (!createdUser) {
-      throw new Error('Could not create user');
-    }
-    const savedUser: User | null = await this.userRepo.saveUser(createdUser);
-    if (!savedUser) {
-      throw new Error('Could not save user');
-    }
-    console.log('CARDONE => usersService, createNewUser, savedUser', savedUser);
-    const userInformationTable =
-     await this.userInfoservice.createUserInformationTable(savedUser);
-    if (!userInformationTable) {
-      throw new Error('Could not create userInformation');
-    }
-    await this.userRepo.update(savedUser.id,{userInformation:userInformationTable});
-    return savedUser;
-  }*/
 
   findAll() {
     return `This action returns all users`;

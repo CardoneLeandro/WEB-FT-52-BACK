@@ -34,7 +34,7 @@ export class User {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updateDate: Date;
 
-  @OneToOne(() => UserInformation)
+  @OneToOne(() => UserInformation, (userInfo) => userInfo.user)
   @JoinColumn({ name: 'userInformation_id' })
   userInformation: UserInformation;
 }

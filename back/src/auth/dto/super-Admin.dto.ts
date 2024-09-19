@@ -1,8 +1,6 @@
-export class SuperAdminDto {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  profilePicture: string;
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+
+export class SuperAdminDto extends PartialType(CreateUserDto) {
   role: string;
 }

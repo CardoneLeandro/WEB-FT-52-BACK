@@ -21,8 +21,7 @@ export class UserInformation {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => User, { eager: true })
-  @JoinColumn({ name: 'user_id' })
+  @OneToOne(() => User, (user) => user.userInformation)
   user: User;
 
   @OneToMany(() => Event, (event) => event.information)

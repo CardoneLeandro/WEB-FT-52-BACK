@@ -28,7 +28,7 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   @IsEmail()
-  mail: string;
+  email: string;
 
   @ApiProperty({
     description: 'Contraseña del usuario a ser creado',

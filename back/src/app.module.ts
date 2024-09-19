@@ -17,6 +17,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeormConfig from 'config/typeorm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+import { SeederModule } from './seeder/seeder.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { DataSource } from 'typeorm';
     PaymentCredentialsModule,
     DonationsModule,
     AuthModule,
+    SeederModule,
   ],
   controllers: [AppController],
   providers: [AppService],
