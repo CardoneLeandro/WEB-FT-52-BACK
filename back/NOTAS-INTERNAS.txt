@@ -5,5 +5,7 @@
 =====> WEB-FT-52-BACK\back\src\users\users.controller.ts => createNewUser()
 LA CONSULTA A LA BASE DE DATOS PARA SABER SI EXISTE O NO EL USUARIO LA DEBE HACER UN INTERCEPTOR O UN GUARD...
 SI LA SOLICITUD INGRESA SE ENTIENDE QUE ES PORQUE EL USUARIO NO EXISTE EN LA BASE DE DATOS
+
+CREAR LOS DTO PARA IMPLEMENTAR AUTH0 EN LAS RUTAS DE INICIO Y LOG
 ------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------
