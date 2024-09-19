@@ -6,11 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-} from '@nestjs/common'
-import { commentsService } from './comments.service'
-import { CreateCommentsDto } from './dto/create-comments.dto'
-import { UpdateCommentsDto } from './dto/update-comments.dto'
-import { ApiTags } from '@nestjs/swagger'
+} from '@nestjs/common';
+import { commentsService } from './comments.service';
+import { CreateCommentsDto } from './dto/create-comments.dto';
+import { UpdateCommentsDto } from './dto/update-comments.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Comments')
 @Controller('comments')
@@ -19,17 +19,17 @@ export class commentsController {
 
   @Post()
   create(@Body() createCommentsDto: CreateCommentsDto) {
-    return this.commentsService.create(createCommentsDto)
+    return this.commentsService.create(createCommentsDto);
   }
 
   @Get()
   findAll() {
-    return this.commentsService.findAll()
+    return this.commentsService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.commentsService.findOne(+id)
+    return this.commentsService.findOne(+id);
   }
 
   @Patch(':id')
@@ -37,11 +37,11 @@ export class commentsController {
     @Param('id') id: string,
     @Body() updateCommentsDto: UpdateCommentsDto,
   ) {
-    return this.commentsService.update(+id, updateCommentsDto)
+    return this.commentsService.update(+id, updateCommentsDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.commentsService.remove(+id)
+    return this.commentsService.remove(+id);
   }
 }

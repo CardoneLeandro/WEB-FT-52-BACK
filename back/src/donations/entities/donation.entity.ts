@@ -1,19 +1,19 @@
-import { status } from 'src/common/enum/status.enum'
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { status } from 'src/common/enum/status.enum';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
   name: 'donations',
 })
 export class Donation {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+  id: string;
 
   @Column({ type: 'date', nullable: false })
-  date: Date
+  date: Date;
 
   @Column({ type: 'enum', enum: status, default: status.ACTIVE })
-  status: status
+  status: status;
 
   @Column({ type: 'integer', nullable: false })
-  amount: number
+  amount: number;
 }

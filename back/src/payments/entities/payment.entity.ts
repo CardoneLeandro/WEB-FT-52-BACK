@@ -1,8 +1,8 @@
-import { status } from 'src/common/enum/status.enum'
-import { Donation } from 'src/donations/entities/donation.entity'
-import { OrderDetail } from 'src/order-details/entities/order-detail.entity'
-import { Order } from 'src/orders/entities/order.entity'
-import { UserInformation } from 'src/user-information/entities/user-information.entity'
+import { status } from 'src/common/enum/status.enum';
+import { Donation } from 'src/donations/entities/donation.entity';
+import { OrderDetail } from 'src/order-details/entities/order-detail.entity';
+import { Order } from 'src/orders/entities/order.entity';
+import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import {
   Column,
   Entity,
@@ -10,40 +10,40 @@ import {
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm'
+} from 'typeorm';
 
 @Entity({
   name: 'payments',
 })
 export class Payment {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+  id: string;
 
   @ManyToOne(
     () => UserInformation,
     (userInformation) => userInformation.payments,
   )
   @JoinColumn({ name: 'user' })
-  user: UserInformation
+  user: UserInformation;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  paymentDate: Date
+  paymentDate: Date;
 
   @Column({ type: 'int', nullable: false })
-  ccl4LastNumber: number
+  ccl4LastNumber: number;
 
   @OneToOne(() => OrderDetail, (orderDetail) => orderDetail.id)
   @JoinColumn({ name: 'Detail' })
-  Detail: OrderDetail
+  Detail: OrderDetail;
 
   @Column({ type: 'enum', enum: status, default: status.ACTIVE })
-  orderStatus: status
+  orderStatus: status;
 
   @OneToOne(() => Donation, (donation) => donation.id)
   @JoinColumn({ name: 'donation' })
-  donation: Donation
+  donation: Donation;
 
   @OneToOne(() => Order, (order) => order.id)
   @JoinColumn({ name: 'order' })
-  order: Order
+  order: Order;
 }
