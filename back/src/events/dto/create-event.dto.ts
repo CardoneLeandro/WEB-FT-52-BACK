@@ -2,6 +2,8 @@ import { ApiProperty } from '@nestjs/swagger'
 import {
   IsDate,
   IsNotEmpty,
+  IsNumber,
+  isNumber,
   IsString,
   IsUrl,
   IsUUID,
@@ -19,15 +21,6 @@ export class CreateEventDto {
   @IsNotEmpty()
   @IsUUID()
   creator: UUID
-
-  @ApiProperty({
-    description: 'Fecha de creación del evento',
-    example: '2022-01-01',
-    type: Date,
-  })
-  @IsNotEmpty()
-  @IsDate()
-  creationDate: Date
 
   @ApiProperty({
     description: 'Titulo del evento a ser creado',
@@ -65,14 +58,32 @@ export class CreateEventDto {
   })
   @IsNotEmpty()
   @IsString()
-  location: string
+  eventLocation: string;
+
+  @ApiProperty({
+    description: 'Precio del evento',
+    example: 1000,
+    type: Number
+  })
+  @IsNotEmpty()
+  @IsNumber()
+  price: number
+
+  @ApiProperty({
+    description: 'Stock del evento',
+    example: 10,
+    type: Number
+  })
+  @IsNotEmpty()
+  @IsNumber()
+  stock: number;
 
   @ApiProperty({
     description: 'URL de la imagen del evento',
-    example: 'https://example.com/image.png',
-    type: String,
+    example: ['https://example.com/image.png'],
+    type: [String],
   })
   @IsNotEmpty()
-  @IsUrl()
-  image: string
+  @IsString()
+  images: string[];
 }
