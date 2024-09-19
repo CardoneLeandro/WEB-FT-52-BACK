@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { UserInformation } from './entities/user-information.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 
 @Injectable()
 export class UserInformationRepository extends Repository<UserInformation> {
@@ -9,12 +8,10 @@ export class UserInformationRepository extends Repository<UserInformation> {
     super(UserInformation, dSource.getRepository(UserInformation).manager);
   }
 
-  createTable(id: string) {
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    return this.create({ id: id });
-  }
-
-  saveTable(userInformation: UserInformation) {
-    return this.save(userInformation);
+  async saveTable(
+    userInformationTable: UserInformation,
+    manager: EntityManager,
+  ) {
+    return await manager.save(userInformationTable);
   }
 }
