@@ -13,8 +13,7 @@ export class UserInformationService {
   ) {}
 
   async createUserInformationTable(user: User, manager: EntityManager) {
-    const userInformation = new UserInformation();
-    userInformation.user = user;
+    const userInformation = this.userInfoRepo.create({ user: user });
     const savedUserInformationTable = await this.userInfoRepo.saveTable(
       userInformation,
       manager,
