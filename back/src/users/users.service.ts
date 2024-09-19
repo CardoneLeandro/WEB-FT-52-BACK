@@ -12,7 +12,7 @@ export class UsersService {
     private readonly userInfoservice: UserInformationService,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async createNewUser(createUserDto: CreateUserDto): Promise<User> {
     const createdUser = this.userRepo.createUser(createUserDto);
     if (!createdUser) {
       throw new Error('Could not create user');

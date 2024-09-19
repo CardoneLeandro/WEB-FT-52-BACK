@@ -12,14 +12,16 @@ export class UserInformationService {
     return 'This action adds a new userInformation';
   }
 
-  createUserInformationTable(id: CreateUserInformationDto) {
-    const createdUserInformationTable = this.userInfoRepo.createTable(id.id);
+  async createUserInformationTable(newUser: CreateUserInformationDto) {
+    const createdUserInformationTable = this.userInfoRepo.createTable(
+      newUser.id,
+    );
 
     if (!createdUserInformationTable) {
       throw new Error('Could not create userInformationTable');
     }
 
-    const savedUserInfoTable = this.userInfoRepo.saveTable(
+    const savedUserInfoTable = await this.userInfoRepo.saveTable(
       createdUserInformationTable,
     );
 
