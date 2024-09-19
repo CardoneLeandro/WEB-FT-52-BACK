@@ -1,4 +1,4 @@
 export enum elementType {
-    PRODUCT = 'product',
-    EVENT = 'event',
-  }
+  PRODUCT = 'product',
+  EVENT = 'event',
+}

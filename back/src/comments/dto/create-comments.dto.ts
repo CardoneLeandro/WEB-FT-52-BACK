@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsUUID, MaxLength } from 'class-validator';
-import { UUID } from 'crypto';
+import { ApiProperty } from '@nestjs/swagger'
+import { IsNotEmpty, IsString, IsUUID, MaxLength } from 'class-validator'
+import { UUID } from 'crypto'
 
 export class CreateCommentsDto {
   @ApiProperty({
@@ -10,7 +10,7 @@ export class CreateCommentsDto {
   })
   @IsNotEmpty()
   @IsUUID()
-  creator: UUID;
+  creator: UUID
 
   @ApiProperty({
     description: 'Contenido del comentario',
@@ -20,5 +20,5 @@ export class CreateCommentsDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(140)
-  content: string;
+  content: string
 }

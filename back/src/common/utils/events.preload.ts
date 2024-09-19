@@ -44,4 +44,4 @@ const events = [
     location: 'Calle Falsa 123',
     image: 'https://picsum.photos/200/300',
   },
-];
+]

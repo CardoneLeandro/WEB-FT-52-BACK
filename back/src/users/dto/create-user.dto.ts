@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger'
 import {
   IsEmail,
   IsNotEmpty,
@@ -7,8 +7,8 @@ import {
   IsUrl,
   Length,
   Validate,
-} from 'class-validator';
-import { MatchPassword } from 'src/common/decorators/matchPassword.decorator';
+} from 'class-validator'
+import { MatchPassword } from 'src/common/decorators/matchPassword.decorator'
 
 export class CreateUserDto {
   @ApiProperty({
@@ -19,7 +19,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @Length(3, 50)
-  name: string;
+  name: string
 
   @ApiProperty({
     description: 'Dirección de mail del usuario a ser creado',
@@ -28,7 +28,7 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   @IsEmail()
-  mail: string;
+  mail: string
 
   @ApiProperty({
     description: 'Contraseña del usuario a ser creado',
@@ -50,7 +50,7 @@ export class CreateUserDto {
         'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.',
     },
   )
-  password: string;
+  password: string
 
   @ApiProperty({
     description: 'Validación de contraseña del usuario a ser creado',
@@ -59,7 +59,7 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   @Validate(MatchPassword, ['password'])
-  confirmPassword: string;
+  confirmPassword: string
 
   @ApiProperty({
     description: 'Imagen de perfil del usuario a ser creado',
@@ -69,5 +69,5 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   @IsUrl()
-  profilePicture: string;
+  profilePicture: string
 }

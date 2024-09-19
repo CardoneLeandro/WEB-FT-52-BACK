@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsUrl } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger'
+import { IsNotEmpty, IsString, IsUrl } from 'class-validator'
 
 export class CreateFileDto {
   @ApiProperty({
@@ -9,7 +9,7 @@ export class CreateFileDto {
   })
   @IsNotEmpty()
   @IsString()
-  title: string;
+  title: string
 
   @ApiProperty({
     description: 'Url del archivo',
@@ -19,5 +19,5 @@ export class CreateFileDto {
   })
   @IsNotEmpty()
   @IsUrl()
-  url: string;
+  url: string
 }

@@ -6,11 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-} from '@nestjs/common';
-import { PaymentCredentialsService } from './payment-credentials.service';
-import { CreatePaymentCredentialDto } from './dto/create-payment-credential.dto';
-import { UpdatePaymentCredentialDto } from './dto/update-payment-credential.dto';
-import { ApiTags } from '@nestjs/swagger';
+} from '@nestjs/common'
+import { PaymentCredentialsService } from './payment-credentials.service'
+import { CreatePaymentCredentialDto } from './dto/create-payment-credential.dto'
+import { UpdatePaymentCredentialDto } from './dto/update-payment-credential.dto'
+import { ApiTags } from '@nestjs/swagger'
 
 @ApiTags('Payment-credentials')
 @Controller('payment-credentials')
@@ -21,17 +21,17 @@ export class PaymentCredentialsController {
 
   @Post()
   create(@Body() createPaymentCredentialDto: CreatePaymentCredentialDto) {
-    return this.paymentCredentialsService.create(createPaymentCredentialDto);
+    return this.paymentCredentialsService.create(createPaymentCredentialDto)
   }
 
   @Get()
   findAll() {
-    return this.paymentCredentialsService.findAll();
+    return this.paymentCredentialsService.findAll()
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.paymentCredentialsService.findOne(+id);
+    return this.paymentCredentialsService.findOne(+id)
   }
 
   @Patch(':id')
@@ -42,11 +42,11 @@ export class PaymentCredentialsController {
     return this.paymentCredentialsService.update(
       +id,
       updatePaymentCredentialDto,
-    );
+    )
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.paymentCredentialsService.remove(+id);
+    return this.paymentCredentialsService.remove(+id)
   }
 }

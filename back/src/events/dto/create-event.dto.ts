@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger'
 import {
   IsDate,
   IsNotEmpty,
@@ -7,8 +7,8 @@ import {
   IsUUID,
   MaxLength,
   MinLength,
-} from 'class-validator';
-import { UUID } from 'crypto';
+} from 'class-validator'
+import { UUID } from 'crypto'
 
 export class CreateEventDto {
   @ApiProperty({
@@ -18,7 +18,7 @@ export class CreateEventDto {
   })
   @IsNotEmpty()
   @IsUUID()
-  creator: UUID;
+  creator: UUID
 
   @ApiProperty({
     description: 'Fecha de creación del evento',
@@ -27,7 +27,7 @@ export class CreateEventDto {
   })
   @IsNotEmpty()
   @IsDate()
-  creationDate: Date;
+  creationDate: Date
 
   @ApiProperty({
     description: 'Titulo del evento a ser creado',
@@ -38,7 +38,7 @@ export class CreateEventDto {
   @IsString()
   @MaxLength(50)
   @MinLength(3)
-  title: string;
+  title: string
 
   @ApiProperty({
     description: 'Descripción del evento a ser creado',
@@ -47,7 +47,7 @@ export class CreateEventDto {
   })
   @IsNotEmpty()
   @IsString()
-  description: string;
+  description: string
 
   @ApiProperty({
     description: 'Fecha donde se realizará el evento',
@@ -56,7 +56,7 @@ export class CreateEventDto {
   })
   @IsNotEmpty()
   @IsDate()
-  eventDate: Date;
+  eventDate: Date
 
   @ApiProperty({
     description: 'Ubicación donde se realizará el evento',
@@ -65,7 +65,7 @@ export class CreateEventDto {
   })
   @IsNotEmpty()
   @IsString()
-  location: string;
+  location: string
 
   @ApiProperty({
     description: 'URL de la imagen del evento',
@@ -74,5 +74,5 @@ export class CreateEventDto {
   })
   @IsNotEmpty()
   @IsUrl()
-  image: string;
+  image: string
 }
