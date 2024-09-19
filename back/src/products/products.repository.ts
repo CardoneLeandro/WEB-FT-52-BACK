@@ -9,16 +9,27 @@ export class ProductsRepository extends Repository<Element> {
     super(Element, dSource.getRepository(Element).manager);
   }
 
-  createProduct(product: CreateProductDto): Partial<Element> {
+  createProduct(product: CreateProductDto): Element {
     return this.create(product);
   }
 
-  async saveProduct(product: Element): Promise<Element> {
+  async saveProduct(product: Element) {
     return await this.save(product);
   }
 
-  async findProducts(): Promise<Element[]> {
-    return await this.find();
+  async findAndCountProducts(
+    page: number,
+    limit: number,
+    sortBy: string,
+    order: 'ASC' | 'DESC',
+  ) {
+    return await this.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        [sortBy]: order,
+      },
+    });
   }
 
   async findProductsById(id: string) {
