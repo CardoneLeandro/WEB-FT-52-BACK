@@ -6,11 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-} from '@nestjs/common';
-import { DonationsService } from './donations.service';
-import { CreateDonationDto } from './dto/create-donation.dto';
-import { UpdateDonationDto } from './dto/update-donation.dto';
-import { ApiTags } from '@nestjs/swagger';
+} from '@nestjs/common'
+import { DonationsService } from './donations.service'
+import { CreateDonationDto } from './dto/create-donation.dto'
+import { UpdateDonationDto } from './dto/update-donation.dto'
+import { ApiTags } from '@nestjs/swagger'
 
 @ApiTags('Donations')
 @Controller('donations')
@@ -19,17 +19,17 @@ export class DonationsController {
 
   @Post()
   create(@Body() createDonationDto: CreateDonationDto) {
-    return this.donationsService.create(createDonationDto);
+    return this.donationsService.create(createDonationDto)
   }
 
   @Get()
   findAll() {
-    return this.donationsService.findAll();
+    return this.donationsService.findAll()
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.donationsService.findOne(+id);
+    return this.donationsService.findOne(+id)
   }
 
   @Patch(':id')
@@ -37,11 +37,11 @@ export class DonationsController {
     @Param('id') id: string,
     @Body() updateDonationDto: UpdateDonationDto,
   ) {
-    return this.donationsService.update(+id, updateDonationDto);
+    return this.donationsService.update(+id, updateDonationDto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.donationsService.remove(+id);
+    return this.donationsService.remove(+id)
   }
 }

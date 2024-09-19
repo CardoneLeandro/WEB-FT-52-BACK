@@ -1,12 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsNotEmpty,
-  IsString,
-  IsUrl,
-  IsUUID,
-  MaxLength,
-} from 'class-validator';
-import { UUID } from 'crypto';
+import { ApiProperty } from '@nestjs/swagger'
+import { IsNotEmpty, IsString, IsUrl, IsUUID, MaxLength } from 'class-validator'
+import { UUID } from 'crypto'
 
 export class CreatePostDto {
   @ApiProperty({
@@ -16,7 +10,7 @@ export class CreatePostDto {
   })
   @IsNotEmpty()
   @IsUUID()
-  creator: UUID;
+  creator: UUID
 
   @ApiProperty({
     description: 'Titulo del post',
@@ -26,7 +20,7 @@ export class CreatePostDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(50)
-  title: string;
+  title: string
 
   @ApiProperty({
     description: 'Descripción del post',
@@ -35,7 +29,7 @@ export class CreatePostDto {
   })
   @IsNotEmpty()
   @IsString()
-  content: string;
+  content: string
 
   @ApiProperty({
     description: 'Imagen del post',
@@ -45,5 +39,5 @@ export class CreatePostDto {
   })
   @IsNotEmpty()
   @IsUrl()
-  image: string;
+  image: string
 }

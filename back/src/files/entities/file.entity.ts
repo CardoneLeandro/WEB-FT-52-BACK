@@ -1,7 +1,7 @@
-import { FileType } from 'src/common/enum/fileType.enum';
-import { Event } from 'src/events/entities/event.entity';
-import { Post } from 'src/posts/entities/post.entity';
-import { UserInformation } from 'src/user-information/entities/user-information.entity';
+import { FileType } from 'src/common/enum/fileType.enum'
+import { Event } from 'src/events/entities/event.entity'
+import { Post } from 'src/posts/entities/post.entity'
+import { UserInformation } from 'src/user-information/entities/user-information.entity'
 import {
   Column,
   Entity,
@@ -9,35 +9,35 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryColumn,
-} from 'typeorm';
+} from 'typeorm'
 
 @Entity({ name: 'files' })
 export class File {
   @PrimaryColumn('uuid')
-  id: string;
+  id: string
 
   @Column({ type: 'enum', enum: FileType, nullable: false })
-  type: FileType;
+  type: FileType
 
   @Column({ type: 'varchar', length: 100, nullable: false })
-  creator: string;
+  creator: string
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createDate: Date;
+  createDate: Date
 
   @Column({ type: 'varchar', length: 50, nullable: false })
-  title: string;
+  title: string
 
   @Column({ type: 'varchar', length: 100, nullable: false })
-  url: string;
+  url: string
 
   @ManyToOne(() => UserInformation, (userInformation) => userInformation.files)
   @JoinColumn({ name: 'userInformation_id' })
-  information: UserInformation;
+  information: UserInformation
 
   @OneToMany(() => Event, (event) => event.files)
-  events: Event[];
+  events: Event[]
 
   @OneToMany(() => Post, (post) => post.files)
-  posts: Post[];
+  posts: Post[]
 }
