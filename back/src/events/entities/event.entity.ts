@@ -1,7 +1,7 @@
-import { Comment } from 'src/comments/entities/comments.entity'
-import { status } from 'src/common/enum/status.enum'
-import { File } from 'src/files/entities/file.entity'
-import { UserInformation } from 'src/user-information/entities/user-information.entity'
+import { Comment } from 'src/comments/entities/comments.entity';
+import { status } from 'src/common/enum/status.enum';
+import { File } from 'src/files/entities/file.entity';
+import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import {
   Column,
   Entity,
@@ -9,42 +9,42 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryColumn,
-} from 'typeorm'
+} from 'typeorm';
 
 @Entity({ name: 'events' })
 export class Event {
   @PrimaryColumn('uuid')
-  id: string
+  id: string;
 
   @Column({ type: 'uuid', nullable: false })
-  creator: string
+  creator: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createDate: Date
+  createDate: Date;
 
   @Column({ type: 'enum', enum: status, default: status.PENDING })
-  status: status
+  status: status;
 
   @Column({ type: 'varchar', length: 50, nullable: false })
-  title: string
+  title: string;
 
   @Column({ type: 'text', nullable: false })
-  description: string
+  description: string;
 
   @Column({ type: 'timestamp', nullable: false })
-  date: Date
+  date: Date;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
-  location: string
+  location: string;
 
   @ManyToOne(() => File, (file) => file.events)
   @JoinColumn({ name: 'file_id' })
-  files: File
+  files: File;
 
   @OneToMany(() => Comment, (comment) => comment.event)
-  comments: Comment[]
+  comments: Comment[];
 
   @ManyToOne(() => UserInformation, (userInformation) => userInformation.events)
   @JoinColumn({ name: 'userInformation_id' })
-  information: UserInformation
+  information: UserInformation;
 }

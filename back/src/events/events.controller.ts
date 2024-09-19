@@ -6,11 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-} from '@nestjs/common'
-import { EventsService } from './events.service'
-import { CreateEventDto } from './dto/create-event.dto'
-import { UpdateEventDto } from './dto/update-event.dto'
-import { ApiTags } from '@nestjs/swagger'
+} from '@nestjs/common';
+import { EventsService } from './events.service';
+import { CreateEventDto } from './dto/create-event.dto';
+import { UpdateEventDto } from './dto/update-event.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Events')
 @Controller('events')
@@ -19,12 +19,12 @@ export class EventsController {
 
   @Post()
   create(@Body() createEventDto: CreateEventDto) {
-    return this.eventsService.create(createEventDto)
+    return this.eventsService.create(createEventDto);
   }
 
   @Get()
   findAll() {
-    return this.eventsService.findAll()
+    return this.eventsService.findAll();
   }
 
   @Get(':id')
@@ -34,11 +34,11 @@ export class EventsController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
-    return this.eventsService.update(+id, updateEventDto)
+    return this.eventsService.update(+id, updateEventDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.eventsService.remove(+id)
+    return this.eventsService.remove(+id);
   }
 }

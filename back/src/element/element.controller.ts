@@ -6,8 +6,8 @@ import {
   Patch,
   Param,
   Delete,
-} from '@nestjs/common'
-import { ElementService } from './element.service'
+} from '@nestjs/common';
+import { ElementService } from './element.service';
 
 @Controller('element')
 export class ElementController {
@@ -15,26 +15,26 @@ export class ElementController {
 
   @Post()
   create(@Body() createElementDto) {
-    return this.elementService.create(createElementDto)
+    return this.elementService.create(createElementDto);
   }
 
   @Get()
   findAll() {
-    return this.elementService.findAll()
+    return this.elementService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.elementService.findOne(+id)
+    return this.elementService.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateElementDto) {
-    return this.elementService.update(+id, updateElementDto)
+    return this.elementService.update(+id, updateElementDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.elementService.remove(+id)
+    return this.elementService.remove(+id);
   }
 }

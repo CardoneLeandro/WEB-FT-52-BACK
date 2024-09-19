@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDate,
   IsNotEmpty,
@@ -9,8 +9,8 @@ import {
   IsUUID,
   MaxLength,
   MinLength,
-} from 'class-validator'
-import { UUID } from 'crypto'
+} from 'class-validator';
+import { UUID } from 'crypto';
 
 export class CreateEventDto {
   @ApiProperty({
@@ -20,7 +20,7 @@ export class CreateEventDto {
   })
   @IsNotEmpty()
   @IsUUID()
-  creator: UUID
+  creator: UUID;
 
   @ApiProperty({
     description: 'Titulo del evento a ser creado',
@@ -31,7 +31,7 @@ export class CreateEventDto {
   @IsString()
   @MaxLength(50)
   @MinLength(3)
-  title: string
+  title: string;
 
   @ApiProperty({
     description: 'Descripción del evento a ser creado',
@@ -40,7 +40,7 @@ export class CreateEventDto {
   })
   @IsNotEmpty()
   @IsString()
-  description: string
+  description: string;
 
   @ApiProperty({
     description: 'Fecha donde se realizará el evento',
@@ -49,7 +49,7 @@ export class CreateEventDto {
   })
   @IsNotEmpty()
   @IsDate()
-  eventDate: Date
+  eventDate: Date;
 
   @ApiProperty({
     description: 'Ubicación donde se realizará el evento',
@@ -63,16 +63,16 @@ export class CreateEventDto {
   @ApiProperty({
     description: 'Precio del evento',
     example: 1000,
-    type: Number
+    type: Number,
   })
   @IsNotEmpty()
   @IsNumber()
-  price: number
+  price: number;
 
   @ApiProperty({
     description: 'Stock del evento',
     example: 10,
-    type: Number
+    type: Number,
   })
   @IsNotEmpty()
   @IsNumber()

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsNumber,
@@ -6,8 +6,8 @@ import {
   IsUrl,
   IsUUID,
   MaxLength,
-} from 'class-validator'
-import { UUID } from 'crypto'
+} from 'class-validator';
+import { UUID } from 'crypto';
 
 export class CreateProductDto {
   @ApiProperty({
@@ -17,7 +17,7 @@ export class CreateProductDto {
   })
   @IsNotEmpty()
   @IsUUID()
-  creator: UUID
+  creator: UUID;
 
   @ApiProperty({
     description: 'Titulo del producto',
@@ -27,7 +27,7 @@ export class CreateProductDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(50)
-  title: string
+  title: string;
 
   @ApiProperty({
     description: 'Descripción del producto',
@@ -36,7 +36,7 @@ export class CreateProductDto {
   })
   @IsNotEmpty()
   @IsString()
-  description: string
+  description: string;
 
   @ApiProperty({
     description: 'Imagen del producto',
@@ -45,7 +45,7 @@ export class CreateProductDto {
   })
   @IsNotEmpty()
   @IsString()
-  image: string
+  image: string;
 
   @ApiProperty({
     description: 'Precio del producto',
@@ -54,7 +54,7 @@ export class CreateProductDto {
   })
   @IsNotEmpty()
   @IsNumber()
-  price: number
+  price: number;
 
   @ApiProperty({
     description: 'Stock del producto',
@@ -63,5 +63,5 @@ export class CreateProductDto {
   })
   @IsNotEmpty()
   @IsNumber()
-  stock: number
+  stock: number;
 }
