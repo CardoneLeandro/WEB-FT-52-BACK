@@ -4,16 +4,33 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
 import { User } from './entities/user.entity';
 import { UserInformationService } from 'src/user-information/user-information.service';
+import { DataSource, getConnection } from 'typeorm';
 
 @Injectable()
 export class UsersService {
   constructor(
+    private readonly dsource: DataSource,
     private readonly userRepo: UsersRepository,
     private readonly userInfoservice: UserInformationService,
   ) {}
+  async createNewUser(createUserData: CreateUserDto): Promise<User> {
+    return await this.dsource.transaction(async (manager) => {
+      const createdUser = this.userRepo.createUser(createUserData);
+      const savedUser = await this.userRepo.saveUser(createdUser);
+      const userInformationTable =
+        await this.userInfoservice.createUserInformationTable(
+          savedUser,
+          manager,
+        );
+      await this.userRepo.update(savedUser.id, {
+        userInformation: userInformationTable,
+      });
+      return savedUser;
+    });
+  }
 
-  async createNewUser(createUserDto: CreateUserDto): Promise<User> {
-    const createdUser = this.userRepo.createUser(createUserDto);
+  /*async createNewUser(createUserData: CreateUserDto): Promise<User> {
+    const createdUser = this.userRepo.createUser(createUserData);
     if (!createdUser) {
       throw new Error('Could not create user');
     }
@@ -21,13 +38,15 @@ export class UsersService {
     if (!savedUser) {
       throw new Error('Could not save user');
     }
-    const userInformation =
-      this.userInfoservice.createUserInformationTable(savedUser);
-    if (!userInformation) {
+    console.log('CARDONE => usersService, createNewUser, savedUser', savedUser);
+    const userInformationTable =
+     await this.userInfoservice.createUserInformationTable(savedUser);
+    if (!userInformationTable) {
       throw new Error('Could not create userInformation');
     }
+    await this.userRepo.update(savedUser.id,{userInformation:userInformationTable});
     return savedUser;
-  }
+  }*/
 
   findAll() {
     return `This action returns all users`;

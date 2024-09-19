@@ -1,6 +1,6 @@
 import { IsUUID } from 'class-validator';
+import { User } from 'src/users/entities/user.entity';
 
 export class CreateUserInformationDto {
-  @IsUUID(4, { message: 'Must be a valid UUID' })
-  id: string;
+  user: User;
 }

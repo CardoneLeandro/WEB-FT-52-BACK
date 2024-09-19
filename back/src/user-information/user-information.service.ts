@@ -1,35 +1,28 @@
-import { Injectable, ParseUUIDPipe, UsePipes } from '@nestjs/common';
-import { CreateUserInformationDto } from './dto/create-user-information.dto';
-import { UpdateUserInformationDto } from './dto/update-user-information.dto';
+import { Injectable } from '@nestjs/common';
+
 import { UserInformationRepository } from './user-information.repository';
+import { User } from 'src/users/entities/user.entity';
+import { UserInformation } from './entities/user-information.entity';
+import { DataSource, EntityManager } from 'typeorm';
 
 @Injectable()
 export class UserInformationService {
-  constructor(private readonly userInfoRepo: UserInformationRepository) {}
+  constructor(
+    private readonly dsource: DataSource,
+    private readonly userInfoRepo: UserInformationRepository,
+  ) {}
 
-  create(dto: CreateUserInformationDto) {
-    console.log(dto);
-    return 'This action adds a new userInformation';
-  }
-
-  async createUserInformationTable(newUser: CreateUserInformationDto) {
-    const createdUserInformationTable = this.userInfoRepo.createTable(
-      newUser.id,
+  async createUserInformationTable(user: User, manager: EntityManager) {
+    const userInformation = new UserInformation();
+    userInformation.user = user;
+    const savedUserInformationTable = await this.userInfoRepo.saveTable(
+      userInformation,
+      manager,
     );
-
-    if (!createdUserInformationTable) {
-      throw new Error('Could not create userInformationTable');
+    if (!savedUserInformationTable) {
+      throw new Error('Could not save userInformation');
     }
-
-    const savedUserInfoTable = await this.userInfoRepo.saveTable(
-      createdUserInformationTable,
-    );
-
-    if (!savedUserInfoTable) {
-      throw new Error('Could not save userInformationTable');
-    }
-
-    return savedUserInfoTable;
+    return savedUserInformationTable;
   }
 
   findAll() {
@@ -40,7 +33,7 @@ export class UserInformationService {
     return `This action returns a #${id} userInformation`;
   }
 
-  update(id: number, updateUserInformationDto: UpdateUserInformationDto) {
+  update(id: number, updateUserInformationDto) {
     return `This action updates a #${id} userInformation`;
   }
 

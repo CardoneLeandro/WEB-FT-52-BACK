@@ -16,6 +16,6 @@ import { UserInformationRepository } from 'src/user-information/user-information
     UserInformationRepository,
   ],
   imports: [TypeOrmModule.forFeature([User])],
-  exports: [UsersRepository],
+  exports: [UsersRepository, UsersService],
 })
 export class UsersModule {}
