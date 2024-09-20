@@ -15,9 +15,40 @@ export class EventsService {
     return savedEvent;
   }
 
-  findAll() {
-    const events = this.eventRepo.find();
-    return events;
+  async findAll(
+    page: number,
+    limit: number,
+    sortBy: string = 'createDate',
+    order: 'ASC' | 'DESC' = 'ASC',
+  ) {
+    const [events, totalElements] = await this.eventRepo.findAndCountProducts(
+      page,
+      limit,
+      sortBy,
+      order,
+    );
+    const validSortFields = ['price', 'title', 'createDate'];
+    if (!validSortFields.includes(sortBy)) {
+      throw new Error(`Invalid sort field: ${sortBy}`);
+    }
+
+    const totalPages = Math.ceil(totalElements / Number(limit));
+    const hasPrevPage = Number(page) > 1;
+    const hasNextPage = Number(page) < totalPages;
+    const prevPage = hasPrevPage ? Number(page) - 1 : null;
+    const nextPage = hasNextPage ? Number(page) + 1 : null;
+
+    return {
+      events,
+      totalElements,
+      page,
+      limit,
+      totalPages,
+      hasPrevPage,
+      hasNextPage,
+      prevPage,
+      nextPage,
+    };
   }
 
   findOne(id) {
