@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { elementType } from 'src/common/enum/elementType.enum';
-import { ElementsRepository } from 'src/element/element.repository';
-import { ProductResponseDto } from './dto/response-product.dto';
 import { ProductsRepository } from './products.repository';
 
 @Injectable()
@@ -23,7 +20,7 @@ export class ProductsService {
     order: 'ASC' | 'DESC' = 'ASC',
   ) {
     const [products, totalElements] =
-      await this.productRepo.findAndCountProducts(page, limit, sortBy, order);
+    await this.productRepo.findAndCountProducts(page, limit, sortBy, order);
     const validSortFields = ['price', 'title', 'createDate'];
     if (!validSortFields.includes(sortBy)) {
       throw new Error(`Invalid sort field: ${sortBy}`);

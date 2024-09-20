@@ -5,10 +5,9 @@ import { EventsRepository } from './events.repository';
 @Injectable()
 export class EventsService {
   constructor(private readonly eventRepo: EventsRepository) {}
+
   async create(eventData) {
-    const newEvent = eventData;
-    const createdEvent = this.eventRepo.create(newEvent);
-    console.log('GAMMA => eventsService, create, createdEvent', createdEvent);
+    const createdEvent = this.eventRepo.create(eventData);
     if (!createdEvent) {
       throw new Error('Could not create event');
     }

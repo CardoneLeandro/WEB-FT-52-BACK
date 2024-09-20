@@ -33,35 +33,14 @@ export class SeederService {
       const createdProduct = this.productRepo.createProduct(newProduct);
       await this.productRepo.saveProduct(createdProduct);
     }
-    const allProducts = await this.userInfo.findOne({
-      where: { id },
-      relations: ['products'],
-    });
-    console.log(
-      'CARDONE => seederService, addProductSeeder, INFORMATION TABLE WITH "PRODUCT" RELATION',
-      allProducts,
-    );
-    return;
   }
 
   async addEventSeeder(id) {
     for (const event of eventSeeder) {
       const newEvent = { ...event, creator: id };
       const createdEvent = this.eventRepo.createEvent(newEvent);
-      const savedEvent = await this.eventRepo.saveEvent(createdEvent);
-      console.log(
-        'CARDONE => seederService, addEventSeeder, savedEvent',
-        savedEvent,
-      );
+      await this.eventRepo.saveEvent(createdEvent);
     }
-    const allEvents = await this.userInfo.findOne({
-      where: { id },
-      relations: ['events'],
-    });
-    console.log(
-      'CARDONE => seederService, addEventSeeder, INFORMATION TABLE WITH "EVENT" RELATION',
-      allEvents,
-    );
     return;
   }
 }

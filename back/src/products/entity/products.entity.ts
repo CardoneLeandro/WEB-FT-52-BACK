@@ -21,7 +21,7 @@ export class Product {
     () => UserInformation,
     (userInformation) => userInformation.products,
   )
-  @JoinColumn()
+  @JoinColumn({ name: 'creator_id' })
   creator: UserInformation;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

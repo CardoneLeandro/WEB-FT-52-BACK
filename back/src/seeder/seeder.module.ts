@@ -22,7 +22,7 @@ import { EventsRepository } from 'src/events/events.repository';
     UsersService,
     UserInformationService,
     EventsService,
-    EventsRepository
+    EventsRepository,
   ],
   exports: [SeederService],
 })

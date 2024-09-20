@@ -28,14 +28,7 @@ export class AuthService {
       where: { role: UserRole.SUPERADMIN },
       relations: ['userInformation'],
     });
-    console.log(userAdminTable);
-    const id = userAdminTable.id;
-    const infoTable: UserInformation = await this.infoRepo.findOne({
-      where: { user: { id } },
-    });
-    console.log(infoTable);
-
-    return infoTable;
+    return userAdminTable.userInformation.id;
   }
 
   async createNewUser(CreateUserData: CreateUserDto) {
