@@ -33,9 +33,9 @@ export class EventsController {
     return this.eventsService.findAll(page, limit, sortBy, order);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.eventsService.findOne(id);
+  @Get('getone')
+  async findOne(@Param('id') id: string) {
+    return await this.eventsService.findOne(id);
   }
 
   @Patch(':id')

@@ -31,9 +31,25 @@ export class AuthService {
     return userAdminTable.userInformation.id;
   }
 
-  async createNewUser(CreateUserData: CreateUserDto) {
+  async loggedUser(CreateUserData) {
+    const existingUser = await this.userRepo.findUser(CreateUserData.email);
+    if (!existingUser) {
+      const newUser = await this.userService.createNewUser(CreateUserData);
+      const newUserInformationTable = this.infoRepo.findOne({
+        where: { user: { id: newUser.id } },
+        relations: ['user'],
+      });
+      return newUserInformationTable;
+    }
+
+    return await this.infoRepo.findOne({
+      where: { user: { id: existingUser.id } },
+      relations: ['user'],
+    });
+  }
+
+  async createNewUser(CreateUserData) {
     const newUser = await this.userService.createNewUser(CreateUserData);
-    console.log('CARDONE => authService, createNewUser, newUser', newUser);
     return newUser;
   }
 
@@ -42,7 +58,7 @@ export class AuthService {
     if (!user) {
       return null;
     }
-    if (user.password !== loginUserDto.password) {
+    if (user.email !== loginUserDto.email) {
       return null;
     }
     return user;

@@ -33,9 +33,9 @@ export class ProductsController {
     return this.productsService.findAll(page, limit, sortBy, order);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productsService.findOne(id);
+  @Get('getone')
+  async findOne(@Param('id') id: string) {
+    return await this.productsService.findOne(id);
   }
 
   @Patch(':id')
