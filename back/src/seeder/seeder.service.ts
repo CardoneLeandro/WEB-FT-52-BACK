@@ -4,9 +4,8 @@ import { UserInformationRepository } from 'src/user-information/user-information
 import { UserRole } from 'src/common/enum/userRole.enum';
 import productsSeeder from './seeders/product.seed';
 import { ProductsRepository } from 'src/products/products.repository';
-import { Element } from 'src/element/entities/element.entity';
 import eventSeeder from './seeders/event.seed';
-import { elementType } from 'src/common/enum/elementType.enum';
+import { EventsRepository } from 'src/events/events.repository';
 
 @Injectable()
 export class SeederService {
@@ -14,6 +13,7 @@ export class SeederService {
     private readonly userInfo: UserInformationRepository,
     private readonly userRepo: UsersRepository,
     private readonly productRepo: ProductsRepository,
+    private readonly eventRepo: EventsRepository,
   ) {}
 
   async superAdmin() {
@@ -28,47 +28,40 @@ export class SeederService {
   }
 
   async addProductSeeder(id) {
-    console.log(
-      'CARDONE => seederService, addProductSeeder, productsSeeder',
-      productsSeeder,
-    );
     for (const product of productsSeeder) {
       const newProduct = { ...product, creator: id };
       const createdProduct = this.productRepo.createProduct(newProduct);
-      const savedProduct = await this.productRepo.saveProduct(createdProduct);
-      console.log(
-        'CARDONE => seederService, addProductSeeder, savedProduct',
-        savedProduct,
-      );
+      await this.productRepo.saveProduct(createdProduct);
     }
-
     const allProducts = await this.userInfo.findOne({
       where: { id },
       relations: ['products'],
     });
     console.log(
-      'CARDONE => seederService, addProductSeeder, allProducts',
+      'CARDONE => seederService, addProductSeeder, INFORMATION TABLE WITH "PRODUCT" RELATION',
       allProducts,
     );
     return;
   }
 
   async addEventSeeder(id) {
-    const eventsSeed = [];
     for (const event of eventSeeder) {
-      const foundProduct = await this.productRepo.findOne({
-        where: { title: event.title },
-      });
-      if (!foundProduct) {
-        const newEvent = { ...event, creator: id, type: elementType.EVENT };
-        eventsSeed.push(newEvent);
-      }
+      const newEvent = { ...event, creator: id };
+      const createdEvent = this.eventRepo.createEvent(newEvent);
+      const savedEvent = await this.eventRepo.saveEvent(createdEvent);
+      console.log(
+        'CARDONE => seederService, addEventSeeder, savedEvent',
+        savedEvent,
+      );
     }
-    if (eventsSeed.length > 0) {
-      const savedEvents = await this.productRepo.save(eventsSeed);
-      console.log(savedEvents);
-    }
-
+    const allEvents = await this.userInfo.findOne({
+      where: { id },
+      relations: ['events'],
+    });
+    console.log(
+      'CARDONE => seederService, addEventSeeder, INFORMATION TABLE WITH "EVENT" RELATION',
+      allEvents,
+    );
     return;
   }
 }

@@ -10,8 +10,12 @@ export class AppService {
   ) {}
   async onApplicationBootstrap() {
     const userInformation = await this.authSv.superAdminSeeder();
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', userInformation);
+    console.log(
+      'CARDONE => appService, onApplicationBootstrap tabla userInformation',
+      userInformation,
+    );
     await this.seederSv.addProductSeeder(userInformation.id);
+    await this.seederSv.addEventSeeder(userInformation.id);
   }
 
   getHello(): string {

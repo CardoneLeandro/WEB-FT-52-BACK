@@ -18,7 +18,7 @@ export class UserInformation {
   @OneToOne(() => User, (user) => user.userInformation)
   user: User;
 
-  @OneToMany(() => Event, (events) => events.creator)
+  @OneToMany(() => Event, (event) => event.creator)
   events: Event[];
 
   @OneToMany(() => Comment, (comment) => comment.information)
