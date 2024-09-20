@@ -2,15 +2,16 @@ import { FileType } from 'src/common/enum/fileType.enum';
 import { status } from 'src/common/enum/status.enum';
 import { File } from 'src/files/entities/file.entity';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'posts' })
 export class Post {
-  @PrimaryColumn('uuid')
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column([{ type: 'uuid', nullable: false }])
-  creator: string;
+  @ManyToOne(() => UserInformation, (userInformation) => userInformation.posts)
+  @JoinColumn({ name: 'userInformation_id' })
+  creator: UserInformation;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createDate: Date;
@@ -20,13 +21,6 @@ export class Post {
 
   @Column({ type: 'text', nullable: false })
   content: string;
-
-  @Column({ type: 'enum', enum: FileType, nullable: true })
-  type: FileType;
-
-  @ManyToOne(() => UserInformation, (userInformation) => userInformation.posts)
-  @JoinColumn({ name: 'userInformation_id' })
-  information: UserInformation;
 
   @ManyToOne(() => File, (file) => file.posts)
   @JoinColumn({ name: 'file_id' })
