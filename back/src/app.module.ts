@@ -16,7 +16,6 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeormConfig from 'config/typeorm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
 import { SeederModule } from './seeder/seeder.module';
 
 @Module({

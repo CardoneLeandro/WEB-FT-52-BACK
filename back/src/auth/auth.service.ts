@@ -33,14 +33,11 @@ export class AuthService {
     const infoTable: UserInformation = await this.infoRepo.findOne({
       where: { user: { id } },
       relations: ['user'],
-
     });
     console.log(infoTable);
 
     return infoTable;
   }
-
-  
 
   async createNewUser(CreateUserData: CreateUserDto) {
     const newUser = await this.userService.createNewUser(CreateUserData);

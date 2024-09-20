@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -23,8 +24,13 @@ export class EventsController {
   }
 
   @Get()
-  findAll() {
-    return this.eventsService.findAll();
+  findAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 5,
+    @Query('sortBy') sortBy: string = 'createDate', // Campo de ordenamiento
+    @Query('order') order: 'ASC' | 'DESC' = 'DESC', // Dirección de orden
+  ) {
+    return this.eventsService.findAll(page, limit, sortBy, order);
   }
 
   @Get(':id')

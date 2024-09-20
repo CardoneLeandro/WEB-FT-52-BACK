@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Element } from 'src/element/entities/element.entity';
+import { elementType } from 'src/common/enum/elementType.enum';
 
 @Injectable()
 export class ProductsRepository extends Repository<Element> {
@@ -24,6 +25,7 @@ export class ProductsRepository extends Repository<Element> {
     order: 'ASC' | 'DESC',
   ) {
     return await this.findAndCount({
+      where: { type: elementType.PRODUCT },
       skip: (page - 1) * limit,
       take: limit,
       order: {

@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { elementType } from 'src/common/enum/elementType.enum';
-import { ElementsRepository } from 'src/element/element.repository';
 import { ProductResponseDto } from './dto/response-product.dto';
 import { ProductsRepository } from './products.repository';
 
