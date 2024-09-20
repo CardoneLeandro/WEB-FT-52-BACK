@@ -43,6 +43,8 @@
     "class-validator": "^0.14.1",
     "cloudinary": "^2.4.0",
     "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.12.0",
