@@ -20,7 +20,7 @@ export class ProductsService {
     order: 'ASC' | 'DESC' = 'ASC',
   ) {
     const [products, totalElements] =
-    await this.productRepo.findAndCountProducts(page, limit, sortBy, order);
+      await this.productRepo.findAndCountProducts(page, limit, sortBy, order);
     const validSortFields = ['price', 'title', 'createDate'];
     if (!validSortFields.includes(sortBy)) {
       throw new Error(`Invalid sort field: ${sortBy}`);

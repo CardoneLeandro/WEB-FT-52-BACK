@@ -3,9 +3,9 @@ import { Event } from './entity/events.entity';
 import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
-export class EventsRepository extends Repository<Element> {
+export class EventsRepository extends Repository<Event> {
   constructor(private readonly dSource: DataSource) {
-    super(Element, dSource.getRepository(Element).manager);
+    super(Event, dSource.getRepository(Event).manager);
   }
 
   async findAndCountProducts(
@@ -30,5 +30,4 @@ export class EventsRepository extends Repository<Element> {
   async saveEvent(event) {
     return await this.save(event);
   }
-
 }

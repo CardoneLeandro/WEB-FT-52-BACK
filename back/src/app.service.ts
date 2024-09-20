@@ -19,8 +19,18 @@ export class AppService {
     await this.seederSv.addProductSeeder(id);
     await this.seederSv.addEventSeeder(id);
 
-    // const allRelations = await this.userInfoRepo.findOne({where:{id:userInformation.id}, relations:{user:true ,events:{comments:true}, products:{creator:true}}});
-    // console.log('CARDONE => appService, onApplicationBootstrap, ====>>> allRelations', allRelations);
+    const allRelations = await this.userInfoRepo.findOne({
+      where: { id },
+      relations: {
+        user: true,
+        events: { comments: true },
+        products: { creator: true },
+      },
+    });
+    console.log(
+      'CARDONE => appService, onApplicationBootstrap, ====>>> allRelations',
+      allRelations,
+    );
   }
 
   getHello(): string {
