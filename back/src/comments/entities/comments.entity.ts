@@ -1,5 +1,6 @@
-import { Event } from 'src/events/entities/event.entity';
+// import { Event } from 'src/events/entities/event.entity';
 import { status } from 'src/common/enum/status.enum';
+import { Element } from 'src/element/entities/element.entity';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
@@ -27,7 +28,7 @@ export class Comment {
   @JoinColumn({ name: 'userInformation_id' })
   information: UserInformation;
 
-  @ManyToOne(() => Event, (event) => event.comments)
-  @JoinColumn({ name: 'event_id' })
-  event: Event;
+  @ManyToOne(() => Element, (element) => element.comments)
+  @JoinColumn()
+  element: Event;
 }

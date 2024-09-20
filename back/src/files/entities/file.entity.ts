@@ -1,5 +1,4 @@
 import { FileType } from 'src/common/enum/fileType.enum';
-import { Event } from 'src/events/entities/event.entity';
 import { Post } from 'src/posts/entities/post.entity';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import {
@@ -35,8 +34,8 @@ export class File {
   @JoinColumn({ name: 'userInformation_id' })
   information: UserInformation;
 
-  @OneToMany(() => Event, (event) => event.files)
-  events: Event[];
+  // @OneToMany(() => Event, (event) => event.files)
+  // events: Event[];
 
   @OneToMany(() => Post, (post) => post.files)
   posts: Post[];

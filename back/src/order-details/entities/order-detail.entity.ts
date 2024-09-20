@@ -1,11 +1,12 @@
+import { Element } from 'src/element/entities/element.entity';
 import { Order } from 'src/orders/entities/order.entity';
 import { Payment } from 'src/payments/entities/payment.entity';
-import { Product } from 'src/products/entities/product.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -20,9 +21,9 @@ export class OrderDetail {
   @OneToOne(() => Order, (order) => order.id)
   order: Order;
 
-  @ManyToOne(() => Product, (product) => product.id)
-  @JoinColumn({ name: 'product' })
-  products: Product[];
+  @OneToMany(() => Element, (element) => element.orderDetail)
+  @JoinColumn()
+  Elements: Element[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   date: Date;

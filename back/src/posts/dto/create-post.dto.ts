@@ -7,6 +7,7 @@ import {
   MaxLength,
 } from 'class-validator';
 import { UUID } from 'crypto';
+import { UserInformation } from 'src/user-information/entities/user-information.entity';
 
 export class CreatePostDto {
   @ApiProperty({
@@ -15,8 +16,7 @@ export class CreatePostDto {
     type: String,
   })
   @IsNotEmpty()
-  @IsUUID()
-  creator: UUID;
+  creator: string;
 
   @ApiProperty({
     description: 'Titulo del post',
