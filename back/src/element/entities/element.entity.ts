@@ -1,12 +1,14 @@
 import { Comment } from 'src/comments/entities/comments.entity';
 import { elementType } from 'src/common/enum/elementType.enum';
 import { status } from 'src/common/enum/status.enum';
+import { OrderDetail } from 'src/order-details/entities/order-detail.entity';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -61,6 +63,9 @@ export class Element {
   @JoinColumn()
   information: UserInformation;
 
-  @OneToMany(() => Comment, (comment) => comment.event)
+  @OneToMany(() => Comment, (comment) => comment.element)
   comments: Comment[];
+
+  @ManyToOne(() => OrderDetail, (orderDetail) => orderDetail.Elements)
+  orderDetail: OrderDetail
 }
