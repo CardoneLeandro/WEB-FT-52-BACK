@@ -1,19 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { CreateProductDto } from './dto/create-product.dto';
-import { Element } from 'src/element/entities/element.entity';
+import { Product } from './entity/products.entity';
 
 @Injectable()
-export class ProductsRepository extends Repository<Element> {
+export class ProductsRepository extends Repository<Product> {
   constructor(private readonly dSource: DataSource) {
-    super(Element, dSource.getRepository(Element).manager);
+    super(Product, dSource.getRepository(Product).manager);
   }
 
-  createProduct(product: CreateProductDto): Element {
+  createProduct(product) {
     return this.create(product);
   }
 
-  async saveProduct(product: Element) {
+  async saveProduct(product): Promise<Product> {
     return await this.save(product);
   }
 

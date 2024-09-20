@@ -4,17 +4,17 @@ import { SeederService } from './seeder/seeder.service';
 
 @Injectable()
 export class AppService {
-constructor(private readonly authSv: AuthService,
-  private readonly seederSv: SeederService,
-) {}
-  async onApplicationBootstrap(){
-    const creatorId = await this.authSv.superAdminSeeder();
-    await this.seederSv.addProductSeeder(creatorId.id);
-    await this.seederSv.addEventSeeder(creatorId.id);
+  constructor(
+    private readonly authSv: AuthService,
+    private readonly seederSv: SeederService,
+  ) {}
+  async onApplicationBootstrap() {
+    const userInformation = await this.authSv.superAdminSeeder();
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', userInformation);
+    await this.seederSv.addProductSeeder(userInformation.id);
   }
 
   getHello(): string {
     return 'Hello World!';
   }
-
 }
