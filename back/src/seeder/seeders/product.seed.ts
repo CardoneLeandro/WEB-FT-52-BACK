@@ -2,7 +2,6 @@ import { elementType } from "src/common/enum/elementType.enum";
 
 const productsSeeder = [
   {
-    "creator": "a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a0",
     "title": "Rosario",
     "description": "Rosario de Movimiento Juvenil Peregrinos",
     "images": ["https://www.google.com"],
@@ -11,7 +10,6 @@ const productsSeeder = [
     "type": elementType.PRODUCT
   },
   {
-    "creator": "a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a1",
     "title": "Cruz de Madera",
     "description": "Cruz de madera tallada a mano.",
     "images": ["https://www.example.com/image1.jpg"],
@@ -20,7 +18,6 @@ const productsSeeder = [
     "type": elementType.PRODUCT
   },
   {
-    "creator": "a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a2",
     "title": "Libreta de Oraciones",
     "description": "Libreta para anotar oraciones y pensamientos.",
     "images": ["https://www.example.com/image2.jpg"],
@@ -29,7 +26,6 @@ const productsSeeder = [
     "type": elementType.PRODUCT
   },
   {
-    "creator": "a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a3",
     "title": "Velas Aromáticas",
     "description": "Velas aromáticas para momentos de paz.",
     "images": ["https://www.example.com/image3.jpg"],
@@ -38,7 +34,6 @@ const productsSeeder = [
     "type": elementType.PRODUCT
   },
   {
-    "creator": "a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a4",
     "title": "Colgante de Fe",
     "description": "Colgante con símbolo de la fe.",
     "images": ["https://www.example.com/image4.jpg"],
@@ -47,7 +42,6 @@ const productsSeeder = [
     "type": elementType.PRODUCT
   },
   {
-    "creator": "a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a5",
     "title": "Agenda Religiosa",
     "description": "Agenda para llevar un registro espiritual.",
     "images": ["https://www.example.com/image5.jpg"],
@@ -56,7 +50,6 @@ const productsSeeder = [
     "type": elementType.PRODUCT
   },
   {
-    "creator": "a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a6",
     "title": "Pulsera de Oraciones",
     "description": "Pulsera con cuentas para orar.",
     "images": ["https://www.example.com/image6.jpg"],
@@ -65,7 +58,6 @@ const productsSeeder = [
     "type": elementType.PRODUCT
   },
   {
-    "creator": "a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a7",
     "title": "Estrella de David",
     "description": "Colgante con la Estrella de David.",
     "images": ["https://www.example.com/image7.jpg"],
@@ -74,7 +66,6 @@ const productsSeeder = [
     "type": elementType.PRODUCT
   },
   {
-    "creator": "a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a8",
     "title": "Cuaderno de Notas",
     "description": "Cuaderno para anotar reflexiones.",
     "images": ["https://www.example.com/image8.jpg"],
@@ -83,7 +74,6 @@ const productsSeeder = [
     "type": elementType.PRODUCT
   },
   {
-    "creator": "a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a9",
     "title": "Rosario de Perlas",
     "description": "Rosario elaborado con perlas naturales.",
     "images": ["https://www.example.com/image9.jpg"],

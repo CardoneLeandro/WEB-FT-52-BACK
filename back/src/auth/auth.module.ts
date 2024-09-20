@@ -15,5 +15,7 @@ import { UserInformationRepository } from 'src/user-information/user-information
     UsersRepository,
     UserInformationRepository,
   ],
+  exports:[
+    AuthService]
 })
 export class AuthModule {}

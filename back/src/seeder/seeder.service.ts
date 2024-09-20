@@ -4,7 +4,9 @@ import { UserInformationRepository } from 'src/user-information/user-information
 import { UserRole } from 'src/common/enum/userRole.enum';
 import productsSeeder from './seeders/product.seed';
 import { ProductsRepository } from 'src/products/products.repository';
-import { Product } from 'src/products/entities/product.entity';
+import { Element } from 'src/element/entities/element.entity';
+import eventSeeder from './seeders/event.seed';
+import { elementType } from 'src/common/enum/elementType.enum';
 
 
 @Injectable()
@@ -15,7 +17,7 @@ export class SeederService {
     private readonly productRepo: ProductsRepository
   ) {}
 
-  async onBoostrapApplication() {
+  async superAdmin() {
     const superAdmin = await this.userRepo.findOne({
       where: { role: UserRole.SUPERADMIN },
       relations: ['userInformation'],
@@ -26,14 +28,39 @@ export class SeederService {
     console.log(creatorId);
   }
   
-  async addProductSeeder() : Promise<Product> {
+  async addProductSeeder(id) {
     const productsSeed = [];
     for (const product of productsSeeder) {
-        productsSeed.push(product);
+      const foundProduct = await this.productRepo.findOne({
+        where: { title: product.title }})
+      if(!foundProduct){
+        const newProduct= { ...product, creator: id };
+        productsSeed.push(newProduct);
+      }
       }
     if (productsSeed.length > 0) {
-      await this.productRepo.save(productsSeed);
+      const savedProducts = await this.productRepo.save(productsSeed);
+      console.log(savedProducts)
     }
+  
+    return;
+  }
+
+  async addEventSeeder(id) {
+    const eventsSeed = [];
+    for (const event of eventSeeder) {
+      const foundProduct = await this.productRepo.findOne({
+        where: { title: event.title }})
+      if(!foundProduct){
+        const newEvent= { ...event, creator: id, type: elementType.EVENT };
+        eventsSeed.push(newEvent);
+      }
+      }
+    if (eventsSeed.length > 0) {
+      const savedEvents = await this.productRepo.save(eventsSeed);
+      console.log(savedEvents)
+    }
+  
     return;
   }
 }

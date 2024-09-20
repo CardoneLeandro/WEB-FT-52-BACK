@@ -19,7 +19,7 @@ export class AuthService {
     private readonly infoRepo: UserInformationRepository,
   ) {}
 
-  async onApplicationBootstrap() {
+  async superAdminSeeder() {
     const existingSuperAdmin = await this.userRepo.findOne({
       where: { role: UserRole.SUPERADMIN },
     });
@@ -40,6 +40,8 @@ export class AuthService {
 
     });
     console.log(infoTable);
+
+    return infoTable;
   }
 
   
