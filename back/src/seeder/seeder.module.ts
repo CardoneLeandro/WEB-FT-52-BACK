@@ -11,7 +11,15 @@ import { UserInformationService } from 'src/user-information/user-information.se
 
 @Module({
   controllers: [SeederController],
-  providers: [SeederService, UsersRepository, UserInformationRepository, AuthService, ProductsRepository, UsersService, UserInformationService],
+  providers: [
+    SeederService,
+    UsersRepository,
+    UserInformationRepository,
+    AuthService,
+    ProductsRepository,
+    UsersService,
+    UserInformationService,
+  ],
   exports: [SeederService],
 })
 export class SeederModule {}
