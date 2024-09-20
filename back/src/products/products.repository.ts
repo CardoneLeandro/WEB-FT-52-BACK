@@ -1,20 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { CreateProductDto } from './dto/create-product.dto';
-import { Element } from 'src/element/entities/element.entity';
-import { elementType } from 'src/common/enum/elementType.enum';
+import { Product } from './entity/products.entity';
 
 @Injectable()
-export class ProductsRepository extends Repository<Element> {
+export class ProductsRepository extends Repository<Product> {
   constructor(private readonly dSource: DataSource) {
-    super(Element, dSource.getRepository(Element).manager);
+    super(Product, dSource.getRepository(Product).manager);
   }
 
-  createProduct(product: CreateProductDto): Element {
+  createProduct(product) {
     return this.create(product);
   }
 
-  async saveProduct(product: Element) {
+  async saveProduct(product): Promise<Product> {
     return await this.save(product);
   }
 
@@ -25,7 +23,6 @@ export class ProductsRepository extends Repository<Element> {
     order: 'ASC' | 'DESC',
   ) {
     return await this.findAndCount({
-      where: { type: elementType.PRODUCT },
       skip: (page - 1) * limit,
       take: limit,
       order: {

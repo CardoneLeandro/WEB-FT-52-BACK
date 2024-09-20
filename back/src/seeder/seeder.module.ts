@@ -8,6 +8,8 @@ import { AuthService } from 'src/auth/auth.service';
 import { ElementsRepository } from 'src/element/element.repository';
 import { UsersService } from 'src/users/users.service';
 import { UserInformationService } from 'src/user-information/user-information.service';
+import { EventsService } from 'src/events/events.service';
+import { EventsRepository } from 'src/events/events.repository';
 
 @Module({
   controllers: [SeederController],
@@ -19,6 +21,8 @@ import { UserInformationService } from 'src/user-information/user-information.se
     ProductsRepository,
     UsersService,
     UserInformationService,
+    EventsService,
+    EventsRepository,
   ],
   exports: [SeederService],
 })

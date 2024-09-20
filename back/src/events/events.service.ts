@@ -1,29 +1,17 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { ElementsRepository } from 'src/element/element.repository';
-import { elementType } from 'src/common/enum/elementType.enum';
 import { EventsRepository } from './events.repository';
 
 @Injectable()
 export class EventsService {
-  constructor(
-    private readonly elementRepo: ElementsRepository,
-    private readonly eventRepo: EventsRepository,
-  ) {}
-  async create(createEventDto: CreateEventDto) {
-    const newDate = new Date();
-    const newEvent = {
-      ...createEventDto,
-      type: elementType.EVENT,
-      createDate: newDate,
-    };
-    const createdEvent = this.elementRepo.create(newEvent);
-    console.log('GAMMA => eventsService, create, createdEvent', createdEvent);
+  constructor(private readonly eventRepo: EventsRepository) {}
+
+  async create(eventData) {
+    const createdEvent = this.eventRepo.create(eventData);
     if (!createdEvent) {
       throw new Error('Could not create event');
     }
-    const savedEvent = await this.elementRepo.save(createdEvent);
+    const savedEvent = await this.eventRepo.save(createdEvent);
     return savedEvent;
   }
 
@@ -64,7 +52,7 @@ export class EventsService {
   }
 
   findOne(id) {
-    const event = this.elementRepo.findOneBy({ id });
+    const event = this.eventRepo.findOneBy({ id });
     if (!event) {
       throw new BadRequestException(`Event with id:${id} not found`);
     }

@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { elementType } from 'src/common/enum/elementType.enum';
-import { ProductResponseDto } from './dto/response-product.dto';
 import { ProductsRepository } from './products.repository';
 
 @Injectable()
@@ -10,27 +8,9 @@ export class ProductsService {
   constructor(private readonly productRepo: ProductsRepository) {}
 
   async create(product: CreateProductDto) {
-    const newProduct = { ...product, type: elementType.PRODUCT };
-    const createdProduct = this.productRepo.createProduct(newProduct);
-    if (!createdProduct) {
-      throw new Error('Could not create product');
-    }
-    const savedProduct = await this.productRepo.saveProduct(createdProduct);
-
-    const response: ProductResponseDto = {
-      id: savedProduct.id,
-      creator: savedProduct.creator,
-      type: savedProduct.type,
-      title: savedProduct.title,
-      description: savedProduct.description,
-      price: savedProduct.price,
-      stock: savedProduct.stock,
-      images: savedProduct.images,
-      createDate: savedProduct.createDate,
-      status: savedProduct.status,
-    };
-    console.log('FERNANDO ==> productsService, create, savedProduct', response);
-    return response;
+    const newProduct = this.productRepo.createProduct(product);
+    const savedProduct = await this.productRepo.saveProduct(newProduct);
+    return savedProduct;
   }
 
   async findAll(
@@ -40,7 +20,7 @@ export class ProductsService {
     order: 'ASC' | 'DESC' = 'ASC',
   ) {
     const [products, totalElements] =
-      await this.productRepo.findAndCountProducts(page, limit, sortBy, order);
+    await this.productRepo.findAndCountProducts(page, limit, sortBy, order);
     const validSortFields = ['price', 'title', 'createDate'];
     if (!validSortFields.includes(sortBy)) {
       throw new Error(`Invalid sort field: ${sortBy}`);
