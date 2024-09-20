@@ -1,46 +1,39 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSeederDto } from './dto/create-seeder.dto';
-import { UpdateSeederDto } from './dto/update-seeder.dto';
 import { UsersRepository } from 'src/users/users.repository';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
 import { UserRole } from 'src/common/enum/userRole.enum';
-import { seedPosts } from 'src/common/helpers/post.seeder';
+import productsSeeder from './seeders/product.seed';
+import { ProductsRepository } from 'src/products/products.repository';
+import { Product } from 'src/products/entities/product.entity';
+
 
 @Injectable()
 export class SeederService {
   constructor(
     private readonly userInfo: UserInformationRepository,
     private readonly userRepo: UsersRepository,
+    private readonly productRepo: ProductsRepository
   ) {}
 
-  // async onBoostrapApplication() {
-  //   const superAdmin = await this.userRepo.findOne({
-  //     where: { role: UserRole.SUPERADMIN },
-  //     relations: ['userInformation'],
-  //   });
+  async onBoostrapApplication() {
+    const superAdmin = await this.userRepo.findOne({
+      where: { role: UserRole.SUPERADMIN },
+      relations: ['userInformation'],
+    });
 
-  //   const creatorId: string = superAdmin.userInformation.id;
+    const creatorId: string = superAdmin.userInformation.id;
 
-  //   seedPosts(creatorId);
-  // }
-
-  create(createSeederDto: CreateSeederDto) {
-    return 'This action adds a new seeder';
+    console.log(creatorId);
   }
-
-  findAll() {
-    return `This action returns all seeder`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} seeder`;
-  }
-
-  update(id: number, updateSeederDto: UpdateSeederDto) {
-    return `This action updates a #${id} seeder`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} seeder`;
+  
+  async addProductSeeder() : Promise<Product> {
+    const productsSeed = [];
+    for (const product of productsSeeder) {
+        productsSeed.push(product);
+      }
+    if (productsSeed.length > 0) {
+      await this.productRepo.save(productsSeed);
+    }
+    return;
   }
 }
