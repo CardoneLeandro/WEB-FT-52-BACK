@@ -4,12 +4,8 @@ import { UserRole } from 'src/common/enum/userRole.enum';
 import { UsersService } from 'src/users/users.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { SUPERADMIN } from 'config/super-admin.config';
-import { seedPosts } from 'src/common/helpers/post.seeder';
-import { userInfo } from 'os';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
-import { User } from 'src/users/entities/user.entity';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
-import { SeederService } from 'src/seeder/seeder.service';
 
 @Injectable()
 export class AuthService {
