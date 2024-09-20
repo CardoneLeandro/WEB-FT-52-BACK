@@ -9,6 +9,7 @@ import { userInfo } from 'os';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
 import { User } from 'src/users/entities/user.entity';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
+import { SeederService } from 'src/seeder/seeder.service';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,7 @@ export class AuthService {
     private readonly infoRepo: UserInformationRepository,
   ) {}
 
-  async onApplicationBootstrap() {
+  async superAdminSeeder() {
     const existingSuperAdmin = await this.userRepo.findOne({
       where: { role: UserRole.SUPERADMIN },
     });
@@ -36,10 +37,14 @@ export class AuthService {
     const infoTable: UserInformation = await this.infoRepo.findOne({
       where: { user: { id } },
       relations: ['user'],
-    });
 
+    });
     console.log(infoTable);
+
+    return infoTable;
   }
+
+  
 
   async createNewUser(CreateUserData: CreateUserDto) {
     const newUser = await this.userService.createNewUser(CreateUserData);
