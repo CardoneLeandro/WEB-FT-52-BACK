@@ -67,5 +67,5 @@ export class Element {
   comments: Comment[];
 
   @ManyToOne(() => OrderDetail, (orderDetail) => orderDetail.Elements)
-  orderDetail: OrderDetail
+  orderDetail: OrderDetail;
 }

@@ -6,34 +6,40 @@ import { UserInformationRepository } from 'src/user-information/user-information
 
 @Injectable()
 export class PostsService {
-  constructor (
+  constructor(
     private readonly postRepo: PostsRepository,
-    private readonly userInfoRepo: UserInformationRepository
+    private readonly userInfoRepo: UserInformationRepository,
   ) {}
   async create(createPostDto: CreatePostDto) {
     const userInformation = await this.userInfoRepo.findOne({
-      where: {id:createPostDto.creator}
-    })
-    if(!userInformation) throw new BadRequestException(`UserInformation with id:${createPostDto.creator} not found`)
+      where: { id: createPostDto.creator },
+    });
+    if (!userInformation)
+      throw new BadRequestException(
+        `UserInformation with id:${createPostDto.creator} not found`,
+      );
     // console.log('GAMMA ==> PostsService, create, userInformation', userInformation);
-    const createdPost = await this.postRepo.create({...createPostDto, creator: userInformation})
+    const createdPost = await this.postRepo.create({
+      ...createPostDto,
+      creator: userInformation,
+    });
     // console.log('GAMMA ==> PostsService, create, createdPost', createdPost)
-    const savedPost = await this.postRepo.save(createdPost)
+    const savedPost = await this.postRepo.save(createdPost);
     // console.log('GAMMA ==> PostsService, create, savedPost', savedPost);
-    return savedPost    
+    return savedPost;
   }
 
   async findAll() {
-    const posts = await this.postRepo.find()
-    return posts
+    const posts = await this.postRepo.find();
+    return posts;
   }
 
   async findOne(id: string) {
     const post = await this.postRepo.findOne({
-      where: {id: id}
-    })
-    if (!post) throw new BadRequestException(`Post with id:${id} not found`)
-    return post
+      where: { id: id },
+    });
+    if (!post) throw new BadRequestException(`Post with id:${id} not found`);
+    return post;
   }
 
   update(id: number, updatePostDto: UpdatePostDto) {

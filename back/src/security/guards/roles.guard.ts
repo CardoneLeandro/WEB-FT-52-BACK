@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { UserRole } from 'src/common/enum/user.role';
+import { UserRole } from 'src/common/enum/userRole.enum';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

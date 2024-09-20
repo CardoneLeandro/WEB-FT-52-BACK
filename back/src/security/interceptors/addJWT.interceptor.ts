@@ -6,7 +6,7 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { JsonWebTokenService } from '../jsonWebToken/jsonWebToken.service';
+import { JsonWebTokenService } from '../../auth/jsonWebToken/jsonWebToken.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
