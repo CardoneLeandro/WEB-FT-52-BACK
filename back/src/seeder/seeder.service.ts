@@ -27,8 +27,13 @@ export class SeederService {
 
   async addProductSeeder(id, seed) {
     for (const product of seed) {
-      const existingProduct = await this.productRepo.findOne({ where: { title: product.title } });
-      if (existingProduct) {console.log(`Product with title ${product.title} already exists`); continue;}
+      const existingProduct = await this.productRepo.findOne({
+        where: { title: product.title },
+      });
+      if (existingProduct) {
+        console.log(`Product with title ${product.title} already exists`);
+        continue;
+      }
       const newProduct = { ...product, creator: id };
       const createdProduct = this.productRepo.createProduct(newProduct);
       await this.productRepo.saveProduct(createdProduct);
@@ -37,8 +42,13 @@ export class SeederService {
 
   async addEventSeeder(id, seed) {
     for (const event of seed) {
-      const existingEvent = await this.eventRepo.findOne({ where: { title: event.title } });
-      if (existingEvent) {console.log(`Event with title ${event.title} already exists`); continue;}
+      const existingEvent = await this.eventRepo.findOne({
+        where: { title: event.title },
+      });
+      if (existingEvent) {
+        console.log(`Event with title ${event.title} already exists`);
+        continue;
+      }
       const newEvent = { ...event, creator: id };
       const createdEvent = this.eventRepo.createEvent(newEvent);
       await this.eventRepo.saveEvent(createdEvent);

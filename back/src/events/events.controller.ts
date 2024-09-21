@@ -25,8 +25,9 @@ import { EventsRepository } from './events.repository';
 @ApiTags('Events')
 @Controller('events')
 export class EventsController {
-  constructor(private readonly eventsService: EventsService,
-    private readonly eventRepo: EventsRepository
+  constructor(
+    private readonly eventsService: EventsService,
+    private readonly eventRepo: EventsRepository,
   ) {}
 
   @Post()
@@ -53,16 +54,18 @@ export class EventsController {
   async highlights(@Param('id', new IsUUIDPipe()) id: string) {
     try {
       return await this.eventsService.highlight(id);
-    } catch (error) { throw new HttpException(error.message, 405);
+    } catch (error) {
+      throw new HttpException(error.message, 405);
     }
   }
 
   @Patch(':id')
-  updateEvent(@Param('id') id: string, @Body() updateEventData: UpdateEventDto) {
+  updateEvent(
+    @Param('id') id: string,
+    @Body() updateEventData: UpdateEventDto,
+  ) {
     return this.eventsService.updateEvent(id, updateEventData);
   }
-
-
 
   @Delete(':id')
   remove(@Param('id') id: string) {

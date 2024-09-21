@@ -58,10 +58,12 @@ export class ProductsService {
     if (!foundEvent) {
       throw new BadRequestException('Event not found');
     }
-    const updatedEvent = await this.productRepo.updateProduct(id, updateProductData);
+    const updatedEvent = await this.productRepo.updateProduct(
+      id,
+      updateProductData,
+    );
     return updatedEvent;
   }
-
 
   remove(id: number) {
     return `This action removes a #${id} product`;

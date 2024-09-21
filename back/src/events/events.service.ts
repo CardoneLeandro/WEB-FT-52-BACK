@@ -62,7 +62,7 @@ export class EventsService {
   }
 
   async updateEvent(id: string, updateEventData: UpdateEventDto) {
-    const foundEvent = await this.eventRepo.findOneBy({id});
+    const foundEvent = await this.eventRepo.findOneBy({ id });
     if (!foundEvent) {
       throw new BadRequestException('Event not found');
     }
@@ -74,12 +74,12 @@ export class EventsService {
     return `This action removes a #${id} event`;
   }
 
-  async highlight(id){
-    const event:Event | null = await this.eventRepo.findOneBy({ id });
+  async highlight(id) {
+    const event: Event | null = await this.eventRepo.findOneBy({ id });
     if (!event) {
       throw new BadRequestException(`Event not found`);
     }
     await this.eventRepo.highlightEvent(id, !event.highlight);
-    return {highlight:!event.highlight, ...event} ;
+    return { highlight: !event.highlight, ...event };
   }
 }
