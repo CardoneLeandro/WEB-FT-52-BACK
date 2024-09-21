@@ -6,23 +6,23 @@ import {
   Injectable,
 } from '@nestjs/common';
 
-import { ProductsService } from '../../products/products.service';
+import { EventsService } from 'src/events/events.service';
 
 @Injectable()
-export class ExistingProductGuard implements CanActivate {
-  constructor(private readonly prodSv: ProductsService) {}
+export class ExistingEventGuard implements CanActivate {
+  constructor(private readonly eventSv: EventsService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const prodId = request.params.id;
+    const eventId = request.params.id;
     try {
-      const product = await this.prodSv.findOne(prodId);
-      if (!product) {
+      const event = await this.eventSv.findOne(eventId);
+      if (!event) {
         return false;
       }
       return true;
     } catch {
-      throw new BadRequestException('error');
+      throw new BadRequestException('Event not found');
     }
   }
 }

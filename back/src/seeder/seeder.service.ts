@@ -2,9 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UsersRepository } from 'src/users/users.repository';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
 import { UserRole } from 'src/common/enum/userRole.enum';
-import productsSeeder from './seeders/product.seed';
 import { ProductsRepository } from 'src/products/products.repository';
-import eventSeeder from './seeders/event.seed';
 import { EventsRepository } from 'src/events/events.repository';
 
 @Injectable()
@@ -27,16 +25,30 @@ export class SeederService {
     console.log(creatorId);
   }
 
-  async addProductSeeder(id) {
-    for (const product of productsSeeder) {
+  async addProductSeeder(id, seed) {
+    for (const product of seed) {
+      const existingProduct = await this.productRepo.findOne({
+        where: { title: product.title },
+      });
+      if (existingProduct) {
+        console.log(`Product with title ${product.title} already exists`);
+        continue;
+      }
       const newProduct = { ...product, creator: id };
       const createdProduct = this.productRepo.createProduct(newProduct);
       await this.productRepo.saveProduct(createdProduct);
     }
   }
 
-  async addEventSeeder(id) {
-    for (const event of eventSeeder) {
+  async addEventSeeder(id, seed) {
+    for (const event of seed) {
+      const existingEvent = await this.eventRepo.findOne({
+        where: { title: event.title },
+      });
+      if (existingEvent) {
+        console.log(`Event with title ${event.title} already exists`);
+        continue;
+      }
       const newEvent = { ...event, creator: id };
       const createdEvent = this.eventRepo.createEvent(newEvent);
       await this.eventRepo.saveEvent(createdEvent);
