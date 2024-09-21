@@ -59,8 +59,13 @@ export class EventsService {
     return event;
   }
 
-  update(id: number, updateEventDto: UpdateEventDto) {
-    return `This action updates a #${id} event`;
+  async updateEvent(id: string, updateEventData: UpdateEventDto) {
+    const foundEvent = await this.eventRepo.findOneBy({id});
+    if (!foundEvent) {
+      throw new BadRequestException('Event not found');
+    }
+    const updatedEvent = await this.eventRepo.updateEvent(id, updateEventData);
+    return updatedEvent;
   }
 
   remove(id: number) {
