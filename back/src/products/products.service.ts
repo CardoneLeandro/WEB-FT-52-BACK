@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductsRepository } from './products.repository';
@@ -53,9 +53,15 @@ export class ProductsService {
     return existingProduct;
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async updateProduct(id: string, updateProductData: UpdateProductDto) {
+    const foundEvent = await this.productRepo.findProductsById(id);
+    if (!foundEvent) {
+      throw new BadRequestException('Event not found');
+    }
+    const updatedEvent = await this.productRepo.updateProduct(id, updateProductData);
+    return updatedEvent;
   }
+
 
   remove(id: number) {
     return `This action removes a #${id} product`;

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Product } from './entity/products.entity';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductsRepository extends Repository<Product> {
@@ -32,6 +33,10 @@ export class ProductsRepository extends Repository<Product> {
   }
 
   async findProductsById(id: string) {
+    return await this.findOne({ where: { id } });
+  }
+  async updateProduct(id: string, updateProductData: UpdateProductDto) {
+    await this.update(id, updateProductData);
     return await this.findOne({ where: { id } });
   }
 }
