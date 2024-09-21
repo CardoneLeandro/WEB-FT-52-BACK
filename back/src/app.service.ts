@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { AuthService } from './auth/auth.service';
 import { SeederService } from './seeder/seeder.service';
 import { UserInformationRepository } from './user-information/user-information.repository';
+import productsSeeder from './seeder/seeders/product.seed';
+import eventSeeder from './seeder/seeders/event.seed';
 
 @Injectable()
 export class AppService {
@@ -12,19 +14,15 @@ export class AppService {
   ) {}
   async onApplicationBootstrap() {
     const id = await this.authSv.superAdminSeeder();
-    console.log(
-      'CARDONE => appService, onApplicationBootstrap ID DE LA TABLA DEL SUPERADMIN',
-      id,
-    );
-    await this.seederSv.addProductSeeder(id);
-    await this.seederSv.addEventSeeder(id);
+    await this.seederSv.addProductSeeder(id, productsSeeder);
+    await this.seederSv.addEventSeeder(id, eventSeeder);
 
     const allRelations = await this.userInfoRepo.findOne({
       where: { id },
       relations: {
         user: true,
         events: { comments: true },
-        products: { creator: true },
+        //products: { creator: true },
       },
     });
     console.log(

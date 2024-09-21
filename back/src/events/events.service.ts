@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { EventsRepository } from './events.repository';
+import { response } from 'express';
+import { Event } from './entity/events.entity';
 
 @Injectable()
 export class EventsService {
@@ -70,5 +72,14 @@ export class EventsService {
 
   remove(id: number) {
     return `This action removes a #${id} event`;
+  }
+
+  async highlight(id){
+    const event:Event | null = await this.eventRepo.findOneBy({ id });
+    if (!event) {
+      throw new BadRequestException(`Event not found`);
+    }
+    await this.eventRepo.highlightEvent(id, !event.highlight);
+    return {highlight:!event.highlight, ...event} ;
   }
 }
