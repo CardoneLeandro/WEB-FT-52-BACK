@@ -8,9 +8,11 @@ dotenvConfig({ path: './.env' });
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const exporess = require('express');
-  const cors = require('cors');
-  app.use(cors());
+  app.enableCors({
+    origin: '*', // Permitir todos los orígenes
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos permitidos
+    allowedHeaders: 'Content-Type,Authorization', // Encabezados permitidos
+  });
   app.use(loggerGlobal);
   //app.use()
   console.log(
