@@ -10,12 +10,9 @@ export class Auth0LogInDto {
   @IsString()
   name: string;
 
-  @IsString()
-  accessToken: string;
-
   @IsOptional()
   @IsString()
   //@IsUrl()
   //@isURL()
-  profilePicture: string;
+  image: string;
 }

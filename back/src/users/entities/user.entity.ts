@@ -29,7 +29,7 @@ export class User {
   providerAccountId: string;
 
   @Column({ type: 'varchar', length: 100, nullable: true })
-  profilePicture: string;
+  image: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updateDate: Date;

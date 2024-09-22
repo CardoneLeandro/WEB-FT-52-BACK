@@ -69,5 +69,5 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   @IsUrl()
-  profilePicture: string;
+  image: string;
 }

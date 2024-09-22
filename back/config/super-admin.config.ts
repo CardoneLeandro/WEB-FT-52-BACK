@@ -8,6 +8,6 @@ export const SUPERADMIN: SuperAdminDto = {
   name: process.env.SUPERADMIN_NAME,
   email: process.env.SUPERADMIN_EMAIL,
   providerAccountId: process.env.SUPERADMIN_PROVIDERACCID,
-  profilePicture: process.env.SUPERADMIN_PROFILEPICTURE,
+  image: process.env.SUPERADMIN_IMAGE,
   role: UserRole.SUPERADMIN,
 };
