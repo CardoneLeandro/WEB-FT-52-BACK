@@ -14,7 +14,7 @@ export class JsonWebTokenService {
   //*     PARAMETROS PARA LA GENERACION DE JSON WEB TOKEN
   async generateJwt(user: any): Promise<string> {
     const payload = {
-      username: user.username,
+      name: user.name,
       sub: user.userId,
       role: user.role, //! ==> INCLUCION DEL ROL
     };
