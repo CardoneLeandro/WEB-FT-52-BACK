@@ -32,9 +32,10 @@ export class AuthController {
     try {
       const loggedUser = await this.authService.loggedUser(SignUpData);
       const { id, user } = loggedUser;
+      console.log('RESPONSE AUTH0 LOGIN', { creatorId: id, ...user });
       return { creatorId: id, ...user };
     } catch (e) {
-      throw new BadRequestException(e.message);
+      throw new BadRequestException({'ERROR:': ` ESTE ES EL ERROR EN EL TESTEO${e.message}`});
     }
   }
 

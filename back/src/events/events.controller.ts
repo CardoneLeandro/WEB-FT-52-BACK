@@ -36,13 +36,15 @@ export class EventsController {
   }
 
   @Get()
-  findAll(
+  async findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 5,
     @Query('sortBy') sortBy: string = 'createDate', // Campo de ordenamiento
     @Query('order') order: 'ASC' | 'DESC' = 'DESC', // Dirección de orden
   ) {
-    return this.eventsService.findAll(page, limit, sortBy, order);
+    const eventResponse = await this.eventsService.findAll(page, limit, sortBy, order);
+    console.log(eventResponse)
+    return eventResponse
   }
 
   @Get('getone')
