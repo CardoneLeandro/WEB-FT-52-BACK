@@ -14,10 +14,7 @@ export class DTOValidationPipe implements PipeTransform<any> {
   }
 
   async validate(value: any, metatype: any) {
-    console.log(
-      'CARDONE =========> dtoValidationvaluepipe, validate, Param()',
-      value,
-    );
+    console.log('==> DATA ENTRY <==', value);
     if (!metatype || !this.toValidate(metatype)) {
       return value;
     }
@@ -48,10 +45,7 @@ export class DTOValidationPipe implements PipeTransform<any> {
       throw new BadRequestException(`Validation failed: ${errorMessages}`);
     }
 
-    console.log(
-      'CARDONE =========> dtoValidationpipe, validate value SUCCESS',
-      value,
-    );
+    console.log('DTO VALIDATION SUCCESS');
     return value;
   }
 
