@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { status } from 'src/common/enum/status.enum';
 
 @ApiTags('Users')
 @Controller('users')
@@ -23,8 +25,14 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 5,
+    @Query('sortBy') sortBy: string = 'updateDate',
+    @Query('order') order: 'ASC' | 'DESC' = 'DESC',
+    @Query('status') stat: status | 'all' = status.ACTIVE,
+  ) {
+    return this.usersService.findAll(page, limit, sortBy, order, stat);
   }
 
   @Get(':id')
