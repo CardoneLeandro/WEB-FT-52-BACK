@@ -9,6 +9,7 @@ import {
   BadRequestException,
   UsePipes,
   UseInterceptors,
+  Put,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
@@ -24,9 +25,9 @@ import { RemovePropertiesInterceptor } from 'src/security/interceptors/remove-pr
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
   @Post('auth0/signup')
   @UsePipes(new DTOValidationPipe())
+  @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
   async signup(@Body() SignUpData: Auth0LogInDto) {
     try {
       const loggedUser = await this.authService.loggedUser(SignUpData);
@@ -45,5 +46,10 @@ export class AuthController {
     } catch (e) {
       throw new BadRequestException(e.message);
     }
+  }
+
+  @Patch('ban/:id')
+  async ban(@Param('id') id: string) {
+    return await this.authService.ban(id);
   }
 }

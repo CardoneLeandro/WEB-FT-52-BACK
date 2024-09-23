@@ -5,6 +5,7 @@ import { User } from './entities/user.entity';
 import { UserInformationService } from 'src/user-information/user-information.service';
 import { DataSource } from 'typeorm';
 import { UserRole } from 'src/common/enum/userRole.enum';
+import { status } from 'src/common/enum/status.enum';
 
 @Injectable()
 export class UsersService {
@@ -24,10 +25,47 @@ export class UsersService {
     });
   }
 
-  findAll() {
-    return `This action returns all users`;
-  }
+  async findAll(
+    page: number,
+    limit: number,
+    sortBy: string = 'createDate',
+    order: 'ASC' | 'DESC' = 'ASC',
+    stat: status | 'all' = status.ACTIVE,
+  ) {
+    const validSortFields = ['price', 'title', 'updateDate'];
+    if (!validSortFields.includes(sortBy)) {
+      throw new Error(`Invalid sort field: ${sortBy}`);
+    }
 
+    const [users, totalElements] =
+      stat === 'all'
+        ? await this.userRepo.findAndCountUsers(page, limit, sortBy, order)
+        : await this.userRepo.findAndCountUsers(
+            page,
+            limit,
+            sortBy,
+            order,
+            stat,
+          );
+
+    const totalPages = Math.ceil(totalElements / Number(limit));
+    const hasPrevPage = Number(page) > 1;
+    const hasNextPage = Number(page) < totalPages;
+    const prevPage = hasPrevPage ? Number(page) - 1 : null;
+    const nextPage = hasNextPage ? Number(page) + 1 : null;
+
+    return {
+      users,
+      totalElements,
+      page,
+      limit,
+      totalPages,
+      hasPrevPage,
+      hasNextPage,
+      prevPage,
+      nextPage,
+    };
+  }
   findOne(id: number) {
     return `This action returns a #${id} user`;
   }

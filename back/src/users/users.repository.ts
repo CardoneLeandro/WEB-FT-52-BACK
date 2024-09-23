@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { DataSource, DeepPartial, Repository } from 'typeorm';
+import { status } from 'src/common/enum/status.enum';
 
 @Injectable()
 export class UsersRepository extends Repository<User> {
@@ -20,6 +21,23 @@ export class UsersRepository extends Repository<User> {
     return await this.findOne({
       where: { email },
       relations: ['userInformation'],
+    });
+  }
+
+  async findAndCountUsers(
+    page: number,
+    limit: number,
+    sortBy: string,
+    order: 'ASC' | 'DESC',
+    stat?: status,
+  ) {
+    return await this.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      where: { status: stat },
+      order: {
+        [sortBy]: order,
+      },
     });
   }
 }
