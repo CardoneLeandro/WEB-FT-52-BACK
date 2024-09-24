@@ -26,7 +26,7 @@ export class User {
   name: string;
 
   @Column({ type: 'varchar', length: 80, nullable: true })
-  password:string
+  password: string;
 
   @Column({ type: 'varchar', length: 80, nullable: true })
   providerAccountId: string;

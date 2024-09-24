@@ -17,7 +17,7 @@ export class UsersRepository extends Repository<User> {
     return await this.save(user);
   }
 
-  async findUser(email: string): Promise<User | null> {
+  async findUserByEmail(email: string): Promise<User | null> {
     return await this.findOne({
       where: { email },
       relations: ['userInformation'],

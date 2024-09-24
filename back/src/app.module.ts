@@ -43,12 +43,23 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     PaymentCredentialsModule,
     DonationsModule,
     AuthModule,
-    SeederModule
+    SeederModule,
   ],
   controllers: [AppController],
-  providers: [AppService,{
-    provide: APP_INTERCEPTOR,
-    useClass: DataEntryInterceptor,
-  },],
+  providers: [AppService],
 })
 export class AppModule {}
+
+/*
+customs providers
+
+{
+    provide: APP_INTERCEPTOR,
+    useClass: DataEntryInterceptor,
+  }
+{
+    provide: APP_INTERCEPTOR,
+    useClass: DataExitInterceptor,
+  }
+
+*/

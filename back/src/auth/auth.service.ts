@@ -32,10 +32,10 @@ export class AuthService {
     return userAdminTable.userInformation.id;
   }
 
-  async loggedUser(CreateUserData) {
-    const existingUser = await this.userRepo.findUser(CreateUserData.email);
+  async logginWishAuth0(params) {
+    const existingUser = await this.userRepo.findUserByEmail(params.email);
     if (!existingUser) {
-      const newUser = await this.userService.createNewUser(CreateUserData);
+      const newUser = await this.userService.createNewUser(params);
       const newUserInformationTable = this.infoRepo.findOne({
         where: { user: { id: newUser.id } },
         relations: ['user'],
@@ -49,20 +49,37 @@ export class AuthService {
     });
   }
 
-  async createNewUser(CreateUserData) {
-    const newUser = await this.userService.createNewUser(CreateUserData);
+  async NEEDREFACTORIZATION(params) {
+    const newUser = await this.userService.createNewUser(params);
+    const newUserInformationTable = this.infoRepo.findOne({
+      where: { user: { id: newUser.id } },
+      relations: ['user'],
+    });
+    return newUserInformationTable;
+  }
+
+  async createNewUser(params) {
+    const newUser = await this.userService.createNewUser(params);
     return newUser;
   }
 
-  async login(loginUserDto) {
-    const user = await this.userRepo.findUser(loginUserDto.email);
+  async loginUser(params) {
+    const user = await this.userRepo.findUserByEmail(params.email);
     if (!user) {
-      return null;
+      throw new NotFoundException('User not found');
     }
-    if (user.email !== loginUserDto.email) {
-      return null;
+    return await this.infoRepo.findOne({
+      where: { user: { id: user.id } },
+      relations: ['user'],
+    });
+  }
+
+  async signUp(params) {
+    const existingUser = await this.userRepo.findUserByEmail(params.email);
+    if (!existingUser) {
+      throw new NotFoundException('User not found');
     }
-    return user;
+    return existingUser;
   }
 
   async ban(id: string) {

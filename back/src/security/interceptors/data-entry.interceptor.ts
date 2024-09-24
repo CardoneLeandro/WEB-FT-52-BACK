@@ -13,7 +13,7 @@ export class DataEntryInterceptor implements NestInterceptor {
     next: CallHandler<any>,
   ): Observable<any> | Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
-    console.log('DATA ENTRY INTERCEPTOR',request)
+    console.log('DATA ENTRY INTERCEPTOR', request);
     return next.handle();
   }
 }
