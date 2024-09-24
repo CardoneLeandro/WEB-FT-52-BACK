@@ -40,10 +40,10 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() loginUserDto: LoginUserDto) {
+  async login(@Body() loginUserData: LoginUserDto) {
+    console.log('CARDONE =========> loginUserData input value', loginUserData);
     try {
-      const user = await this.authService.login(loginUserDto);
-      return user;
+      return await this.authService.loggedUser(loginUserData);
     } catch (e) {
       throw new BadRequestException(e.message);
     }
