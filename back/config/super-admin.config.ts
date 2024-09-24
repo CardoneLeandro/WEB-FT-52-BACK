@@ -5,9 +5,9 @@ import { UserRole } from 'src/common/enum/userRole.enum';
 dotenvConfig({path: './.env'});
 
 export const SUPERADMIN: SuperAdminDto = {
-  name: process.env.SUPERADMIN_NAME,
-  email: process.env.SUPERADMIN_EMAIL,
-  providerAccountId: process.env.SUPERADMIN_PROVIDERACCID,
-  image: process.env.SUPERADMIN_IMAGE,
+  name: "SUPERADMINUSER",
+  email: "example@email.com",
+  providerAccountId: "102036134540783805678",
+  image: "https://th.bing.com/th/id/OIP.audMX4ZGbvT2_GJTx2c4GgHaHw?rs=1&pid=ImgDetMain",
   role: UserRole.SUPERADMIN,
 };
