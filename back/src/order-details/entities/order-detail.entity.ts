@@ -1,15 +1,7 @@
-import { Element } from 'src/element/entities/element.entity';
+import { Event } from 'src/events/entity/events.entity';
 import { Order } from 'src/orders/entities/order.entity';
-import { Payment } from 'src/payments/entities/payment.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Product } from 'src/products/entity/products.entity';
+import { Column, Entity, JoinColumn, ManyToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
   name: 'orderDetails',
@@ -18,20 +10,20 @@ export class OrderDetail {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => Order, (order) => order.id)
+  @OneToOne(() => Order, (order) => order.orderDetail)
   order: Order;
 
-  @OneToMany(() => Element, (element) => element.orderDetail)
+  @ManyToMany(() => Product, (product) => product.id)
   @JoinColumn()
-  Elements: Element[];
+  products: Product[];
+
+  @ManyToMany( () => Event, (event) => event.id )
+  @JoinColumn()
+  events: Event[]
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   date: Date;
 
   @Column({ type: 'float', nullable: false })
   total: number;
-
-  @OneToOne(() => Payment, (payment) => payment.id)
-  @JoinColumn({ name: 'payment' })
-  payment: Payment;
 }

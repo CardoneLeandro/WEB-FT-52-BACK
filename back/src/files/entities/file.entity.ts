@@ -5,6 +5,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryColumn,
@@ -18,8 +19,9 @@ export class File {
   @Column({ type: 'enum', enum: FileType, nullable: false })
   type: FileType;
 
-  @Column({ type: 'varchar', length: 100, nullable: false })
-  creator: string;
+  @ManyToOne(() => UserInformation, (userInformation) => userInformation.files)
+  @JoinColumn({ name: 'userInformation_id' })
+  creator: UserInformation;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createDate: Date;
@@ -30,13 +32,6 @@ export class File {
   @Column({ type: 'varchar', length: 100, nullable: false })
   url: string;
 
-  @ManyToOne(() => UserInformation, (userInformation) => userInformation.files)
-  @JoinColumn({ name: 'userInformation_id' })
-  information: UserInformation;
-
-  // @OneToMany(() => Event, (event) => event.files)
-  // events: Event[];
-
-  @OneToMany(() => Post, (post) => post.files)
+  @ManyToMany(() => Post, (post) => post.files)
   posts: Post[];
 }

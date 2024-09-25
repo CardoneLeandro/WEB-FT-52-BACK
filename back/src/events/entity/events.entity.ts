@@ -53,9 +53,10 @@ export class Event {
   @Column({ type: 'varchar', array: true, nullable: false })
   images: string[];
 
-  @OneToMany(() => Comment, (comment) => comment.element)
+  @OneToMany(() => Comment, (comment) => comment.event)
   comments: Comment[];
 
-  @ManyToOne(() => OrderDetail, (orderDetail) => orderDetail.Elements)
-  orderDetail: OrderDetail;
+  @ManyToMany(() => UserInformation, (userInformation) => userInformation.assistantEvents)
+  @JoinColumn()
+  assistants: UserInformation[];
 }
