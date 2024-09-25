@@ -21,7 +21,7 @@ services:
       SUPERADMIN_PROVIDERACCID: 102036134540783805678
       SUPERADMIN_PASSWORD: "@IsStrongPassword1"
       SUPERADMIN_CONFIRMPASSWORD: "@IsStrongPassword1"
-      SUPERADMIN_PROFILEPICTURE: "https://th.bing.com/th/id/OIP.audMX4ZGbvT2_GJTx2c4GgHaHw?rs=1&pid=ImgDetMain"
+      SUPERADMIN_PROFILEPICTURE: https://th.bing.com/th/id/OIP.audMX4ZGbvT2_GJTx2c4GgHaHw?rs=1&pid=ImgDetMain
       APP_PORT: 3003
     depends_on:
       - db  
