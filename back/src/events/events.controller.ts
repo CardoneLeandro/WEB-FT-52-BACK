@@ -31,6 +31,7 @@ export class EventsController {
   ) {}
 
   @Post()
+  @UsePipes(new DTOValidationPipe())
   create(@Body() createEventDto: CreateEventDto) {
     return this.eventsService.create(createEventDto);
   }

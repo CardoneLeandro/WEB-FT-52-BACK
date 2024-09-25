@@ -43,7 +43,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     PaymentsModule,
     PaymentCredentialsModule,
     DonationsModule,
-    SeederModule
+    SeederModule,
   ],
   controllers: [AppController],
   providers: [AppService],

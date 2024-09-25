@@ -8,7 +8,10 @@ export class Comment {
   @PrimaryColumn('uuid')
   id: string;
 
-  @ManyToOne( () => UserInformation, (userInformation) => userInformation.comments )
+  @ManyToOne(
+    () => UserInformation,
+    (userInformation) => userInformation.comments,
+  )
   @JoinColumn({ name: 'creator_id' })
   creator: UserInformation;
 
@@ -21,7 +24,7 @@ export class Comment {
   @Column({ type: 'varchar', length: 140, nullable: false })
   content: string;
 
-  @ManyToOne( () => Event, (event) => event.comments )
+  @ManyToOne(() => Event, (event) => event.comments)
   @JoinColumn({ name: 'event_id' })
   event: Event;
 }

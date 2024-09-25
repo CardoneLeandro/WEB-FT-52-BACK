@@ -1,7 +1,15 @@
 import { status } from 'src/common/enum/status.enum';
 import { File } from 'src/files/entities/file.entity';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'posts' })
 export class Post {

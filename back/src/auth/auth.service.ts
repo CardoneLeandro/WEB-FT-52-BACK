@@ -35,7 +35,8 @@ export class AuthService {
   async logginWishAuth0(params) {
     const existingUser = await this.userRepo.findUserByEmail(params.email);
     if (!existingUser) {
-      const newUser = await this.userService.createNewUser(params);
+      const newAuth0UserData = { status: status.PENDING, ...params };
+      const newUser = await this.userService.createNewUser(newAuth0UserData);
       const newUserInformationTable = this.infoRepo.findOne({
         where: { user: { id: newUser.id } },
         relations: ['user'],

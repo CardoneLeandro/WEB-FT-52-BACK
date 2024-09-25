@@ -28,6 +28,22 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   //! FLUJO DE CREACION USUARIO E INICIO DE SESION MEDIANTE AUTH0
+  //! cuando el usuario se CREA por auth0 inyectar en el payload el status pendign
+  //! retornar el satus si es pending para que el front redirecciones al formulario de completar la informacion
+  //! guardar el provideracountid como password para el inicio de sesion por auth0
+
+  //* cuando el usuario actualice su formulario, con el token siendo pending pasar a active
+
+  //auth0 => loading sesion => PETICION => "usuario" "pediging?" => formulario
+
+  //intenta iniciar sesion pero con el "password de google", al estar "pending" "enviar alerta de completar formulario"
+  // validacion en login por status, si es pending "redirigir al formulario"
+
+  // signup => ingresa el correo de google? => ya exite en base de datos
+
+  // comprobar si existe y estado. si es "pending" => redirigir al formulario
+
+  // token id
 
   @Post('auth0/signup')
   @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
@@ -52,9 +68,9 @@ export class AuthController {
   @UseInterceptors(PasswordEncriptorInterceptor)
   async signupUser(@Body() singUpData: SingUpDto) {
     try {
-      const newUser=await this.authService.createNewUser(singUpData);
+      const newUser = await this.authService.createNewUser(singUpData);
       //response.status(200).json({ message: 'Login successful' });
-    return newUser
+      return newUser;
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -78,9 +94,6 @@ export class AuthController {
     return await this.authService.ban(id);
   }
 }
-
-
-
 
 /* 
  if (

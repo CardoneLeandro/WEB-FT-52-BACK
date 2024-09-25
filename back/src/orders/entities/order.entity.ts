@@ -2,7 +2,14 @@ import { status } from 'src/common/enum/status.enum';
 import { OrderDetail } from 'src/order-details/entities/order-detail.entity';
 import { Payment } from 'src/payments/entities/payment.entity';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne,PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'orders',

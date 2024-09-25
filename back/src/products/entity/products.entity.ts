@@ -1,7 +1,14 @@
 import { status } from 'src/common/enum/status.enum';
 import { OrderDetail } from 'src/order-details/entities/order-detail.entity';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'product',
@@ -10,7 +17,10 @@ export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne( () => UserInformation, (userInformation) => userInformation.products )
+  @ManyToOne(
+    () => UserInformation,
+    (userInformation) => userInformation.products,
+  )
   @JoinColumn()
   creator: UserInformation;
 
