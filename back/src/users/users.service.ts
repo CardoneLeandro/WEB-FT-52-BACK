@@ -6,6 +6,7 @@ import { UserInformationService } from 'src/user-information/user-information.se
 import { DataSource } from 'typeorm';
 import { UserRole } from 'src/common/enum/userRole.enum';
 import { status } from 'src/common/enum/status.enum';
+import { CompleteRegisterAuth0Dto } from 'src/auth/dto/complete-register-auth0.dto';
 
 @Injectable()
 export class UsersService {
@@ -70,8 +71,10 @@ export class UsersService {
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async updateUserInformation(user:User, param:Partial<CompleteRegisterAuth0Dto>) {
+    await this.userRepo.update(user.id, param);
+    return await this.userRepo.findOneBy({id:user.id});
+    
   }
 
   remove(id: number) {

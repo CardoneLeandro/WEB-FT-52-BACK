@@ -21,6 +21,7 @@ import { RemovePropertiesInterceptor } from 'src/security/interceptors/remove-pr
 import { SingUpDto } from './dto/sungUp-user.dto';
 import { response } from 'express';
 import { PasswordEncriptorInterceptor } from 'src/security/interceptors/password-encriptor.interceptor';
+import { CompleteRegisterAuth0Dto } from './dto/complete-register-auth0.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -50,7 +51,7 @@ export class AuthController {
   @UsePipes(new DTOValidationPipe())
   async signup(@Body() auth0Data: Auth0LogInDto) {
     try {
-      const loggedUser = await this.authService.logginWishAuth0(auth0Data);
+      const loggedUser = await this.authService.logginWithAuth0(auth0Data);
       const { id, user } = loggedUser;
       return { creatorId: id, ...user };
     } catch (e) {
@@ -59,6 +60,18 @@ export class AuthController {
       });
     }
   }
+
+  @Post('auth0/completeregister')
+  @UsePipes(new DTOValidationPipe())
+  async completeRegister(@Body() confirmData:CompleteRegisterAuth0Dto){
+    try {
+      return this.authService.completeRegister(confirmData);
+    } catch (e) {
+      throw new BadRequestException({ 'ERROR:': `${e.message}` });
+  }
+  }
+
+
 
   //! FLUJO DE CREACION USUARIO E INICIO DE SESION MEDIANTE EL FORMULARIO DEL CLIENTE
 
