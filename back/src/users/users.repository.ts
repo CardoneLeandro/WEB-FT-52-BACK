@@ -40,4 +40,13 @@ export class UsersRepository extends Repository<User> {
       },
     });
   }
+
+
+  async findUserById(param:string): Promise<User[] | null> {
+    const lowerParam = param.toLowerCase()
+    const filter:User[] = await this.find()
+    const result = filter.filter((user) => user.name.toLowerCase().includes(lowerParam))
+    //! aplicar los filtros restantes al resultado de los usuarios filtrados por "name"
+    return result
+  }
 }

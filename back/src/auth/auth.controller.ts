@@ -20,6 +20,7 @@ import { addJWTInterceptor } from 'src/security/interceptors/addJWT.interceptor'
 import { RemovePropertiesInterceptor } from 'src/security/interceptors/remove-properties.interceptor';
 import { SingUpDto } from './dto/sungUp-user.dto';
 import { response } from 'express';
+import { PasswordEncriptorInterceptor } from 'src/security/interceptors/password-encriptor.interceptor';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -48,11 +49,12 @@ export class AuthController {
   @Post('signup')
   @UsePipes(new DTOValidationPipe())
   @UseGuards()
-  @UseInterceptors()
+  @UseInterceptors(PasswordEncriptorInterceptor)
   async signupUser(@Body() singUpData: SingUpDto) {
     try {
-      await this.authService.createNewUser(singUpData);
-      response.status(200).json({ message: 'Login successful' });
+      const newUser=await this.authService.createNewUser(singUpData);
+      //response.status(200).json({ message: 'Login successful' });
+    return newUser
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -83,7 +85,7 @@ export class AuthController {
 /* 
  if (
         !user ||
-        (user && (await encriptPasswordCompare(user, DTO.password)) === false)
+        (user && (await encriptPasswordCompare(user, loginUserData.password)) === false)
       ) {
         throw new BadRequestException('Invalid credentials');
       } 
