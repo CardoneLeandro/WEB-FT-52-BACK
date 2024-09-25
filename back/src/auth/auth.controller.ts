@@ -65,7 +65,7 @@ export class AuthController {
   @UsePipes(new DTOValidationPipe())
   async completeRegister(@Body() confirmData:CompleteRegisterAuth0Dto){
     try {
-      return this.authService.completeRegister(confirmData);
+      return await this.authService.completeRegister(confirmData);
     } catch (e) {
       throw new BadRequestException({ 'ERROR:': `${e.message}` });
   }
