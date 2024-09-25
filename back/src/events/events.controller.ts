@@ -31,6 +31,7 @@ export class EventsController {
   ) {}
 
   @Post()
+  @UsePipes(new DTOValidationPipe())
   create(@Body() createEventDto: CreateEventDto) {
     return this.eventsService.create(createEventDto);
   }
@@ -38,12 +39,18 @@ export class EventsController {
   @Get()
   async findAll(
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 5,
-    @Query('sortBy') sortBy: string = 'createDate',
-    @Query('order') order: 'ASC' | 'DESC' = 'DESC',
+    @Query('limit') limit: number = 9,
+    @Query('sortBy') sortBy: string = 'createDate', // Campo de ordenamiento
+    @Query('order') order: 'ASC' | 'DESC' = 'DESC', // Dirección de orden
   ) {
-    const eventResponse = await this.eventsService.findAll(page, limit, sortBy, order);
-    return eventResponse
+    const { events, ...pageInfo } = await this.eventsService.findAll(
+      page,
+      limit,
+      sortBy,
+      order,
+    );
+    const response = { events, page: pageInfo };
+    return response;
   }
 
   @Get('getone')

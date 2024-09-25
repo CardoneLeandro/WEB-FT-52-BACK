@@ -1,6 +1,5 @@
-// import { Event } from 'src/events/entities/event.entity';
 import { status } from 'src/common/enum/status.enum';
-import { Element } from 'src/element/entities/element.entity';
+import { Event } from 'src/events/entity/events.entity';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
@@ -9,8 +8,12 @@ export class Comment {
   @PrimaryColumn('uuid')
   id: string;
 
-  @Column({ type: 'uuid', nullable: false })
-  creator: string;
+  @ManyToOne(
+    () => UserInformation,
+    (userInformation) => userInformation.comments,
+  )
+  @JoinColumn({ name: 'creator_id' })
+  creator: UserInformation;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createDate: Date;
@@ -21,14 +24,7 @@ export class Comment {
   @Column({ type: 'varchar', length: 140, nullable: false })
   content: string;
 
-  @ManyToOne(
-    () => UserInformation,
-    (userInformation) => userInformation.comments,
-  )
-  @JoinColumn({ name: 'userInformation_id' })
-  information: UserInformation;
-
-  @ManyToOne(() => Element, (element) => element.comments)
-  @JoinColumn()
-  element: Event;
+  @ManyToOne(() => Event, (event) => event.comments)
+  @JoinColumn({ name: 'event_id' })
+  event: Event;
 }

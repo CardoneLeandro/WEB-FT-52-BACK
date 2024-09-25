@@ -5,8 +5,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -21,7 +21,7 @@ export class Product {
     () => UserInformation,
     (userInformation) => userInformation.products,
   )
-  @JoinColumn({ name: 'creator_id' })
+  @JoinColumn()
   creator: UserInformation;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
@@ -44,7 +44,4 @@ export class Product {
 
   @Column({ type: 'varchar', array: true, nullable: false })
   images: string[];
-
-  @ManyToOne(() => OrderDetail, (orderDetail) => orderDetail.Elements)
-  orderDetail: OrderDetail;
 }

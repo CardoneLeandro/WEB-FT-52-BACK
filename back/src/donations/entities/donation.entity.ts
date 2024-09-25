@@ -1,5 +1,12 @@
 import { status } from 'src/common/enum/status.enum';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { UserInformation } from 'src/user-information/entities/user-information.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'donations',
@@ -7,6 +14,13 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 export class Donation {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @ManyToOne(
+    () => UserInformation,
+    (userInformation) => userInformation.donations,
+  )
+  @JoinColumn()
+  user: UserInformation;
 
   @Column({ type: 'date', nullable: false })
   date: Date;

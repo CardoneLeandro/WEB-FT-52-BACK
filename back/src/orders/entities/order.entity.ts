@@ -18,17 +18,17 @@ export class Order {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ManyToOne(() => UserInformation, (userInformation) => userInformation.orders)
+  @JoinColumn({ name: 'user' })
+  user: string;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   orderDate: Date;
 
   @Column({ type: 'enum', enum: status, default: status.ACTIVE })
   status: status;
 
-  @ManyToOne(() => UserInformation, (userInformation) => userInformation.orders)
-  @JoinColumn({ name: 'user' })
-  user: string;
-
-  @OneToOne(() => OrderDetail, (orderDetail) => orderDetail.id)
+  @OneToOne(() => OrderDetail, (orderDetail) => orderDetail.order)
   orderDetail: OrderDetail;
 
   @OneToOne(() => Payment, (payment) => payment.id)

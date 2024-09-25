@@ -26,24 +26,22 @@ export class Payment {
   @JoinColumn({ name: 'user' })
   user: UserInformation;
 
+  @Column({ type: 'int', nullable: false })
+  ccFourLastNumber: number;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   paymentDate: Date;
 
-  @Column({ type: 'int', nullable: false })
-  ccl4LastNumber: number;
-
-  @OneToOne(() => OrderDetail, (orderDetail) => orderDetail.id)
-  @JoinColumn({ name: 'Detail' })
-  Detail: OrderDetail;
-
   @Column({ type: 'enum', enum: status, default: status.ACTIVE })
   orderStatus: status;
+
+  @OneToOne(() => Order, (order) => order.paymentInformation)
+  @JoinColumn({ name: 'order' })
+  order: Order;
 
   @OneToOne(() => Donation, (donation) => donation.id)
   @JoinColumn({ name: 'donation' })
   donation: Donation;
 
-  @OneToOne(() => Order, (order) => order.id)
-  @JoinColumn({ name: 'order' })
-  order: Order;
+  //! Validar enum de paymentStatus
 }

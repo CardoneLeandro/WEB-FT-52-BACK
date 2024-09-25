@@ -45,5 +45,5 @@ export class CreatePostDto {
   })
   @IsNotEmpty()
   @IsUrl()
-  image: string;
+  image: string[];
 }

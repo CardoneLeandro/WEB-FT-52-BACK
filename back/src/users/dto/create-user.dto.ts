@@ -43,7 +43,6 @@ export class CreateUserDto {
       minLowercase: 1,
       minUppercase: 1,
       minNumbers: 1,
-      minSymbols: 1,
     },
     {
       message:
@@ -67,7 +66,6 @@ export class CreateUserDto {
       'https://fotografias.lasexta.com/clipping/cmsimages02/2019/11/14/66C024AF-E20B-49A5-8BC3-A21DD22B96E6/default.jpg',
     type: String,
   })
-  @IsNotEmpty()
   @IsUrl()
   image: string;
 }
