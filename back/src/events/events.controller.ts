@@ -39,18 +39,16 @@ export class EventsController {
   @Get()
   async findAll(
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 9,
-    @Query('sortBy') sortBy: string = 'createDate', // Campo de ordenamiento
-    @Query('order') order: 'ASC' | 'DESC' = 'DESC', // Dirección de orden
+    @Query('limit') limit: number = 5,
+    @Query('sortBy') sortBy: string = 'createDate', 
+    @Query('order') order: 'ASC' | 'DESC' = 'DESC',
+    @Query('month') month: string = 'all',
+    @Query('year') year: number = new Date().getFullYear(),
+    @Query('title') title: string = '',
   ) {
-    const { events, ...pageInfo } = await this.eventsService.findAll(
-      page,
-      limit,
-      sortBy,
-      order,
-    );
-    const response = { events, page: pageInfo };
-    return response;
+    const eventResponse = await this.eventsService.findAll(page, limit, sortBy, order, month, year, title);
+    console.log(eventResponse)
+    return eventResponse;
   }
 
   @Get('getone')
