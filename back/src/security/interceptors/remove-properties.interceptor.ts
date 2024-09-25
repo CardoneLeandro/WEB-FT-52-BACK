@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { status } from 'src/common/enum/status.enum';
 //*     INTERCEPTOR ENCARGADO DE ELIMINAR LAS PROPIEDADES EN LA RESPUESTA
 //!     DE INICIO DE SESION POR AUTH 0
 @Injectable()
@@ -16,19 +17,30 @@ export class RemovePropertiesInterceptor implements NestInterceptor {
   ): Observable<any> | Promise<Observable<any>> {
     return next.handle().pipe(
       map((data) => {
-        if (
-          data &&
-          data.role &&
-          data.status &&
-          data.providerAccountId &&
-          data.updateDate
-        ) {
+        if (data && data.role) {
           delete data.role;
-          delete data.status;
-          delete data.providerAccountId;
-          delete data.updateDate;
-          return data;
         }
+        if (
+          (data && data.status === status.ACTIVE) ||
+          data.status === status.BANNED ||
+          data.status === status.INACTIVE
+        ) {
+          delete data.status;
+        }
+        if (data && data.providerAccountId) {
+          delete data.providerAccountId;
+        }
+        if (data && data.updateDate) {
+          delete data.updateDate;
+        }
+        if (data && data.password) {
+          delete data.password;
+        }
+        if (data && data.password === null) {
+          delete data.password;
+        }
+
+        return data;
       }),
     );
   }

@@ -25,7 +25,10 @@ export class User {
   @Column({ type: 'varchar', length: 50, nullable: false })
   name: string;
 
-  @Column({ type: 'varchar', length: 80, nullable: false })
+  @Column({ type: 'varchar', length: 80, nullable: true })
+  password: string;
+
+  @Column({ type: 'varchar', length: 80, nullable: true })
   providerAccountId: string;
 
   @Column({ type: 'varchar', length: 100, nullable: true })

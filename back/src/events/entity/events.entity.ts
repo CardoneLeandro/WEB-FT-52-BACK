@@ -56,7 +56,10 @@ export class Event {
   @OneToMany(() => Comment, (comment) => comment.event)
   comments: Comment[];
 
-  @ManyToMany(() => UserInformation, (userInformation) => userInformation.assistantEvents)
+  @ManyToMany(
+    () => UserInformation,
+    (userInformation) => userInformation.assistantEvents,
+  )
   @JoinColumn()
   assistants: UserInformation[];
 }

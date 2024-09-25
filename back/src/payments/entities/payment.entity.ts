@@ -19,7 +19,10 @@ export class Payment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne( () => UserInformation, (userInformation) => userInformation.payments )
+  @ManyToOne(
+    () => UserInformation,
+    (userInformation) => userInformation.payments,
+  )
   @JoinColumn({ name: 'user' })
   user: UserInformation;
 

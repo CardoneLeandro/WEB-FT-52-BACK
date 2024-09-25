@@ -1,7 +1,14 @@
 import { Event } from 'src/events/entity/events.entity';
 import { Order } from 'src/orders/entities/order.entity';
 import { Product } from 'src/products/entity/products.entity';
-import { Column, Entity, JoinColumn, ManyToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'orderDetails',
@@ -17,9 +24,9 @@ export class OrderDetail {
   @JoinColumn()
   products: Product[];
 
-  @ManyToMany( () => Event, (event) => event.id )
+  @ManyToMany(() => Event, (event) => event.id)
   @JoinColumn()
-  events: Event[]
+  events: Event[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   date: Date;
