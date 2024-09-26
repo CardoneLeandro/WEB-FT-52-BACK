@@ -6,4 +6,13 @@ export class SingUpDto {
 
   @IsNotEmpty()
   password: string;
+
+  @IsNotEmpty()
+  name: string;
+
+  @IsNotEmpty()
+  phone: number;
+
+  @IsNotEmpty()
+  address: string;
 }

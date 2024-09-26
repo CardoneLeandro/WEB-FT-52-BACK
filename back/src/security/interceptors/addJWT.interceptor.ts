@@ -1,5 +1,3 @@
-//*     INTERCEPTOR ENCARGADO DE CARGAR EL TOKEN EN LA RESPUESTA DE INICIO DE SESION
-
 import {
   CallHandler,
   ExecutionContext,
@@ -15,19 +13,21 @@ export class addJWTInterceptor implements NestInterceptor {
   constructor(private readonly jwtSv: JsonWebTokenService) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const response = context.switchToHttp().getResponse();
+
     return next.handle().pipe(
-      map(async (user) => {
+      map(async (result) => {
+        if (result && result.redirect === true) {
+          return result;
+        }
+
         try {
-          // ==> then gereate token
-          const token = await this.jwtSv.generateJwt(user);
-          // and return the user with the new token
-          return { user, token };
+          const token = await this.jwtSv.generateJwt(result);
+          return { user: result, token };
         } catch (error) {
-          throw error({
-            message:
-              'An error has ben ocurred during the creation of the token',
-            error,
-          });
+          throw new Error(
+            'An error has occurred during the creation of the token',
+          );
         }
       }),
     );
