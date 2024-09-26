@@ -12,7 +12,7 @@ import { CreateCommentsDto } from './dto/create-comments.dto';
 import { UpdateCommentsDto } from './dto/update-comments.dto';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Comments')
+@ApiTags('WorkInProgress')
 @Controller('comments')
 export class commentsController {
   constructor(private readonly commentsService: commentsService) {}

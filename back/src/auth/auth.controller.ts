@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LoginUserDto } from './dto/login-user.dto';
 import { Auth0LogInDto } from './dto/auth0-logIn.dto';
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
@@ -48,6 +48,7 @@ export class AuthController {
   // token id
 
   @Post('auth0/signup')
+  @ApiOperation({ summary: 'Ruta para el SignUp con cuentas de Google usando Auth0' })
   @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
   @UsePipes(new DTOValidationPipe())
   async signup(@Body() auth0Data: Auth0LogInDto) {
@@ -63,6 +64,7 @@ export class AuthController {
   }
 
   @Post('auth0/completeregister')
+  @ApiOperation({ summary: 'Ruta para completar los datos del usuario una vez que se haya registrado con Google usando Auth0' })
   @UseInterceptors(CompareAndRemovePasswordInterceptor)
   @UsePipes(new DTOValidationPipe())
   async completeRegister(@Body() confirmData: CompleteRegisterAuth0Dto) {
@@ -76,6 +78,7 @@ export class AuthController {
   //! FLUJO DE CREACION USUARIO E INICIO DE SESION MEDIANTE EL FORMULARIO DEL CLIENTE
 
   @Post('signup')
+  @ApiOperation({ summary: 'Ruta para el SignUp usando el formulario dado por la aplicación' })
   @UsePipes(new DTOValidationPipe())
   @UseGuards()
   @UseInterceptors(PasswordEncriptorInterceptor)
@@ -90,6 +93,7 @@ export class AuthController {
   }
 
   @Get('login')
+  @ApiOperation({ summary: 'Ruta para el LogIn usando los datos dado por el formulario de la aplicación' })
   @UsePipes(new DTOValidationPipe())
   @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
   async login(@Body() loginUserData: LoginUserDto) {
@@ -103,6 +107,7 @@ export class AuthController {
   }
 
   @Patch('ban/:id')
+  @ApiOperation({ summary: 'Ruta para banear usuarios. Pasa su estado "Active" a "Banned" y viceversa' })
   async ban(@Param('id') id: string) {
     return await this.authService.ban(id);
   }
