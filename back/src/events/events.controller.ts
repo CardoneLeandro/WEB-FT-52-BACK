@@ -51,7 +51,7 @@ export class EventsController {
     @Query('sortBy') sortBy: string = 'createDate', 
     @Query('order') order: 'ASC' | 'DESC' = 'DESC',
     @Query('month') month: string = 'all',
-    @Query('year') year: number = new Date().getFullYear(),
+    @Query('year') year: number,
     @Query('title') title: string = '',
   ) {
     const eventResponse = await this.eventsService.findAll(page, limit, sortBy, order, month, year, title);

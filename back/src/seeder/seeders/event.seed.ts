@@ -3,7 +3,7 @@ const eventSeeder = [
     title: 'Concierto de Navidad',
     description:
       'Un evento musical para celebrar la Navidad con villancicos tradicionales.',
-    eventDate: '2025-12-24',
+    eventDate: '2024-12-24',
     eventLocation: 'Teatro Central',
     price: 1500,
     stock: 50,

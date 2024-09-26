@@ -23,7 +23,7 @@ export class EventsService {
     sortBy: string = 'createDate',
     order: 'ASC' | 'DESC' = 'ASC',
     month: string = 'all',
-    year: number = new Date().getFullYear(),
+    year: number,
     title: string = ''
   ) {
     const [events, totalElements] = await this.eventRepo.findAndCountProducts(
