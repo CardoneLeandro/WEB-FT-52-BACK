@@ -11,6 +11,7 @@ import {
   UsePipes,
   ParseUUIDPipe,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -21,6 +22,7 @@ import { UUID } from 'crypto';
 import { IsUUIDPipe } from 'src/common/pipes/isUUID.pipe';
 import { ExistingEventGuard } from 'src/security/guards/existing-event.guard';
 import { EventsRepository } from './events.repository';
+import { ParseEventDataInterceptor } from 'src/security/interceptors/parse-event-data.interceptor';
 
 @ApiTags('Events')
 @Controller('events')
@@ -31,9 +33,15 @@ export class EventsController {
   ) {}
 
   @Post()
+  @UseInterceptors(ParseEventDataInterceptor)
   @UsePipes(new DTOValidationPipe())
-  create(@Body() createEventDto: CreateEventDto) {
-    return this.eventsService.create(createEventDto);
+  async create(@Body() createEventDto: CreateEventDto) {
+    try {
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      return await this.eventsService.create(createEventDto);
+    } catch (error) {
+      throw new HttpException(error.message, 405);
+    }
   }
 
   @Get()

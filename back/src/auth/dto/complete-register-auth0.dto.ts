@@ -1,23 +1,22 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CompleteRegisterAuth0Dto {
+  @IsNotEmpty()
+  email: string;
 
-    @IsNotEmpty()
-    email: string;
+  @IsNotEmpty()
+  @IsString()
+  password: string;
 
-    @IsNotEmpty()
-    @IsString()
-    password: string;
+  // @IsNotEmpty()
+  // @IsString()
+  // confirmPassword: string;
 
-    // @IsNotEmpty()
-    // @IsString()
-    // confirmPassword: string;
+  @IsNotEmpty()
+  @IsString()
+  address: string;
 
-    @IsNotEmpty()
-    @IsString()
-    address: string;
-
-    @IsNotEmpty()
-    @IsString()
-    phone: string;
+  @IsNotEmpty()
+  @IsString()
+  phone: string;
 }

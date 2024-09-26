@@ -63,15 +63,13 @@ export class AuthController {
 
   @Post('auth0/completeregister')
   @UsePipes(new DTOValidationPipe())
-  async completeRegister(@Body() confirmData:CompleteRegisterAuth0Dto){
+  async completeRegister(@Body() confirmData: CompleteRegisterAuth0Dto) {
     try {
-      return this.authService.completeRegister(confirmData);
+      return await this.authService.completeRegister(confirmData);
     } catch (e) {
       throw new BadRequestException({ 'ERROR:': `${e.message}` });
+    }
   }
-  }
-
-
 
   //! FLUJO DE CREACION USUARIO E INICIO DE SESION MEDIANTE EL FORMULARIO DEL CLIENTE
 
