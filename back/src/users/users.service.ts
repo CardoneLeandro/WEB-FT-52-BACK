@@ -71,10 +71,12 @@ export class UsersService {
     return `This action returns a #${id} user`;
   }
 
-  async updateUserInformation(user:User, param:Partial<CompleteRegisterAuth0Dto>) {
+  async updateUserInformation(
+    user: User,
+    param: Partial<CompleteRegisterAuth0Dto>,
+  ) {
     await this.userRepo.update(user.id, param);
-    return await this.userRepo.findOneBy({id:user.id});
-    
+    return await this.userRepo.findOneBy({ id: user.id });
   }
 
   remove(id: number) {

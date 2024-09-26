@@ -98,11 +98,17 @@ export class AuthService {
   }
 
   async completeRegister(params) {
-    const incompleteUser:User | null = await this.userRepo.findOneBy({email:params.email});
-    if(!incompleteUser) return new NotFoundException('User not found');
-    if(incompleteUser.status !== status.PENDING) { return new NotFoundException('User register is allready Completed'); }
-    const userData = {status:status.ACTIVE, ...params,};
-    return await this.userService.updateUserInformation(incompleteUser, userData);
+    const incompleteUser: User | null = await this.userRepo.findOneBy({
+      email: params.email,
+    });
+    if (!incompleteUser) return new NotFoundException('User not found');
+    if (incompleteUser.status !== status.PENDING) {
+      return new NotFoundException('User register is allready Completed');
+    }
+    const userData = { status: status.ACTIVE, ...params };
+    return await this.userService.updateUserInformation(
+      incompleteUser,
+      userData,
+    );
   }
-    
 }
