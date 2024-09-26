@@ -22,6 +22,7 @@ import { SingUpDto } from './dto/sungUp-user.dto';
 import { response } from 'express';
 import { PasswordEncriptorInterceptor } from 'src/security/interceptors/password-encriptor.interceptor';
 import { CompleteRegisterAuth0Dto } from './dto/complete-register-auth0.dto';
+import { CompareAndRemovePasswordInterceptor } from 'src/security/interceptors/compare&remove-password.interceptor';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -62,6 +63,7 @@ export class AuthController {
   }
 
   @Post('auth0/completeregister')
+  @UseInterceptors(CompareAndRemovePasswordInterceptor)
   @UsePipes(new DTOValidationPipe())
   async completeRegister(@Body() confirmData: CompleteRegisterAuth0Dto) {
     try {
