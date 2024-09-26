@@ -7,6 +7,8 @@ import { SUPERADMIN } from 'config/super-admin.config';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import { status } from 'src/common/enum/status.enum';
+import { emitWarning } from 'process';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -32,7 +34,7 @@ export class AuthService {
     return userAdminTable.userInformation.id;
   }
 
-  async logginWishAuth0(params) {
+  async logginWithAuth0(params) {
     const existingUser = await this.userRepo.findUserByEmail(params.email);
     if (!existingUser) {
       const newAuth0UserData = { status: status.PENDING, ...params };
@@ -93,5 +95,20 @@ export class AuthService {
     }
     const updatedUser = await this.userRepo.findOne({ where: { id } });
     return updatedUser;
+  }
+
+  async completeRegister(params) {
+    const incompleteUser: User | null = await this.userRepo.findOneBy({
+      email: params.email,
+    });
+    if (!incompleteUser) return new NotFoundException('User not found');
+    if (incompleteUser.status !== status.PENDING) {
+      return new NotFoundException('User register is allready Completed');
+    }
+    const userData = { status: status.ACTIVE, ...params };
+    return await this.userService.updateUserInformation(
+      incompleteUser,
+      userData,
+    );
   }
 }

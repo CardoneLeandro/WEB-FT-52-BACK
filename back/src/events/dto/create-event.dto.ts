@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsArray,
   IsDate,
   IsNotEmpty,
   IsNumber,
@@ -82,6 +83,6 @@ export class CreateEventDto {
     type: [String],
   })
   @IsNotEmpty()
-  @IsString()
+  @IsArray()
   images: string[];
 }

@@ -16,12 +16,11 @@ async function bootstrap() {
   });
   app.use(loggerGlobal);
 
-  //app.use()
-  console.log(
-    `Server running on port http://localhost:${process.env.APP_PORT}`,
-  );
   const apiDocumentation = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('documentation', app, apiDocumentation);
-  await app.listen(process.env.APP_PORT);
+  const port = process.env.APP_PORT || 3000;
+  await app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
 }
 bootstrap();

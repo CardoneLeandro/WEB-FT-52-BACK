@@ -34,6 +34,12 @@ export class User {
   @Column({ type: 'varchar', length: 100, nullable: true })
   image: string;
 
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  address: string;
+
+  @Column({ type: 'varchar', length: 20, nullable: true })
+  phone: string;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updateDate: Date;
 
