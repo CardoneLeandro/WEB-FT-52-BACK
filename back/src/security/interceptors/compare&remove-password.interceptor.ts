@@ -3,28 +3,32 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
+  BadRequestException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { status } from 'src/common/enum/status.enum';
-//*     INTERCEPTOR ENCARGADO DE ELIMINAR LAS PROPIEDADES EN LA RESPUESTA
-//!     DE INICIO DE SESION POR AUTH 0
+import * as bcrypt from 'bcrypt';
+//! INTERCEPTOR ENCARGADO DE COMPARAR EL PASSWORD Y EL PASSWORD DE CONFIRMACION
+//! EN CASO DE QUE NO COINCIDAN SE LANZARA UNA EXCEPCION
+//! EN CASO DE QUE COINCIDAN SE ELIMINAN EL CAMPO DE "CONFIRMAR PASSWORD"
+//! Y SE ENCRIPTA EL PASSWORD
 @Injectable()
 export class CompareAndRemovePasswordInterceptor implements NestInterceptor {
-  intercept(
-    context: ExecutionContext,
-    next: CallHandler<any>,
-  ): Observable<any> | Promise<Observable<any>> {
-    return next.handle().pipe(
-      map((data) => {
-        if (data && data.password && data.confirmPassword) {
-          if (data.password !== data.confirmPassword) {
-            throw new Error('Las contraseñas no coinciden');
-          }
-          delete data.password;
-        }
-        return data;
-      }),
-    );
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const request = context.switchToHttp().getRequest();
+    if (
+      !request.body ||
+      !request.body.password ||
+      !request.body.confirmPassword
+    ) {
+      throw new BadRequestException(
+        'Bouth "password" and "confirmPassword" are required',
+      );
+    }
+    if (request.body.password !== request.body.confirmPassword) {
+      throw new BadRequestException('Passwords do not match');
+    }
+    delete request.body.confirmPassword;
+    request.body.password = bcrypt.hashSync(request.body.password, 10);
+    return next.handle();
   }
 }

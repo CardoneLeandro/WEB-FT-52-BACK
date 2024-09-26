@@ -1,14 +1,21 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UsersRepository } from 'src/users/users.repository';
 import { UserRole } from 'src/common/enum/userRole.enum';
 import { UsersService } from 'src/users/users.service';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { SUPERADMIN } from 'config/super-admin.config';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import { status } from 'src/common/enum/status.enum';
-import { emitWarning } from 'process';
 import { User } from 'src/users/entities/user.entity';
+import { encriptPasswordCompare } from 'src/common/utils/encript-passwordCompare.util';
+import { encriptProviderAccIdCompare } from 'src/common/utils/encript-providerAccIdCompare.util';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -37,7 +44,13 @@ export class AuthService {
   async logginWithAuth0(params) {
     const existingUser = await this.userRepo.findUserByEmail(params.email);
     if (!existingUser) {
-      const newAuth0UserData = { status: status.PENDING, ...params };
+      const { providerAccountId, ...creationParams } = params;
+      const hashedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
+      const newAuth0UserData = {
+        status: status.PENDING,
+        providerAccountId: hashedProviderAccId,
+        ...creationParams,
+      };
       const newUser = await this.userService.createNewUser(newAuth0UserData);
       const newUserInformationTable = this.infoRepo.findOne({
         where: { user: { id: newUser.id } },
@@ -45,11 +58,42 @@ export class AuthService {
       });
       return newUserInformationTable;
     }
+    if (
+      existingUser.status === status.BANNED ||
+      existingUser.status === status.INACTIVE
+    ) {
+      throw new NotFoundException('Access denied');
+    }
 
-    return await this.infoRepo.findOne({
-      where: { user: { id: existingUser.id } },
-      relations: ['user'],
-    });
+    if (existingUser.status === status.PARTIALACTIVE) {
+      const hashedProviderAccId = bcrypt.hashSync(params.providerAccountId, 10);
+      await this.userRepo.update(existingUser.id, {
+        status: status.ACTIVE,
+        providerAccountId: hashedProviderAccId,
+      });
+      return await this.infoRepo.findOne({
+        where: { user: { id: existingUser.id } },
+        relations: ['user'],
+      });
+    }
+
+    if (
+      existingUser.status === status.ACTIVE ||
+      existingUser.status === status.PENDING
+    ) {
+      if (
+        (await encriptProviderAccIdCompare(
+          existingUser,
+          params.providerAccountId,
+        )) === false
+      ) {
+        throw new NotFoundException('Invalid Credentials');
+      }
+      return await this.infoRepo.findOne({
+        where: { user: { id: existingUser.id } },
+        relations: ['user'],
+      });
+    }
   }
 
   async NEEDREFACTORIZATION(params) {
@@ -63,18 +107,56 @@ export class AuthService {
 
   async createNewUser(params) {
     const newUser = await this.userService.createNewUser(params);
-    return newUser;
+    const newUserInformationTable = this.infoRepo.findOne({
+      where: { user: { id: newUser.id } },
+      relations: ['user'],
+    });
+    return newUserInformationTable;
   }
 
   async loginUser(params) {
-    const user = await this.userRepo.findUserByEmail(params.email);
-    if (!user) {
-      throw new NotFoundException('User not found');
+    console.log(
+      'entrada al servicio de login, datos de entradad al servicio',
+      params,
+    );
+    const existingUser: User | null = await this.userRepo.findUserByEmail(
+      params.email,
+    );
+    if (!existingUser) {
+      throw new NotFoundException('Invalid Credentials');
     }
-    return await this.infoRepo.findOne({
-      where: { user: { id: user.id } },
-      relations: ['user'],
-    });
+    if (
+      existingUser.status === status.BANNED ||
+      existingUser.status === status.INACTIVE
+    ) {
+      throw new NotFoundException('Access denied');
+    }
+    if (existingUser.status === status.PENDING) {
+      //? Lanzar excepción para que el controlador pueda manejarla
+      return { redirect: true };
+    }
+    if (
+      existingUser.status === status.ACTIVE ||
+      existingUser.status === status.PARTIALACTIVE
+    ) {
+      console.log(
+        'entrada al if dentro del servicio de login, donde se llama a la funcion que compara contraseñas',
+      );
+      if (
+        (await encriptPasswordCompare(existingUser, params.password)) === false
+      ) {
+        throw new NotFoundException('Invalid Credentials');
+      }
+      console.log(
+        'salida del if dentro del servicio de login, donde se llama a la funcion que compara contraseñas',
+      );
+      const loggedUser = await this.infoRepo.findOne({
+        where: { user: { id: existingUser.id } },
+        relations: ['user'],
+      });
+      const { id, user } = loggedUser;
+      return { creatorId: id, ...user };
+    }
   }
 
   async signUp(params) {
@@ -105,10 +187,25 @@ export class AuthService {
     if (incompleteUser.status !== status.PENDING) {
       return new NotFoundException('User register is allready Completed');
     }
-    const userData = { status: status.ACTIVE, ...params };
-    return await this.userService.updateUserInformation(
-      incompleteUser,
-      userData,
-    );
+
+    if (
+      (await encriptProviderAccIdCompare(
+        incompleteUser,
+        params.providerAccountId,
+      )) === false
+    ) {
+      throw new BadRequestException('Invalid credentials');
+    }
+    const { providerAccountId, ...updateParams } = params;
+    const userData = { status: status.ACTIVE, ...updateParams };
+    await this.userService.updateUserInformation(incompleteUser, userData);
+    //! -----------------------------------
+    const completeUser = await this.infoRepo.findOne({
+      where: { user: { id: incompleteUser.id } },
+      relations: ['user'],
+    });
+    const { id, user } = completeUser;
+    return { creatorId: id, ...user };
+    //! -----------------------------------
   }
 }

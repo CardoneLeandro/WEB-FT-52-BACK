@@ -15,31 +15,53 @@ export class RemovePropertiesInterceptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler<any>,
   ): Observable<any> | Promise<Observable<any>> {
+    console.log('REMOVE PROPERTIES INTERCEPTOR');
     return next.handle().pipe(
       map((data) => {
-        if (data && data.role) {
+        if (data && data.email === null) {
+          delete data.email;
+        }
+
+        if (data && data.name === null) {
+          delete data.name;
+        }
+
+        if (data && data.id === null) {
+          delete data.id;
+        }
+
+        if ((data && data.role) || data.role === null) {
           delete data.role;
         }
         if (
           (data && data.status === status.ACTIVE) ||
           data.status === status.BANNED ||
-          data.status === status.INACTIVE
+          data.status === status.INACTIVE ||
+          data.status === status.PARTIALACTIVE
         ) {
           delete data.status;
         }
-        if (data && data.providerAccountId) {
+        if (
+          (data && data.providerAccountId) ||
+          data.providerAccountId === null
+        ) {
           delete data.providerAccountId;
         }
-        if (data && data.updateDate) {
+        if ((data && data.updateDate) || data.updateDate === null) {
           delete data.updateDate;
         }
-        if (data && data.password) {
+        if ((data && data.password) || data.password === null) {
           delete data.password;
         }
-        if (data && data.password === null) {
-          delete data.password;
+        if (data && data.phone === null) {
+          delete data.phone;
         }
-
+        if (data && data.address === null) {
+          delete data.address;
+        }
+        if (data && data.image === null) {
+          delete data.image;
+        }
         return data;
       }),
     );
