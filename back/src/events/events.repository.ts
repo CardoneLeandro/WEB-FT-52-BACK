@@ -15,25 +15,27 @@ export class EventsRepository extends Repository<Event> {
     order: 'ASC' | 'DESC',
     month: string,
     year: number,
-    title: string
+    title: string,
   ) {
     const query = this.createQueryBuilder('event')
       .skip((page - 1) * limit)
       .take(limit)
       .orderBy(`event.${sortBy}`, order);
-  
+
     if (title) {
       query.andWhere('event.title ILIKE :title', { title: `%${title}%` });
     }
-  
+
     if (month !== 'all') {
-      query.andWhere('EXTRACT(MONTH FROM event.eventDate) = :month', { month: Number(month) });
+      query.andWhere('EXTRACT(MONTH FROM event.eventDate) = :month', {
+        month: Number(month),
+      });
     }
-  
+
     if (year) {
       query.andWhere('EXTRACT(YEAR FROM event.eventDate) = :year', { year });
     }
-  
+
     return await query.getManyAndCount();
   }
 

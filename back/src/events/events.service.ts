@@ -24,7 +24,7 @@ export class EventsService {
     order: 'ASC' | 'DESC' = 'ASC',
     month: string = 'all',
     year: number,
-    title: string = ''
+    title: string = '',
   ) {
     const [events, totalElements] = await this.eventRepo.findAndCountProducts(
       page,
@@ -33,9 +33,9 @@ export class EventsService {
       order,
       month,
       year,
-      title
+      title,
     );
-    const validSortFields = ['price','createDate','title'];
+    const validSortFields = ['price', 'createDate', 'title'];
     if (!validSortFields.includes(sortBy)) {
       throw new Error(`Invalid sort field: ${sortBy}`);
     }
