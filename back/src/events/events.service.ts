@@ -22,14 +22,20 @@ export class EventsService {
     limit: number,
     sortBy: string = 'createDate',
     order: 'ASC' | 'DESC' = 'ASC',
+    month: string = 'all',
+    year: number,
+    title: string = '',
   ) {
     const [events, totalElements] = await this.eventRepo.findAndCountProducts(
       page,
       limit,
       sortBy,
       order,
+      month,
+      year,
+      title,
     );
-    const validSortFields = ['price', 'title', 'createDate'];
+    const validSortFields = ['price', 'createDate', 'title'];
     if (!validSortFields.includes(sortBy)) {
       throw new Error(`Invalid sort field: ${sortBy}`);
     }
