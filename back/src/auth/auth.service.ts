@@ -13,6 +13,7 @@ import { UserInformationRepository } from 'src/user-information/user-information
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import { status } from 'src/common/enum/status.enum';
 import { User } from 'src/users/entities/user.entity';
+import { MailerService } from 'src/mailer/mailer.service';
 import { encriptPasswordCompare } from 'src/common/utils/encript-passwordCompare.util';
 import { encriptProviderAccIdCompare } from 'src/common/utils/encript-providerAccIdCompare.util';
 import * as bcrypt from 'bcrypt';
@@ -23,6 +24,7 @@ export class AuthService {
     private readonly userRepo: UsersRepository,
     private readonly userService: UsersService,
     private readonly infoRepo: UserInformationRepository,
+    private readonly mailerService: MailerService,
   ) {}
 
   async superAdminSeeder() {
@@ -44,12 +46,9 @@ export class AuthService {
   async logginWithAuth0(params) {
     const existingUser = await this.userRepo.findUserByEmail(params.email);
     if (!existingUser) {
-      const { providerAccountId, ...creationParams } = params;
-      const hashedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
       const newAuth0UserData = {
         status: status.PENDING,
-        providerAccountId: hashedProviderAccId,
-        ...creationParams,
+        ... params,
       };
       const newUser = await this.userService.createNewUser(newAuth0UserData);
       const newUserInformationTable = this.infoRepo.findOne({
@@ -77,9 +76,14 @@ export class AuthService {
       });
     }
 
+    if(existingUser.status === status.PENDING){
+      return await this.infoRepo.findOne({
+        where: { user: { id: existingUser.id } },
+        relations: ['user'],
+      });
+    }
     if (
-      existingUser.status === status.ACTIVE ||
-      existingUser.status === status.PENDING
+      existingUser.status === status.ACTIVE
     ) {
       if (
         (await encriptProviderAccIdCompare(
@@ -107,6 +111,10 @@ export class AuthService {
 
   async createNewUser(params) {
     const newUser = await this.userService.createNewUser(params);
+    await this.mailerService.sendEmailWelcome({
+      name: newUser.name,
+      email: newUser.email,
+    });
     const newUserInformationTable = this.infoRepo.findOne({
       where: { user: { id: newUser.id } },
       relations: ['user'],
@@ -187,16 +195,24 @@ export class AuthService {
     if (incompleteUser.status !== status.PENDING) {
       return new NotFoundException('User register is allready Completed');
     }
-
-    if (
-      (await encriptProviderAccIdCompare(
-        incompleteUser,
-        params.providerAccountId,
-      )) === false
-    ) {
+    await this.mailerService.sendEmailWelcome({
+      name: incompleteUser.name,
+      email: incompleteUser.email,
+    });
+    if(incompleteUser.providerAccountId !== params.providerAccountId) {
       throw new BadRequestException('Invalid credentials');
     }
+    // if (
+    //   (await encriptProviderAccIdCompare(
+    //     incompleteUser,
+    //     params.providerAccountId,
+    //   )) === false
+    // ) {
+    //   throw new BadRequestException('Invalid credentials');
+    // }
     const { providerAccountId, ...updateParams } = params;
+    const hashedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
+    updateParams.providerAccountId = hashedProviderAccId;
     const userData = { status: status.ACTIVE, ...updateParams };
     await this.userService.updateUserInformation(incompleteUser, userData);
     //! -----------------------------------

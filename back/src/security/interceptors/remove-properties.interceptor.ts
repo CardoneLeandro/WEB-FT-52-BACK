@@ -42,7 +42,7 @@ export class RemovePropertiesInterceptor implements NestInterceptor {
           delete data.status;
         }
         if (
-          (data && data.providerAccountId) ||
+          (data && data.providerAccountId && data.status !== status.PENDING) ||
           data.providerAccountId === null
         ) {
           delete data.providerAccountId;
