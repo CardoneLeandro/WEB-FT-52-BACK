@@ -23,11 +23,8 @@ import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
 import { addJWTInterceptor } from 'src/security/interceptors/addJWT.interceptor';
 import { RemovePropertiesInterceptor } from 'src/security/interceptors/remove-properties.interceptor';
 import { SignUpDto } from './dto/signUp-user.dto';
-import { response } from 'express';
-import { PasswordEncriptorInterceptor } from 'src/security/interceptors/password-encriptor.interceptor';
 import { CompleteRegisterAuth0Dto } from './dto/complete-register-auth0.dto';
 import { CompareAndRemovePasswordInterceptor } from 'src/security/interceptors/compare&remove-password.interceptor';
-import { ProviderAccountIdEncriptorInterceptor } from 'src/security/interceptors/providerAccID-encriptor.interceptor';
 import { StringToNumberInterceptor } from 'src/security/interceptors/string-toNumber.interceptor';
 import { status } from 'src/common/enum/status.enum';
 @ApiTags('Auth')
@@ -118,16 +115,7 @@ export class AuthController {
   @UsePipes(new DTOValidationPipe())
   async login(@Body() loginUserData: LoginUserDto): Promise<any> {
     try {
-      console.log(
-        'entrada al controlador de login, datos de entrada',
-        loginUserData,
-      );
-
       const logedUser = await this.authService.loginUser(loginUserData);
-      console.log(
-        'salida del controlador de login, resultado del llamado al servicio',
-        logedUser,
-      );
       return logedUser;
     } catch (e) {
       throw new BadRequestException({ 'ERROR:': `${e.message}` });

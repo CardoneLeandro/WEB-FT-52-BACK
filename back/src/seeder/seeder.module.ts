@@ -23,7 +23,7 @@ import { MailerService } from 'src/mailer/mailer.service';
     UserInformationService,
     EventsService,
     EventsRepository,
-    MailerService
+    MailerService,
   ],
   exports: [SeederService],
 })

@@ -1,6 +1,7 @@
 import { SuperAdminDto } from 'src/auth/dto/super-Admin.dto';
 import {config as dotenvConfig} from "dotenv";
 import { UserRole } from 'src/common/enum/userRole.enum';
+import { status } from 'src/common/enum/status.enum';
 
 dotenvConfig({path: './.env'});
 
@@ -10,4 +11,5 @@ export const SUPERADMIN: SuperAdminDto = {
   providerAccountId: process.env.SUPERADMIN_PROVIDERACCID,
   image: process.env.SUPERADMIN_IMAGE,
   role: UserRole.SUPERADMIN,
+  status: status.PENDING,
 };

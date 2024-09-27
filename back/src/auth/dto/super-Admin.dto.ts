@@ -12,4 +12,6 @@ export class SuperAdminDto extends PartialType(Auth0LogInDto) {
   @IsNotEmpty()
   @IsString()
   role: string;
+
+  status: string;
 }

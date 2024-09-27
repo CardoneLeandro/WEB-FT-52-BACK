@@ -17,7 +17,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeormConfig from 'config/typeorm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SeederModule } from './seeder/seeder.module';
-import { DataEntryInterceptor } from './security/interceptors/data-entry.interceptor';
+import { DataLogInterceptor } from './security/interceptors/data-log.interceptor';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { MailerModule } from './mailer/mailer.module';
 
@@ -45,23 +45,15 @@ import { MailerModule } from './mailer/mailer.module';
     PaymentCredentialsModule,
     DonationsModule,
     SeederModule,
-    MailerModule
+    MailerModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DataLogInterceptor,
+    },
+  ],
 })
 export class AppModule {}
-
-/*
-customs providers
-
-{
-    provide: APP_INTERCEPTOR,
-    useClass: DataEntryInterceptor,
-  }
-{
-    provide: APP_INTERCEPTOR,
-    useClass: DataExitInterceptor,
-  }
-
-*/

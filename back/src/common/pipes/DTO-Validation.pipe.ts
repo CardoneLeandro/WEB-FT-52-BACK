@@ -14,7 +14,6 @@ export class DTOValidationPipe implements PipeTransform<any> {
   }
 
   async validate(value: any, metatype: any) {
-    console.log('==> DATA ENTRY <==', value);
     if (!metatype || !this.toValidate(metatype)) {
       return value;
     }

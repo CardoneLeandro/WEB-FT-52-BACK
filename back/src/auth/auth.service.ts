@@ -33,7 +33,13 @@ export class AuthService {
     });
 
     if (!existingSuperAdmin) {
-      await this.userService.createNewUser(SUPERADMIN);
+      const { providerAccountId, ...params } = SUPERADMIN;
+      const encriptedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
+      const superAdminCreationData = {
+        providerAccountId: encriptedProviderAccId,
+        ...params,
+      };
+      await this.userService.createNewUser(superAdminCreationData);
     }
 
     const userAdminTable = await this.userRepo.findOne({
@@ -48,7 +54,7 @@ export class AuthService {
     if (!existingUser) {
       const newAuth0UserData = {
         status: status.PENDING,
-        ... params,
+        ...params,
       };
       const newUser = await this.userService.createNewUser(newAuth0UserData);
       const newUserInformationTable = this.infoRepo.findOne({
@@ -76,15 +82,13 @@ export class AuthService {
       });
     }
 
-    if(existingUser.status === status.PENDING){
+    if (existingUser.status === status.PENDING) {
       return await this.infoRepo.findOne({
         where: { user: { id: existingUser.id } },
         relations: ['user'],
       });
     }
-    if (
-      existingUser.status === status.ACTIVE
-    ) {
+    if (existingUser.status === status.ACTIVE) {
       if (
         (await encriptProviderAccIdCompare(
           existingUser,
@@ -123,10 +127,6 @@ export class AuthService {
   }
 
   async loginUser(params) {
-    console.log(
-      'entrada al servicio de login, datos de entradad al servicio',
-      params,
-    );
     const existingUser: User | null = await this.userRepo.findUserByEmail(
       params.email,
     );
@@ -147,17 +147,12 @@ export class AuthService {
       existingUser.status === status.ACTIVE ||
       existingUser.status === status.PARTIALACTIVE
     ) {
-      console.log(
-        'entrada al if dentro del servicio de login, donde se llama a la funcion que compara contraseñas',
-      );
       if (
         (await encriptPasswordCompare(existingUser, params.password)) === false
       ) {
         throw new NotFoundException('Invalid Credentials');
       }
-      console.log(
-        'salida del if dentro del servicio de login, donde se llama a la funcion que compara contraseñas',
-      );
+
       const loggedUser = await this.infoRepo.findOne({
         where: { user: { id: existingUser.id } },
         relations: ['user'],
@@ -199,7 +194,7 @@ export class AuthService {
       name: incompleteUser.name,
       email: incompleteUser.email,
     });
-    if(incompleteUser.providerAccountId !== params.providerAccountId) {
+    if (incompleteUser.providerAccountId !== params.providerAccountId) {
       throw new BadRequestException('Invalid credentials');
     }
     // if (
