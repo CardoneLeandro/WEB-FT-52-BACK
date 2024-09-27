@@ -20,7 +20,10 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Ruta para obtener todos los usuarios. Por defecto se devuelve 1 página con 5 usuarios ordenados por fecha de actualización' })
+  @ApiOperation({
+    summary:
+      'Ruta para obtener todos los usuarios. Por defecto se devuelve 1 página con 5 usuarios ordenados por fecha de actualización',
+  })
   findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 5,
@@ -36,5 +39,4 @@ export class UsersController {
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
-
 }

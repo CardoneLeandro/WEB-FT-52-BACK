@@ -45,7 +45,10 @@ export class EventsController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Ruta para la obtención de todos los eventos creados. Por defecto se devuelve 1 pagina con 9 eventos ordenados por fecha de creación de más reciente a más antiguo' })
+  @ApiOperation({
+    summary:
+      'Ruta para la obtención de todos los eventos creados. Por defecto se devuelve 1 pagina con 9 eventos ordenados por fecha de creación de más reciente a más antiguo',
+  })
   async findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 9,
@@ -69,7 +72,10 @@ export class EventsController {
   }
 
   @Patch('highlight/:id')
-  @ApiOperation({ summary: 'Ruta para cambiar el estado "highlight" de un evento. Pasa de false a true o viceversa' })
+  @ApiOperation({
+    summary:
+      'Ruta para cambiar el estado "highlight" de un evento. Pasa de false a true o viceversa',
+  })
   async highlights(@Param('id', new IsUUIDPipe()) id: string) {
     try {
       return await this.eventsService.highlight(id);
@@ -79,12 +85,14 @@ export class EventsController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Ruta para la actualización de eventos. Se debe enviar el ID del evento a querer editar por @Params y los campos a modificar por @Body' })
+  @ApiOperation({
+    summary:
+      'Ruta para la actualización de eventos. Se debe enviar el ID del evento a querer editar por @Params y los campos a modificar por @Body',
+  })
   updateEvent(
     @Param('id') id: string,
     @Body() updateEventData: UpdateEventDto,
   ) {
     return this.eventsService.updateEvent(id, updateEventData);
   }
-
 }

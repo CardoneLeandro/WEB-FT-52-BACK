@@ -25,7 +25,10 @@ export class ProductsController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Ruta para la obtención de todos los productos creados. Por defecto se devuelve 1 pagina con 5 productos ordenados por fecha de creación de más reciente a más antiguo' })
+  @ApiOperation({
+    summary:
+      'Ruta para la obtención de todos los productos creados. Por defecto se devuelve 1 pagina con 5 productos ordenados por fecha de creación de más reciente a más antiguo',
+  })
   findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 5,
@@ -36,13 +39,18 @@ export class ProductsController {
   }
 
   @Get('getone')
-  @ApiOperation({ summary: 'Ruta para la obtención de un solo producto por ID' })
+  @ApiOperation({
+    summary: 'Ruta para la obtención de un solo producto por ID',
+  })
   async findOne(@Param('id') id: string) {
     return await this.productsService.findOne(id);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Ruta para la actualización de un solo producto. Se debe pasar el ID del producto por @Param y los campos a actualizar por @Body' })
+  @ApiOperation({
+    summary:
+      'Ruta para la actualización de un solo producto. Se debe pasar el ID del producto por @Param y los campos a actualizar por @Body',
+  })
   update(@Param('id') id: string, @Body() updateProductData: UpdateProductDto) {
     return this.productsService.updateProduct(id, updateProductData);
   }
