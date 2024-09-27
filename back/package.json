@@ -45,6 +45,7 @@
     "class-validator": "^0.14.1",
     "cloudinary": "^2.4.0",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",

@@ -1,15 +1,10 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
+  Headers,
 } from '@nestjs/common';
 import { DonationsService } from './donations.service';
-import { CreateDonationDto } from './dto/create-donation.dto';
-import { UpdateDonationDto } from './dto/update-donation.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Donations')
@@ -23,4 +18,8 @@ export class DonationsController {
     return console.log(donation);
   }
 
+  @Post('webhook')
+  webhookDonation(@Headers('x-signature') xSignature: string, @Headers('x-request-id') xRequestId: string,){
+    return this.donationsService.webhook(xSignature, xRequestId);
+  }
 }
