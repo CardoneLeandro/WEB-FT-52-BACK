@@ -11,7 +11,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { status } from 'src/common/enum/status.enum';
 
 @ApiTags('Users')
@@ -19,12 +19,11 @@ import { status } from 'src/common/enum/status.enum';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.createNewUser(createUserDto);
-  }
-
   @Get()
+  @ApiOperation({
+    summary:
+      'Ruta para obtener todos los usuarios. Por defecto se devuelve 1 página con 5 usuarios ordenados por fecha de actualización',
+  })
   findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 5,
@@ -36,12 +35,8 @@ export class UsersController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Ruta caducada momentaneamente' })
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
   }
 }

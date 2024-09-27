@@ -16,13 +16,15 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LoginUserDto } from './dto/login-user.dto';
 import { Auth0LogInDto } from './dto/auth0-logIn.dto';
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
 import { addJWTInterceptor } from 'src/security/interceptors/addJWT.interceptor';
 import { RemovePropertiesInterceptor } from 'src/security/interceptors/remove-properties.interceptor';
-import { SingUpDto } from './dto/signUp-user.dto';
+import { SignUpDto } from './dto/signUp-user.dto';
+import { response } from 'express';
+import { PasswordEncriptorInterceptor } from 'src/security/interceptors/password-encriptor.interceptor';
 import { CompleteRegisterAuth0Dto } from './dto/complete-register-auth0.dto';
 import { CompareAndRemovePasswordInterceptor } from 'src/security/interceptors/compare&remove-password.interceptor';
 import { ProviderAccountIdEncriptorInterceptor } from 'src/security/interceptors/providerAccID-encriptor.interceptor';
@@ -52,7 +54,10 @@ export class AuthController {
   // token id
 
   @Post('auth0/signup')
-  @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor) // INTERCEPTORS APLICADOS AL RESPONSE
+  @ApiOperation({
+    summary: 'Ruta para el SignUp con cuentas de Google usando Auth0',
+  })
+  @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
   @UsePipes(new DTOValidationPipe())
   async signup(@Body() auth0Data: Auth0LogInDto) {
     try {
@@ -65,6 +70,10 @@ export class AuthController {
   }
 
   @Post('auth0/completeregister')
+  @ApiOperation({
+    summary:
+      'Ruta para completar los datos del usuario una vez que se haya registrado con Google usando Auth0',
+  })
   @UseInterceptors(
     CompareAndRemovePasswordInterceptor,
     StringToNumberInterceptor,
@@ -82,13 +91,16 @@ export class AuthController {
   //! FLUJO DE CREACION USUARIO E INICIO DE SESION MEDIANTE EL FORMULARIO DEL CLIENTE
 
   @Post('signup')
+  @ApiOperation({
+    summary: 'Ruta para el SignUp usando el formulario dado por la aplicación',
+  })
   @UsePipes(new DTOValidationPipe())
   @UseGuards()
   @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
   @UseInterceptors(CompareAndRemovePasswordInterceptor)
-  async signupUser(@Body() singUpData: SingUpDto) {
+  async signupUser(@Body() signUpData: SignUpDto) {
     try {
-      const params = { status: status.PARTIALACTIVE, ...singUpData };
+      const params = { status: status.PARTIALACTIVE, ...signUpData };
       const newUser = await this.authService.createNewUser(params);
       const { id, user } = newUser;
       return { creatorId: id, ...user };
@@ -98,6 +110,10 @@ export class AuthController {
   }
 
   @Post('login')
+  @ApiOperation({
+    summary:
+      'Ruta para el LogIn usando los datos dado por el formulario de la aplicación',
+  })
   @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
   @UsePipes(new DTOValidationPipe())
   async login(@Body() loginUserData: LoginUserDto): Promise<any> {
@@ -119,6 +135,10 @@ export class AuthController {
   }
 
   @Patch('ban/:id')
+  @ApiOperation({
+    summary:
+      'Ruta para banear usuarios. Pasa su estado "Active" a "Banned" y viceversa',
+  })
   async ban(@Param('id') id: string) {
     return await this.authService.ban(id);
   }
