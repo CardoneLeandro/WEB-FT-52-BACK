@@ -16,13 +16,13 @@ export class DonationsController {
 
   @Post('savedonations')
   webhookDonation(@Headers('x-signature') xSignature: string, @Headers('x-request-id') xRequestId: string, @Res() res:Response){
-    this.donationsService.webhook(xSignature, xRequestId);
+    // this.donationsService.webhook(xSignature, xRequestId);
     return res.status(200).send('Funcinó el webhook!')
   }
 
   @Post('webhook')
-  async weebhookTest(@Body() payment,req: Request, res: Response){
-    console.log(payment)
+  async weebhookTest(@Body() payment,@Headers('x-signature') xSignature: string, @Headers('x-request-id') xRequestId: string,req: Request, res: Response){
+    this.donationsService.webhook(xSignature, xRequestId,payment);
     return Response.json({success: true})
   }
  }

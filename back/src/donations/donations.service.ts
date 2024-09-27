@@ -12,7 +12,7 @@ export class DonationsService {
     return console.log(donation);
   }
 
-  async webhook(xSignature: string, xRequestId: string){
+  async webhook(xSignature: string, xRequestId: string,payment){
     // Obtain the x-signature value from the header
     // const xSignature = Headers['x-signature']; // Assuming headers is an object containing request headers
     // const xRequestId = Headers['x-request-id']; // Assuming headers is an object containing request headers
