@@ -33,9 +33,10 @@ export class DonationsController {
     return { message: 'Webhook recibido' };
   }
 
-  @Post('upload')
+  @Post('savedonations')
   uploadDonation(@Body() donation) {
-    return this.donationsService.uploadDonation(donation);
+    console.log(donation)
+    return console.log(donation);
   }
 
 }

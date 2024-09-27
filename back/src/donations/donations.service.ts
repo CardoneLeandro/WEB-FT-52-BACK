@@ -37,7 +37,8 @@ export class DonationsService {
   }
 
   async saveDonation(donation) {
-    // Implementa la lógica para guardar la donación en tu base de datos
+    return console.log(donation);
+    
   }
 }
 
