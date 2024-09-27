@@ -19,7 +19,7 @@ export class CompleteRegisterAuth0Dto {
   email: string;
 
   @ApiProperty({
-    description: 'ID de la cuenta de Auth0',
+    description: 'ID de la cuenta de Auth0 del usuario',
     example: '12345678901234567890',
     type: String,
   })
