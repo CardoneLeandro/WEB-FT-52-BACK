@@ -5,7 +5,7 @@ import { MercadoPagoConfig, Preference } from 'mercadopago';
 const client = new MercadoPagoConfig({ accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN });
 @Injectable()
 export class DonationsService {
-  async createDonation(donationData: CreateDonationDto) {
+  async createDonation(donationData) {
     const preference = await new Preference(client).create({
       body: {
         items: [
@@ -18,6 +18,26 @@ export class DonationsService {
         }
       })
     preference.sandbox_init_point
+  }
+
+  async uploadDonation(donation){
+
+  }
+
+  async processDonation(paymentData) {
+    const donation = {
+      id: paymentData.id,
+      amount: paymentData.transaction_amount,
+      message: paymentData.description,
+      // Otros datos relevantes
+    };
+    // Guarda la donación en tu base de datos
+    await this.saveDonation(donation);
+    // Envia un correo electrónico de confirmación, etc.
+  }
+
+  async saveDonation(donation) {
+    // Implementa la lógica para guardar la donación en tu base de datos
   }
 }
 
