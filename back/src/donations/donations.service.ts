@@ -12,14 +12,14 @@ export class DonationsService {
     return console.log(donation);
   }
 
-  async webhook(xSignature: string, xRequestId: string,payment){
+  async webhook(xSignature: string, xRequestId: string, dataId: string){
     // Obtain the x-signature value from the header
     // const xSignature = Headers['x-signature']; // Assuming headers is an object containing request headers
     // const xRequestId = Headers['x-request-id']; // Assuming headers is an object containing request headers
 
     // Obtain Query params related to the request URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const dataID = urlParams.get('data.id');
+    // const urlParams = new URLSearchParams(window.location.search);
+    // const dataID = urlParams.get('data.id');
 
     // Separating the x-signature into parts
     const parts = xSignature.split(',');
@@ -47,7 +47,7 @@ export class DonationsService {
     const secret = process.env.WEBHOOK_SECRET_KEY;
 
     // Generate the manifest string
-    const manifest = `id:${dataID};request-id:${xRequestId};ts:${ts};`;
+    const manifest = `id:${dataId};request-id:${xRequestId};ts:${ts};`;
 
     // Create an HMAC signature
     const hmac = crypto.createHmac('sha256', secret);
