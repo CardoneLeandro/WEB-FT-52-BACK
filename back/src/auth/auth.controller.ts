@@ -9,6 +9,10 @@ import {
   UsePipes,
   UseInterceptors,
   UseGuards,
+  Res,
+  NotFoundException,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
@@ -18,12 +22,14 @@ import { Auth0LogInDto } from './dto/auth0-logIn.dto';
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
 import { addJWTInterceptor } from 'src/security/interceptors/addJWT.interceptor';
 import { RemovePropertiesInterceptor } from 'src/security/interceptors/remove-properties.interceptor';
-import { SignUpDto } from './dto/sungUp-user.dto';
+import { SignUpDto } from './dto/signUp-user.dto';
 import { response } from 'express';
 import { PasswordEncriptorInterceptor } from 'src/security/interceptors/password-encriptor.interceptor';
 import { CompleteRegisterAuth0Dto } from './dto/complete-register-auth0.dto';
 import { CompareAndRemovePasswordInterceptor } from 'src/security/interceptors/compare&remove-password.interceptor';
-
+import { ProviderAccountIdEncriptorInterceptor } from 'src/security/interceptors/providerAccID-encriptor.interceptor';
+import { StringToNumberInterceptor } from 'src/security/interceptors/string-toNumber.interceptor';
+import { status } from 'src/common/enum/status.enum';
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
@@ -59,9 +65,7 @@ export class AuthController {
       const { id, user } = loggedUser;
       return { creatorId: id, ...user };
     } catch (e) {
-      throw new BadRequestException({
-        'ERROR:': ` ESTE ES EL ERROR EN EL TESTEO${e.message}`,
-      });
+      throw new BadRequestException(e.message);
     }
   }
 
@@ -70,7 +74,11 @@ export class AuthController {
     summary:
       'Ruta para completar los datos del usuario una vez que se haya registrado con Google usando Auth0',
   })
-  @UseInterceptors(CompareAndRemovePasswordInterceptor)
+  @UseInterceptors(
+    CompareAndRemovePasswordInterceptor,
+    StringToNumberInterceptor,
+  ) //INTERCEPTOPS APLICADOS AL REQUEST
+  @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor) // INTERCEPTORS APLICADOS AL RESPONSE
   @UsePipes(new DTOValidationPipe())
   async completeRegister(@Body() confirmData: CompleteRegisterAuth0Dto) {
     try {
@@ -88,12 +96,14 @@ export class AuthController {
   })
   @UsePipes(new DTOValidationPipe())
   @UseGuards()
-  @UseInterceptors(PasswordEncriptorInterceptor)
+  @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
+  @UseInterceptors(CompareAndRemovePasswordInterceptor)
   async signupUser(@Body() signUpData: SignUpDto) {
     try {
-      const newUser = await this.authService.createNewUser(signUpData);
-      //response.status(200).json({ message: 'Login successful' });
-      return newUser;
+      const params = { status: status.PARTIALACTIVE, ...signUpData };
+      const newUser = await this.authService.createNewUser(params);
+      const { id, user } = newUser;
+      return { creatorId: id, ...user };
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -104,13 +114,21 @@ export class AuthController {
     summary:
       'Ruta para el LogIn usando los datos dado por el formulario de la aplicación',
   })
-  @UsePipes(new DTOValidationPipe())
   @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
-  async login(@Body() loginUserData: LoginUserDto) {
+  @UsePipes(new DTOValidationPipe())
+  async login(@Body() loginUserData: LoginUserDto): Promise<any> {
     try {
-      const loggedUser = await this.authService.loginUser(loginUserData);
-      const { id, user } = loggedUser;
-      return { creatorId: id, ...user };
+      console.log(
+        'entrada al controlador de login, datos de entrada',
+        loginUserData,
+      );
+
+      const logedUser = await this.authService.loginUser(loginUserData);
+      console.log(
+        'salida del controlador de login, resultado del llamado al servicio',
+        logedUser,
+      );
+      return logedUser;
     } catch (e) {
       throw new BadRequestException({ 'ERROR:': `${e.message}` });
     }

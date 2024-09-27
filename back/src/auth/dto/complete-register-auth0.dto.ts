@@ -1,5 +1,11 @@
+import {
+  IsEmail,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class CompleteRegisterAuth0Dto {
   @ApiProperty({
@@ -8,17 +14,20 @@ export class CompleteRegisterAuth0Dto {
     type: String,
   })
   @IsNotEmpty()
+  @IsString()
   @IsEmail()
   email: string;
 
   @ApiProperty({
-    description: 'Contraseña del usuario',
-    example: 'Password123*',
+    description: 'ID de la cuenta de Auth0',
+    example: '12345678901234567890',
     type: String,
   })
+  @IsString()
+  providerAccountId: string;
+
   @IsNotEmpty()
   @IsString()
-  @Length(8, 15)
   password: string;
 
   // @ApiProperty({
@@ -46,6 +55,6 @@ export class CompleteRegisterAuth0Dto {
     type: String,
   })
   @IsNotEmpty()
-  @IsString()
-  phone: string;
+  @IsNumber()
+  phone: number;
 }

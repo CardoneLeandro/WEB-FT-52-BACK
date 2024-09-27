@@ -51,18 +51,24 @@ export class EventsController {
   })
   async findAll(
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 9,
+    @Query('limit') limit: number = 5,
     @Query('sortBy') sortBy: string = 'createDate',
     @Query('order') order: 'ASC' | 'DESC' = 'DESC',
+    @Query('month') month: string = 'all',
+    @Query('year') year: number,
+    @Query('title') title: string = '',
   ) {
-    const { events, ...pageInfo } = await this.eventsService.findAll(
+    const eventResponse = await this.eventsService.findAll(
       page,
       limit,
       sortBy,
       order,
+      month,
+      year,
+      title,
     );
-    const response = { events, page: pageInfo };
-    return response;
+    console.log(eventResponse);
+    return eventResponse;
   }
 
   @Get('getone')
