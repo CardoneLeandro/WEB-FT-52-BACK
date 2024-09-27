@@ -44,12 +44,9 @@ export class AuthService {
   async logginWithAuth0(params) {
     const existingUser = await this.userRepo.findUserByEmail(params.email);
     if (!existingUser) {
-      const { providerAccountId, ...creationParams } = params;
-      const hashedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
       const newAuth0UserData = {
         status: status.PENDING,
-        providerAccountId: hashedProviderAccId,
-        ...creationParams,
+        ... params,
       };
       const newUser = await this.userService.createNewUser(newAuth0UserData);
       const newUserInformationTable = this.infoRepo.findOne({
@@ -77,9 +74,14 @@ export class AuthService {
       });
     }
 
+    if(existingUser.status === status.PENDING){
+      return await this.infoRepo.findOne({
+        where: { user: { id: existingUser.id } },
+        relations: ['user'],
+      });
+    }
     if (
-      existingUser.status === status.ACTIVE ||
-      existingUser.status === status.PENDING
+      existingUser.status === status.ACTIVE
     ) {
       if (
         (await encriptProviderAccIdCompare(
@@ -187,16 +189,20 @@ export class AuthService {
     if (incompleteUser.status !== status.PENDING) {
       return new NotFoundException('User register is allready Completed');
     }
-
-    if (
-      (await encriptProviderAccIdCompare(
-        incompleteUser,
-        params.providerAccountId,
-      )) === false
-    ) {
+    if(incompleteUser.providerAccountId !== params.providerAccountId) {
       throw new BadRequestException('Invalid credentials');
     }
+    // if (
+    //   (await encriptProviderAccIdCompare(
+    //     incompleteUser,
+    //     params.providerAccountId,
+    //   )) === false
+    // ) {
+    //   throw new BadRequestException('Invalid credentials');
+    // }
     const { providerAccountId, ...updateParams } = params;
+    const hashedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
+    updateParams.providerAccountId = hashedProviderAccId;
     const userData = { status: status.ACTIVE, ...updateParams };
     await this.userService.updateUserInformation(incompleteUser, userData);
     //! -----------------------------------

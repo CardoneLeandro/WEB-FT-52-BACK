@@ -13,22 +13,16 @@ export class addJWTInterceptor implements NestInterceptor {
   constructor(private readonly jwtSv: JsonWebTokenService) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const response = context.switchToHttp().getResponse();
 
     return next.handle().pipe(
       map(async (result) => {
         if (result && result.redirect === true) {
           return result;
         }
-
-        try {
-          const token = await this.jwtSv.generateJwt(result);
-          return { user: result, token };
-        } catch (error) {
-          throw new Error(
-            'An error has occurred during the creation of the token',
-          );
-        }
+    
+        const token = await this.jwtSv.generateJwt(result);
+        console.log('RESPUESTA DEL INTERCEPTOR', { user: result, token });
+        return { user: result, token };
       }),
     );
   }
