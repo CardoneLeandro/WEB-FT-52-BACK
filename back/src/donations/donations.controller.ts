@@ -1,14 +1,13 @@
 import {
   Controller,
   Post,
-  Body,
   Headers,
   Res,
+  Body,
 } from '@nestjs/common';
 import { DonationsService } from './donations.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { Payment } from 'mercadopago';
 
 @ApiTags('Donations')
 @Controller('donations')
@@ -22,8 +21,8 @@ export class DonationsController {
   }
 
   @Post('webhook')
-  async weebhookTest(req: Request, res: Response){
-    console.log(req)
+  async weebhookTest(@Body() payment,req: Request, res: Response){
+    console.log(payment)
     return Response.json({success: true})
   }
  }
