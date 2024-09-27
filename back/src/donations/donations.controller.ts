@@ -17,31 +17,9 @@ import { ApiTags } from '@nestjs/swagger';
 export class DonationsController {
   constructor(private readonly donationsService: DonationsService) {}
 
-  @Post()
-  create(@Body() createDonationDto: CreateDonationDto) {
-    return this.donationsService.create(createDonationDto);
-  }
-
   @Get()
-  findAll() {
-    return this.donationsService.findAll();
+  createDonation(donationData: CreateDonationDto) {
+    return this.donationsService.createDonation(donationData);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.donationsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateDonationDto: UpdateDonationDto,
-  ) {
-    return this.donationsService.update(+id, updateDonationDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.donationsService.remove(+id);
-  }
 }

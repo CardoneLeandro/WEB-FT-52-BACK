@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDonationDto } from './dto/create-donation.dto';
-import { UpdateDonationDto } from './dto/update-donation.dto';
+import { MercadoPagoConfig, Preference } from 'mercadopago';
 
+const client = new MercadoPagoConfig({ accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN });
 @Injectable()
 export class DonationsService {
-  create(createDonationDto: CreateDonationDto) {
-    return 'This action adds a new donation';
-  }
+  async createDonation(donationData: CreateDonationDto) {
+    const preference = await new Preference(client);
+    preference.create({
+      body: {
+        items: [
+          {
+            id: "1",
+            title: 'Donacion a Congregación Juvenil Peregrinos',
+            quantity: 1,
+            unit_price: donationData.amount
+          }],
+        }
+      })
+    .then(console.log)
+    .catch(console.log);
 
-  findAll() {
-    return `This action returns all donations`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} donation`;
-  }
-
-  update(id: number, updateDonationDto: UpdateDonationDto) {
-    return `This action updates a #${id} donation`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} donation`;
+    return preference;
   }
 }

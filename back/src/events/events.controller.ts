@@ -37,7 +37,6 @@ export class EventsController {
   @UsePipes(new DTOValidationPipe())
   async create(@Body() createEventDto: CreateEventDto) {
     try {
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
       return await this.eventsService.create(createEventDto);
     } catch (error) {
       throw new HttpException(error.message, 405);
