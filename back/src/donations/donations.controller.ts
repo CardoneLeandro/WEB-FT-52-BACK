@@ -22,9 +22,9 @@ export class DonationsController {
 
   @Post('webhook')
   async weebhookTest(req: Request, res: Response){
-    const body = await req.json().then((data) => data as {data: {id:string}});
-    console.log(body)
-    return res.status(200)
+    // const body = await req.json().then((data) => data as {data: {id:string}});
+    // console.log(body)
+    return Response.json({success: true})
   }
  }
 
