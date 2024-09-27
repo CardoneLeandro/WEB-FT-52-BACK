@@ -6,8 +6,7 @@ const client = new MercadoPagoConfig({ accessToken: process.env.MERCADOPAGO_ACCE
 @Injectable()
 export class DonationsService {
   async createDonation(donationData: CreateDonationDto) {
-    const preference = await new Preference(client);
-    preference.create({
+    const preference = await new Preference(client).create({
       body: {
         items: [
           {
@@ -18,9 +17,8 @@ export class DonationsService {
           }],
         }
       })
-    .then(console.log)
-    .catch(console.log);
-
-    return preference;
+    preference.sandbox_init_point
   }
 }
+
+
