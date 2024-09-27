@@ -109,7 +109,7 @@ export class AuthController {
     }
   }
 
-  @Get('login')
+  @Post('login')
   @ApiOperation({
     summary:
       'Ruta para el LogIn usando los datos dado por el formulario de la aplicación',
