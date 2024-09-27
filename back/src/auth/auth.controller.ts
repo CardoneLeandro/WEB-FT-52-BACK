@@ -18,7 +18,7 @@ import { Auth0LogInDto } from './dto/auth0-logIn.dto';
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
 import { addJWTInterceptor } from 'src/security/interceptors/addJWT.interceptor';
 import { RemovePropertiesInterceptor } from 'src/security/interceptors/remove-properties.interceptor';
-import { SingUpDto } from './dto/sungUp-user.dto';
+import { SignUpDto } from './dto/sungUp-user.dto';
 import { response } from 'express';
 import { PasswordEncriptorInterceptor } from 'src/security/interceptors/password-encriptor.interceptor';
 import { CompleteRegisterAuth0Dto } from './dto/complete-register-auth0.dto';
@@ -82,9 +82,9 @@ export class AuthController {
   @UsePipes(new DTOValidationPipe())
   @UseGuards()
   @UseInterceptors(PasswordEncriptorInterceptor)
-  async signupUser(@Body() singUpData: SingUpDto) {
+  async signupUser(@Body() signUpData: SignUpDto) {
     try {
-      const newUser = await this.authService.createNewUser(singUpData);
+      const newUser = await this.authService.createNewUser(signUpData);
       //response.status(200).json({ message: 'Login successful' });
       return newUser;
     } catch (e) {
