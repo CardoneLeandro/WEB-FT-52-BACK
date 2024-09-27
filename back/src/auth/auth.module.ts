@@ -21,7 +21,7 @@ import { MailerService } from 'src/mailer/mailer.service';
     UsersRepository,
     UserInformationRepository,
     JsonWebTokenService,
-    MailerService
+    MailerService,
   ],
   imports: [
     ConfigModule.forRoot({
