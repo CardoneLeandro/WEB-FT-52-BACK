@@ -60,9 +60,7 @@ export class AuthController {
       const { id, user } = loggedUser;
       return { creatorId: id, ...user };
     } catch (e) {
-      throw new BadRequestException({
-        'ERROR:': ` ESTE ES EL ERROR EN EL TESTEO${e.message}`,
-      });
+      throw new BadRequestException(e.message);
     }
   }
 
