@@ -87,9 +87,4 @@ export class EventsController {
     return this.eventsService.updateEvent(id, updateEventData);
   }
 
-  @Delete(':id')
-  @ApiOperation({ summary: 'Ruta caducada momentaneamente' })
-  remove(@Param('id') id: string) {
-    return this.eventsService.remove(+id);
-  }
 }

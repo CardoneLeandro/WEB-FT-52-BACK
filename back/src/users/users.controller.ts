@@ -19,12 +19,6 @@ import { status } from 'src/common/enum/status.enum';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  @ApiOperation({ summary: 'Ruta caducada momentaneamente' })
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.createNewUser(createUserDto);
-  }
-
   @Get()
   @ApiOperation({ summary: 'Ruta para obtener todos los usuarios. Por defecto se devuelve 1 página con 5 usuarios ordenados por fecha de actualización' })
   findAll(
@@ -43,9 +37,4 @@ export class UsersController {
     return this.usersService.findOne(+id);
   }
 
-  @Delete(':id')
-  @ApiOperation({ summary: 'Ruta caducada momentaneamente' })
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
-  }
 }

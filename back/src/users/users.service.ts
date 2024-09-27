@@ -79,7 +79,4 @@ export class UsersService {
     return await this.userRepo.findOneBy({ id: user.id });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
 }

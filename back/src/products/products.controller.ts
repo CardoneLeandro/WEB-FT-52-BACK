@@ -46,10 +46,4 @@ export class ProductsController {
   update(@Param('id') id: string, @Body() updateProductData: UpdateProductDto) {
     return this.productsService.updateProduct(id, updateProductData);
   }
-
-  @Delete(':id')
-  @ApiOperation({ summary: 'Ruta caducada momentaneamente' })
-  remove(@Param('id') id: string) {
-    return this.productsService.remove(+id);
-  }
 }

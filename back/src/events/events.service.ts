@@ -70,10 +70,6 @@ export class EventsService {
     return updatedEvent;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} event`;
-  }
-
   async highlight(id) {
     const event: Event | null = await this.eventRepo.findOneBy({ id });
     if (!event) {
