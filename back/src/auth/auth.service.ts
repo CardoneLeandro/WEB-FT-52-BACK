@@ -13,6 +13,7 @@ import { UserInformationRepository } from 'src/user-information/user-information
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import { status } from 'src/common/enum/status.enum';
 import { User } from 'src/users/entities/user.entity';
+import { MailerService } from 'src/mailer/mailer.service';
 import { encriptPasswordCompare } from 'src/common/utils/encript-passwordCompare.util';
 import { encriptProviderAccIdCompare } from 'src/common/utils/encript-providerAccIdCompare.util';
 import * as bcrypt from 'bcrypt';
@@ -23,6 +24,7 @@ export class AuthService {
     private readonly userRepo: UsersRepository,
     private readonly userService: UsersService,
     private readonly infoRepo: UserInformationRepository,
+    private readonly mailerService: MailerService,
   ) {}
 
   async superAdminSeeder() {
@@ -109,6 +111,10 @@ export class AuthService {
 
   async createNewUser(params) {
     const newUser = await this.userService.createNewUser(params);
+    await this.mailerService.sendEmailWelcome({
+      name: newUser.name,
+      email: newUser.email,
+    });
     const newUserInformationTable = this.infoRepo.findOne({
       where: { user: { id: newUser.id } },
       relations: ['user'],
@@ -189,6 +195,10 @@ export class AuthService {
     if (incompleteUser.status !== status.PENDING) {
       return new NotFoundException('User register is allready Completed');
     }
+    await this.mailerService.sendEmailWelcome({
+      name: incompleteUser.name,
+      email: incompleteUser.email,
+    });
     if(incompleteUser.providerAccountId !== params.providerAccountId) {
       throw new BadRequestException('Invalid credentials');
     }

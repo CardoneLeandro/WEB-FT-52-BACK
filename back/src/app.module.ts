@@ -19,6 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SeederModule } from './seeder/seeder.module';
 import { DataEntryInterceptor } from './security/interceptors/data-entry.interceptor';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     PaymentCredentialsModule,
     DonationsModule,
     SeederModule,
+    MailerModule
   ],
   controllers: [AppController],
   providers: [AppService],
