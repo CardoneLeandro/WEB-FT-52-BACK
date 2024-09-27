@@ -17,22 +17,6 @@ import { ApiTags } from '@nestjs/swagger';
 export class DonationsController {
   constructor(private readonly donationsService: DonationsService) {}
 
-  @Post('create')
-  createDonation(@Body() donationData) {
-    return this.donationsService.createDonation(donationData);
-  }
-
-  @Post('webhook')
-  async webhook(@Body() event) {
-    const eventData = event.body;
-    if (eventData.action === 'payment') {
-      const paymentData = eventData.data;
-      // Procesa la donación aquí
-      await this.donationsService.processDonation(paymentData);
-    }
-    return { message: 'Webhook recibido' };
-  }
-
   @Post('savedonations')
   uploadDonation(@Body() donation) {
     console.log(donation)
