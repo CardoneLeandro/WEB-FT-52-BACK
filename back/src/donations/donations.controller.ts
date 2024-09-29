@@ -24,19 +24,4 @@ export class DonationsController {
     console.log('-----------------> PAYMENT == ', payment)
     return Response.json({ success: true });
   }
-
-  @Get(':id')
-  async getPayment(@Param('id') id: string): Promise<any> {
-    try {
-      // Llama al servicio para obtener el pago por ID
-      const payment = await this.donationsService.getPaymentById(id);
-      return payment;
-    } catch (error) {
-      throw new HttpException(
-        { message: 'Error retrieving payment', error: error.message },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
-
 }
