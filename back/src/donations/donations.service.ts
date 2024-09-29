@@ -1,29 +1,24 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateDonationDto } from './dto/create-donation.dto';
-import { MercadoPagoConfig, Preference } from 'mercadopago';
+import {  Injectable } from '@nestjs/common';
+import { MercadoPagoConfig, Payment } from 'mercadopago';
 import * as crypto from 'crypto';
 
 @Injectable()
 export class DonationsService {
-  private client: any;
-
-  constructor() {
-    // Configura el cliente de MercadoPago con el token de acceso
-    this.client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN});
+  constructor() {   
   }
-
+  client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN});
   async getPaymentById(id: string): Promise<any> {
-    const payment = new this.client.payment();
     
     try {
       // Obtén el pago por ID
-      const response = await payment.get({ id });
+      const response = await new Payment(this.client).get({id});
       return response;
     } catch (error) {
       console.error('Error fetching payment:', error);
-      throw error;  // Puedes manejar el error de forma personalizada o propagarlo
+      throw error; 
     }
   }
+
 
   async webhook(xSignature: string, xRequestId: string, dataId: string) {
     // Obtain Query params related to the request URL
