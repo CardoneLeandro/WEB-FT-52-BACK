@@ -16,6 +16,7 @@ export class DonationsController {
 
   @Post('webhook')
   async weebhookTest(
+    @Body()payment,
     @Headers('x-signature') xSignature: string,
     @Headers('x-request-id') xRequestId: string,
     @Query() queryParams,
@@ -26,6 +27,7 @@ export class DonationsController {
     console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---> QueryParams: ',queryParams)
     console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---> dataIdController: ', dataId)
     this.donationsService.webhook(xSignature, xRequestId, dataId);
+    console.log('-----------------> PAYMENT == ', payment)
     return Response.json({ success: true });
   }
 }
