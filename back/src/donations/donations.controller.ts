@@ -22,7 +22,7 @@ export class DonationsController {
     req: Request,
     res: Response,
   ) {
-    const dataId = queryParams.dataID;
+    const dataId = queryParams.data.id;
     this.donationsService.webhook(xSignature, xRequestId, dataId);
     return Response.json({ success: true });
   }
