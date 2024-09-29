@@ -71,6 +71,7 @@ export class DonationsService {
     }
 
     const response = await new Payment(this.client).get({id: dataId});
+    console.log(response)
     return response
   }
 }
