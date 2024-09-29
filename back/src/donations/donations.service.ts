@@ -9,6 +9,19 @@ const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN}
 export class DonationsService {
   constructor() {   
   }
+  
+  async getPaymentById(id: string): Promise<any> {
+    
+    try {
+      // Obtén el pago por ID
+      const response = await new Payment(client).get({id});
+      return response;
+    } catch (error) {
+      console.error('Error fetching payment:', error);
+      throw error; 
+    }
+  }
+
 
   async webhook(xSignature: string, xRequestId: string, dataId: string) {
     // Obtain Query params related to the request URL
@@ -61,7 +74,7 @@ export class DonationsService {
     }
 
     const response = await new Payment(client).get({id: dataId});
-    console.log('Payment =================================> ',response)
+    console.log('PAYMENT -------------------------------->',response)
     return response
   }
 }
