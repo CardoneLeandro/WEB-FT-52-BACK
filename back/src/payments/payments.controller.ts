@@ -17,6 +17,13 @@ import { ApiTags } from '@nestjs/swagger';
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
+
+  @Post()
+  createDonation(){
+    
+  }
+
+
   @Post()
   create(@Body() createPaymentDto: CreatePaymentDto) {
     return this.paymentsService.create(createPaymentDto);
