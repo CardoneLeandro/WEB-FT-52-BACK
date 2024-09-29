@@ -2,16 +2,19 @@ import {  Injectable } from '@nestjs/common';
 import { MercadoPagoConfig, Payment } from 'mercadopago';
 import * as crypto from 'crypto';
 
+
+const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN});
+
 @Injectable()
 export class DonationsService {
   constructor() {   
   }
-  client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN});
+  
   async getPaymentById(id: string): Promise<any> {
     
     try {
       // Obtén el pago por ID
-      const response = await new Payment(this.client).get({id});
+      const response = await new Payment(client).get({id});
       return response;
     } catch (error) {
       console.error('Error fetching payment:', error);
@@ -70,7 +73,7 @@ export class DonationsService {
       console.log('HMAC verification failed');
     }
 
-    const response = await new Payment(this.client).get({id: dataId});
+    const response = await new Payment(client).get({id: dataId});
     console.log(response)
     return response
   }
