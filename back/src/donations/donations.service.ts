@@ -1,11 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateDonationDto } from './dto/create-donation.dto';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import * as crypto from 'crypto';
 
-const client = new MercadoPagoConfig({
-  accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
-});
+const mercadopago = require('mercadopago');
+mercadopago.configurations.setAccessToken(process.env.WEBHOOK_SECRET_KEY);
 @Injectable()
 export class DonationsService {
   async saveDonation(donation) {
@@ -62,4 +61,12 @@ export class DonationsService {
       console.log('HMAC verification failed');
     }
   }
-}
+
+  async notification({type, data}){
+    if(type !== 'payment'){
+      throw new BadRequestException('Operación inválida')
+    }
+    const payment = await mercadopago.payment.findById(data.id);
+    return payment
+    }
+  }

@@ -1,4 +1,4 @@
-import { Controller, Post, Headers, Res, Body, Query } from '@nestjs/common';
+import { Controller, Post, Headers, Res, Body, Query, BadRequestException } from '@nestjs/common';
 import { DonationsService } from './donations.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -26,8 +26,17 @@ export class DonationsController {
     const dataId = queryParams['data.id'];
     console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---> QueryParams: ',queryParams)
     console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---> dataIdController: ', dataId)
-    this.donationsService.webhook(xSignature, xRequestId, dataId);
+    await this.donationsService.webhook(xSignature, xRequestId, dataId);
     console.log('-----------------> PAYMENT == ', payment)
     return Response.json({ success: true });
+  }
+
+  @Post('notifications')
+  async webhookNotification(@Body()notification){
+    try {
+      return this.donationsService.notification(notification);
+    } catch (error) {
+      throw new BadRequestException('Mensajo di errato')
+    }
   }
 }
