@@ -1,4 +1,4 @@
-import { Controller, Post, Headers, Res, Body, Query, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Headers, Res, Body, Query, BadRequestException, HttpException, HttpStatus, Param, Get } from '@nestjs/common';
 import { DonationsService } from './donations.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -31,12 +31,18 @@ export class DonationsController {
     return Response.json({ success: true });
   }
 
-  @Post('notifications')
-  async webhookNotification(@Body()notification){
+  @Get(':id')
+  async getPayment(@Param('id') id: string): Promise<any> {
     try {
-      return this.donationsService.notification(notification);
+      // Llama al servicio para obtener el pago por ID
+      const payment = await this.donationsService.getPaymentById(id);
+      return payment;
     } catch (error) {
-      throw new BadRequestException('Mensajo di errato')
+      throw new HttpException(
+        { message: 'Error retrieving payment', error: error.message },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
+
 }

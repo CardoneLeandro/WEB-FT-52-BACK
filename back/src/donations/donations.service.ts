@@ -3,12 +3,26 @@ import { CreateDonationDto } from './dto/create-donation.dto';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import * as crypto from 'crypto';
 
-const mercadopago = require('mercadopago');
-mercadopago.configurations.setAccessToken(process.env.WEBHOOK_SECRET_KEY);
 @Injectable()
 export class DonationsService {
-  async saveDonation(donation) {
-    return console.log(donation);
+  private client: any;
+
+  constructor() {
+    // Configura el cliente de MercadoPago con el token de acceso
+    this.client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN});
+  }
+
+  async getPaymentById(id: string): Promise<any> {
+    const payment = new this.client.payment();
+    
+    try {
+      // Obtén el pago por ID
+      const response = await payment.get({ id });
+      return response;
+    } catch (error) {
+      console.error('Error fetching payment:', error);
+      throw error;  // Puedes manejar el error de forma personalizada o propagarlo
+    }
   }
 
   async webhook(xSignature: string, xRequestId: string, dataId: string) {
@@ -61,12 +75,4 @@ export class DonationsService {
       console.log('HMAC verification failed');
     }
   }
-
-  async notification({type, data}){
-    if(type !== 'payment'){
-      throw new BadRequestException('Operación inválida')
-    }
-    const payment = await mercadopago.payment.findById(data.id);
-    return payment
-    }
-  }
+}
