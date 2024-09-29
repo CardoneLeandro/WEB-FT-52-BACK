@@ -1,6 +1,5 @@
 export class CreateDonationDto {
-    
-    createdAt: Date
-    userEmail: string
-    amount: number
+  createdAt: Date;
+  userEmail: string;
+  amount: number;
 }

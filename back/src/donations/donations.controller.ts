@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Post,
-  Headers,
-  Res,
-  Body,
-  Query,
-} from '@nestjs/common';
+import { Controller, Post, Headers, Res, Body, Query } from '@nestjs/common';
 import { DonationsService } from './donations.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -17,14 +10,20 @@ export class DonationsController {
 
   // @Post('savedonations')
   // webhookDonation(@Headers('x-signature') xSignature: string, @Headers('x-request-id') xRequestId: string, @Res() res:Response){
-    // this.donationsService.webhook(xSignature, xRequestId);
+  // this.donationsService.webhook(xSignature, xRequestId);
   //   return res.status(200).send('Funcinó el webhook!')
   // }
 
   @Post('webhook')
-  async weebhookTest(@Headers('x-signature') xSignature: string, @Headers('x-request-id') xRequestId: string,@Headers('referrer') dataId: string, @Query() queryParams ,req: Request, res: Response){
+  async weebhookTest(
+    @Headers('x-signature') xSignature: string,
+    @Headers('x-request-id') xRequestId: string,
+    @Query() queryParams,
+    req: Request,
+    res: Response,
+  ) {
+    const dataId = queryParams.dataId;
     this.donationsService.webhook(xSignature, xRequestId, dataId);
-    return Response.json({success: true})
+    return Response.json({ success: true });
   }
- }
-
+}
