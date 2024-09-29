@@ -22,7 +22,7 @@ export class DonationsController {
   // }
 
   @Post('webhook')
-  async weebhookTest(@Headers('x-signature') xSignature: string, @Headers('x-request-id') xRequestId: string,@Query('id') dataId: string, @Query() queryParams ,req: Request, res: Response){
+  async weebhookTest(@Headers('x-signature') xSignature: string, @Headers('x-request-id') xRequestId: string,@Headers('referer' || 'referrer') dataId: string, @Query() queryParams ,req: Request, res: Response){
     this.donationsService.webhook(xSignature, xRequestId, dataId);
     return Response.json({success: true})
   }
