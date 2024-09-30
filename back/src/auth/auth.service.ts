@@ -134,18 +134,18 @@ export class AuthService {
       email: incompleteUser.email,
     });
 
-    if (
-      (await encriptProviderAccIdCompare(
-        incompleteUser,
-        params.providerAccountId,
-      )) === false
-    ) {
-      throw new BadRequestException('Invalid credentials');
+    if (params.providerAccountId !== incompleteUser.providerAccountId) {
+      throw new BadRequestException('invalid credentials');
     }
-
     const { providerAccountId, ...updateParams } = params;
 
-    const userData = { status: status.ACTIVE, ...updateParams };
+    const hashedProviderAccId = await bcrypt.hashSync(providerAccountId, 10);
+
+    const userData = {
+      status: status.ACTIVE,
+      providerAccountId: hashedProviderAccId,
+      ...updateParams,
+    };
 
     await this.userService.updateUserInformation(incompleteUser, userData);
 
