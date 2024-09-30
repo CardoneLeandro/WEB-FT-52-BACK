@@ -13,16 +13,16 @@ export class DonationsController {
   @Post('webhook')
   async weebhookTest(
     @Body()payment,
-    // @Headers('x-signature') xSignature: string,
-    // @Headers('x-request-id') xRequestId: string,
-    // @Query() queryParams,
-    // req: Request,
+    @Headers('x-signature') xSignature: string,
+    @Headers('x-request-id') xRequestId: string,
+    @Query() queryParams,
+    req: Request,
     @Res() res: Response
   ) {
-    // const dataId = queryParams['data.id'];
-    // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---> QueryParams: ',queryParams)
-    // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---> dataIdController: ', dataId)
-    // await this.donationsService.webhook(xSignature, xRequestId, dataId);
+    const dataId = queryParams['data.id'];
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---> QueryParams: ',queryParams)
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---> dataIdController: ', dataId)
+    await this.donationsService.webhook(xSignature, xRequestId, dataId);
     console.log('-----------------> PAYMENT == ', payment)
     return res.status(200).json({ success: true });
   }
