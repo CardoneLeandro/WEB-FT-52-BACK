@@ -73,8 +73,7 @@ export class DonationsService {
       console.log('HMAC verification failed');
     }
 
-    const response = await new Payment(client).get({id: dataId});
-    console.log('PAYMENT -------------------------------->',response)
-    return response
+    // const response = await new Payment(client).get({id: dataId});
+    // console.log('PAYMENT -------------------------------->',response)
   }
 }
