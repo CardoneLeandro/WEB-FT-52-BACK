@@ -3,6 +3,7 @@ import { DonationsService } from './donations.service';
 import { ApiTags } from '@nestjs/swagger';
 import { response } from 'express';
 
+
 @ApiTags('Donations')
 @Controller('donations')
 export class DonationsController {
@@ -10,33 +11,33 @@ export class DonationsController {
 
   @Post('webhook')
   async weebhookTest(
-    @Body()payment,
+    // @Body()payment,
     // @Headers('x-signature') xSignature: string,
     // @Headers('x-request-id') xRequestId: string,
     // @Query() queryParams,
     // req: Request,
-    res: Response,
+    // res: Response,
   ) {
     // const dataId = queryParams['data.id'];
     // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---> QueryParams: ',queryParams)
     // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---> dataIdController: ', dataId)
     // await this.donationsService.webhook(xSignature, xRequestId, dataId);
-    console.log('-----------------> PAYMENT == ', payment)
-    return response.json({success: true});
+    // console.log('-----------------> PAYMENT == ', payment)
+    return response.json({success: true})
   }
 
-  @Get(':id')
-  async getPayment(@Param('id') id: string): Promise<any> {
-    try {
-      // Llama al servicio para obtener el pago por ID
-      const payment = await this.donationsService.getPaymentById(id);
-      return payment;
-    } catch (error) {
-      throw new HttpException(
-        { message: 'Error retrieving payment', error: error.message },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
+  // @Get(':id')
+  // async getPayment(@Param('id') id: string): Promise<any> {
+  //   try {
+  //     // Llama al servicio para obtener el pago por ID
+  //     const payment = await this.donationsService.getPaymentById(id);
+  //     return payment;
+  //   } catch (error) {
+  //     throw new HttpException(
+  //       { message: 'Error retrieving payment', error: error.message },
+  //       HttpStatus.INTERNAL_SERVER_ERROR,
+  //     );
+  //   }
+  // }
 
 }
