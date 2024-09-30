@@ -6,40 +6,17 @@ import { Donation } from './entities/donation.entity';
 
 @Injectable()
 export class DonationsService {
-constructor(private readonly donationsRepo: DonationsRepository) {}
+  constructor(private readonly donationsRepo: DonationsRepository) {}
 
-  async createDonation({creator, title, amount}) {
-    const parseParams = {user: creator, title, amount}
+  async createDonation({ creator, title, amount }) {
+    const parseParams = { user: creator, title, amount };
     const newDonation = this.donationsRepo.create(parseParams);
     return await this.donationsRepo.save(newDonation);
   }
 
-  create(params){
-    return this.createDonation(params)
+  create(params) {
+    return this.createDonation(params);
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   findAll() {
     return `This action returns all donations`;

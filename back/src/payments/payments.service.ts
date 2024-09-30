@@ -13,22 +13,29 @@ import { UserInformationRepository } from 'src/user-information/user-information
 
 @Injectable()
 export class PaymentsService {
-  constructor (
+  constructor(
     private readonly paymentsRepo: PaymentsRepository,
     private readonly donationsSv: DonationsService,
     private readonly userInfoRepo: UserInformationRepository,
-    private readonly dSource: DataSource 
-  ){}
+    private readonly dSource: DataSource,
+  ) {}
 
   async newDonation(params) {
-    return await this.dSource.transaction(async (manager)=> {
-      const newDonation:Donation | null = await this.donationsSv.createDonation(params);
-      const parseParams = {donation:newDonation, user:params.creator, type: elementType.DONATION}
-      const newPayment = this.paymentsRepo.create({...parseParams});
+    return await this.dSource.transaction(async (manager) => {
+      const newDonation: Donation | null =
+        await this.donationsSv.createDonation(params);
+      const parseParams = {
+        donation: newDonation,
+        user: params.creator,
+        type: elementType.DONATION,
+      };
+      const newPayment = this.paymentsRepo.create({ ...parseParams });
       await this.paymentsRepo.savePayment(newPayment, manager);
-      return await this.userInfoRepo.findOne({where: {id: params.creator}, relations: ['donations']})
-    })
-
+      return await this.userInfoRepo.findOne({
+        where: { id: params.creator },
+        relations: ['donations'],
+      });
+    });
   }
 
   create(createPaymentDto) {

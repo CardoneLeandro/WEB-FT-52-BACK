@@ -10,7 +10,13 @@ import { UserInformationRepository } from 'src/user-information/user-information
 
 @Module({
   controllers: [PaymentsController],
-  providers: [PaymentsService, PaymentsRepository, DonationsService, DonationsRepository, UserInformationRepository],
+  providers: [
+    PaymentsService,
+    PaymentsRepository,
+    DonationsService,
+    DonationsRepository,
+    UserInformationRepository,
+  ],
   imports: [TypeOrmModule.forFeature([Payment])],
 })
 export class PaymentsModule {}

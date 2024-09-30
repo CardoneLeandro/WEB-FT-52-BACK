@@ -24,17 +24,16 @@ import { DonationFormaterInterceptor } from 'src/security/interceptors/donation-
 export class PaymentsController {
   constructor(
     private readonly paymentsService: PaymentsService,
-    private readonly donationsSv: DonationsService
+    private readonly donationsSv: DonationsService,
   ) {}
 
-@Post('pay-donations')
-@UseInterceptors(StringToNumberInterceptor)
-@UseInterceptors(DonationFormaterInterceptor)
-@UsePipes(new DTOValidationPipe())
-async payDonations(@Body() params:CreateDonationDto) {
-  return await this.paymentsService.newDonation(params)
-
-}
+  @Post('pay-donations')
+  @UseInterceptors(StringToNumberInterceptor)
+  @UseInterceptors(DonationFormaterInterceptor)
+  @UsePipes(new DTOValidationPipe())
+  async payDonations(@Body() params: CreateDonationDto) {
+    return await this.paymentsService.newDonation(params);
+  }
   @Post()
   create(@Body() createPaymentDto) {
     return this.paymentsService.create(createPaymentDto);

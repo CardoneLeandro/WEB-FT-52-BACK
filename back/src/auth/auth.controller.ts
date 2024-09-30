@@ -41,7 +41,6 @@ export class AuthController {
   async signup(@Body() auth0Data: Auth0LogInDto) {
     try {
       return await this.authService.logginWithAuth0(auth0Data);
-      
     } catch (e) {
       throw new BadRequestException(e.message);
     }

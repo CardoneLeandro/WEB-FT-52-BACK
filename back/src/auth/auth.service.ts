@@ -48,7 +48,7 @@ export class AuthService {
     });
     return userAdminTable.userInformation.id;
   }
-//________________________
+  //________________________
 
   async logginWithAuth0(params) {
     const existingUser = await this.userService.foundExistingUser(params);
@@ -87,16 +87,15 @@ export class AuthService {
   }
 
   async loginUser(params) {
-    const existingUser = await this.userService.foundExistingUser(
-      params.email)
+    const existingUser = await this.userService.foundExistingUser(params.email);
     if (!existingUser) {
       throw new NotFoundException('Invalid Credentials');
     }
-    
+
     if (existingUser.status === status.PENDING) {
-    return { redirect: true };
+      return { redirect: true };
     }
-    
+
     if (
       existingUser.status === status.ACTIVE ||
       existingUser.status === status.PARTIALACTIVE

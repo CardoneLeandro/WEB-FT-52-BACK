@@ -52,7 +52,8 @@ export class EventsRepository extends Repository<Event> {
   }
 
   async highlightEvent(id, value) {
-    return await this.update(id, { highlight: value });
+    await this.update(id, { highlight: value });
+    return await this.findOne({ where: { id } });
   }
 
   async updateEvent(id: string, updateEventData: UpdateEventDto) {

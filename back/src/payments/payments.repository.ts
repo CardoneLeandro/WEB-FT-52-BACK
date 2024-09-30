@@ -9,7 +9,7 @@ export class PaymentsRepository extends Repository<Payment> {
     super(Payment, dSource.getRepository(Payment).manager);
   }
 
-  async savePayment(payment: DeepPartial<Payment>, manager:EntityManager) {
+  async savePayment(payment: DeepPartial<Payment>, manager: EntityManager) {
     return await manager.save(payment);
   }
 }

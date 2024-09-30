@@ -17,11 +17,19 @@ export class Donation {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => UserInformation,(userInformation) => userInformation.donations)
+  @ManyToOne(
+    () => UserInformation,
+    (userInformation) => userInformation.donations,
+  )
   @JoinColumn()
   user: UserInformation;
 
-  @Column({ type: 'varchar', length: 100, nullable: true, default: 'Gracias por tu ayuda' })
+  @Column({
+    type: 'varchar',
+    length: 100,
+    nullable: true,
+    default: 'Gracias por tu ayuda',
+  })
   title: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

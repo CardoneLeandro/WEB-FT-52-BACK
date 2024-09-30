@@ -22,10 +22,9 @@ export class DataLogInterceptor implements NestInterceptor {
     const params = request.params;
     const query = request.query;
     const body = request.body;
-    
 
-    const refererUrl = headers['referer'] || headers['referrer'] || 'No disponible';
-
+    const refererUrl =
+      headers['referer'] || headers['referrer'] || 'No disponible';
 
     console.log('---- Datos de la Solicitud ----');
     console.log(`URL de Referencia: ${refererUrl}`);
@@ -37,7 +36,6 @@ export class DataLogInterceptor implements NestInterceptor {
     console.log('Body:', body);
     console.log('--------------------------------');
 
-
     return next.handle();
   }
 
@@ -46,13 +44,11 @@ export class DataLogInterceptor implements NestInterceptor {
   //     tap((response) => {
   //       const elapsedTime = Date.now() - startTime;
 
-
   //       const statusCode = context.switchToHttp().getResponse().statusCode;
   //       const responseHeaders = context
   //         .switchToHttp()
   //         .getResponse()
   //         .getHeaders();
-
 
   //       console.log('---- Datos de la Respuesta ----');
   //       console.log(`Código de Estado: ${statusCode}`);

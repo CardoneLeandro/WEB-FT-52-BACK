@@ -1,9 +1,9 @@
-import { UUID } from "crypto";
+import { UUID } from 'crypto';
 
 export class CreateDonationDto {
-    creator: UUID
+  creator: UUID;
 
-    title: string
+  title: string;
 
-    amount: number
+  amount: number;
 }

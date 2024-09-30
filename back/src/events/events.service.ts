@@ -81,7 +81,6 @@ export class EventsService {
     if (!event) {
       throw new BadRequestException(`Event not found`);
     }
-    await this.eventRepo.highlightEvent(id, !event.highlight);
-    return { highlight: !event.highlight, ...event };
+    return await this.eventRepo.highlightEvent(id, !event.highlight);
   }
 }

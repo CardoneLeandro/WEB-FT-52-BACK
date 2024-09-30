@@ -32,7 +32,7 @@ export class Payment {
   @Column({ type: 'enum', enum: status, default: status.ACTIVE })
   orderStatus: status;
 
-  @Column({ type: 'enum', enum: elementType ,nullable: false })
+  @Column({ type: 'enum', enum: elementType, nullable: false })
   type: elementType;
 
   @OneToOne(() => Order, (order) => order.paymentInformation)
@@ -41,5 +41,4 @@ export class Payment {
 
   @OneToOne(() => Donation, (donation) => donation.payment)
   donation: Donation;
-
 }
