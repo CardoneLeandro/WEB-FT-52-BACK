@@ -17,7 +17,7 @@ import { MailerService } from 'src/mailer/mailer.service';
     DonationsService,
     DonationsRepository,
     UserInformationRepository,
-    MailerService
+    MailerService,
   ],
   imports: [TypeOrmModule.forFeature([Payment])],
 })
