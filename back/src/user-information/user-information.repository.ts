@@ -26,4 +26,15 @@ export class UserInformationRepository extends Repository<UserInformation> {
     const { id, user, donations } = loggedUser;
     return { creatorId: id, ...user, donations };
   }
+
+  async findOneUser(id) {
+    const mData = this.manager.connection.getMetadata(UserInformation);
+    const allRelation = mData.relations.map(
+      (relation) => relation.propertyPath,
+    );
+    return await this.findOne({
+      where: { user: { id } },
+      relations: allRelation,
+    });
+  }
 }

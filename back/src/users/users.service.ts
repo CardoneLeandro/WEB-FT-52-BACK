@@ -94,6 +94,6 @@ export class UsersService {
     param: Partial<CompleteRegisterAuth0Dto>,
   ) {
     await this.userRepo.update(user.id, param);
-    return await this.userRepo.findOneBy({ id: user.id });
+    return;
   }
 }

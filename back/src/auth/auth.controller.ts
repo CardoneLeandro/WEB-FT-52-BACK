@@ -13,6 +13,7 @@ import {
   NotFoundException,
   HttpException,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
@@ -106,5 +107,10 @@ export class AuthController {
   })
   async ban(@Param('id') id: string) {
     return await this.authService.ban(id);
+  }
+
+  @Post('get/one/user')
+  async getUser(@Query('id') id: string) {
+    return await this.authService.getOne(id);
   }
 }
