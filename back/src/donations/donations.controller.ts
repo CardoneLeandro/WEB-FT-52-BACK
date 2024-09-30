@@ -22,7 +22,7 @@ export class DonationsController {
     console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---> dataIdController: ', dataId)
     await this.donationsService.webhook(xSignature, xRequestId, dataId);
     console.log('-----------------> PAYMENT == ', payment)
-    return Response.json({ success: true });
+    return res.status(200);
   }
 
   @Get(':id')
