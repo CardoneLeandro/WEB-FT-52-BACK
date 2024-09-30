@@ -48,12 +48,15 @@ import { MailerModule } from './mailer/mailer.module';
     MailerModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
+  providers: [AppService,{
+    provide: APP_INTERCEPTOR,
+    useClass: DataLogInterceptor,
+  }],
+})
+export class AppModule {}
+
+/*,
     {
       provide: APP_INTERCEPTOR,
       useClass: DataLogInterceptor,
-    },
-  ],
-})
-export class AppModule {}
+    }, */

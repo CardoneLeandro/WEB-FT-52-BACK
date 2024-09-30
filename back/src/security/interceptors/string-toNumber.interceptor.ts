@@ -20,6 +20,9 @@ export class StringToNumberInterceptor implements NestInterceptor {
     if (request.body && request.body.stock) {
       request.body.stock = Number(request.body.stock);
     }
+    if (request.body && request.body.amount) {
+      request.body.amount = Number(request.body.amount);
+    }
     return next.handle().pipe();
   }
 }

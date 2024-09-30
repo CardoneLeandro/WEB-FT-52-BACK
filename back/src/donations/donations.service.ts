@@ -1,12 +1,45 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDonationDto } from './dto/create-donation.dto';
 import { UpdateDonationDto } from './dto/update-donation.dto';
+import { DonationsRepository } from './donations.repository';
+import { Donation } from './entities/donation.entity';
 
 @Injectable()
 export class DonationsService {
-  create(createDonationDto: CreateDonationDto) {
-    return 'This action adds a new donation';
+constructor(private readonly donationsRepo: DonationsRepository) {}
+
+  async createDonation({creator, title, amount}) {
+    const parseParams = {user: creator, title, amount}
+    const newDonation = this.donationsRepo.create(parseParams);
+    return await this.donationsRepo.save(newDonation);
   }
+
+  create(params){
+    return this.createDonation(params)
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   findAll() {
     return `This action returns all donations`;

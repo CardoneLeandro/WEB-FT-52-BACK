@@ -32,24 +32,6 @@ import { status } from 'src/common/enum/status.enum';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  //! FLUJO DE CREACION USUARIO E INICIO DE SESION MEDIANTE AUTH0
-  //! cuando el usuario se CREA por auth0 inyectar en el payload el status pendign
-  //! retornar el satus si es pending para que el front redirecciones al formulario de completar la informacion
-  //! guardar el provideracountid como password para el inicio de sesion por auth0
-
-  //* cuando el usuario actualice su formulario, con el token siendo pending pasar a active
-
-  //auth0 => loading sesion => PETICION => "usuario" "pediging?" => formulario
-
-  //intenta iniciar sesion pero con el "password de google", al estar "pending" "enviar alerta de completar formulario"
-  // validacion en login por status, si es pending "redirigir al formulario"
-
-  // signup => ingresa el correo de google? => ya exite en base de datos
-
-  // comprobar si existe y estado. si es "pending" => redirigir al formulario
-
-  // token id
-
   @Post('auth0/signup')
   @ApiOperation({
     summary: 'Ruta para el SignUp con cuentas de Google usando Auth0',
@@ -58,9 +40,8 @@ export class AuthController {
   @UsePipes(new DTOValidationPipe())
   async signup(@Body() auth0Data: Auth0LogInDto) {
     try {
-      const loggedUser = await this.authService.logginWithAuth0(auth0Data);
-      const { id, user } = loggedUser;
-      return { creatorId: id, ...user };
+      return await this.authService.logginWithAuth0(auth0Data);
+      
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -98,9 +79,7 @@ export class AuthController {
   async signupUser(@Body() signUpData: SignUpDto) {
     try {
       const params = { status: status.PARTIALACTIVE, ...signUpData };
-      const newUser = await this.authService.createNewUser(params);
-      const { id, user } = newUser;
-      return { creatorId: id, ...user };
+      return await this.authService.createNewUser(params);
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -115,8 +94,7 @@ export class AuthController {
   @UsePipes(new DTOValidationPipe())
   async login(@Body() loginUserData: LoginUserDto): Promise<any> {
     try {
-      const logedUser = await this.authService.loginUser(loginUserData);
-      return logedUser;
+      return await this.authService.loginUser(loginUserData);
     } catch (e) {
       throw new BadRequestException({ 'ERROR:': `${e.message}` });
     }
@@ -131,13 +109,3 @@ export class AuthController {
     return await this.authService.ban(id);
   }
 }
-
-/* 
- if (
-        !user ||
-        (user && (await encriptPasswordCompare(user, loginUserData.password)) === false)
-      ) {
-        throw new BadRequestException('Invalid credentials');
-      } 
- 
-*/

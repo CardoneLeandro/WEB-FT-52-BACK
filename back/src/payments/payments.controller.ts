@@ -6,19 +6,37 @@ import {
   Patch,
   Param,
   Delete,
+  Headers,
+  UseInterceptors,
+  UsePipes,
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
-import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { DonationsService } from 'src/donations/donations.service';
+import { CreateDonationDto } from 'src/donations/dto/create-donation.dto';
+import { StringToNumberInterceptor } from 'src/security/interceptors/string-toNumber.interceptor';
+import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
+import { DonationFormaterInterceptor } from 'src/security/interceptors/donation-formater.interceptor';
 
 @ApiTags('WorkInProgress')
 @Controller('payments')
 export class PaymentsController {
-  constructor(private readonly paymentsService: PaymentsService) {}
+  constructor(
+    private readonly paymentsService: PaymentsService,
+    private readonly donationsSv: DonationsService
+  ) {}
 
+@Post('pay-donations')
+@UseInterceptors(StringToNumberInterceptor)
+@UseInterceptors(DonationFormaterInterceptor)
+@UsePipes(new DTOValidationPipe())
+async payDonations(@Body() params:CreateDonationDto) {
+  return await this.paymentsService.newDonation(params)
+
+}
   @Post()
-  create(@Body() createPaymentDto: CreatePaymentDto) {
+  create(@Body() createPaymentDto) {
     return this.paymentsService.create(createPaymentDto);
   }
 
