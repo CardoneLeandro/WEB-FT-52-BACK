@@ -43,7 +43,7 @@ export class UserInformation {
   @OneToMany(() => Payment, (payment) => payment.id)
   payments: Payment[];
 
-  @OneToMany(() => Donation, (donation) => donation.id)
+  @OneToMany(() => Donation, (donation) => donation.user)
   donations: Donation[];
 
   @OneToMany(

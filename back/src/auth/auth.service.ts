@@ -48,26 +48,17 @@ export class AuthService {
     });
     return userAdminTable.userInformation.id;
   }
+//________________________
 
   async logginWithAuth0(params) {
-    const existingUser = await this.userRepo.findUserByEmail(params.email);
-    if (!existingUser) {
-      const newAuth0UserData = {
+    const existingUser = await this.userService.foundExistingUser(params);
+    if (existingUser === null) {
+      const createUserData = {
         status: status.PENDING,
         ...params,
       };
-      const newUser = await this.userService.createNewUser(newAuth0UserData);
-      const newUserInformationTable = this.infoRepo.findOne({
-        where: { user: { id: newUser.id } },
-        relations: ['user'],
-      });
-      return newUserInformationTable;
-    }
-    if (
-      existingUser.status === status.BANNED ||
-      existingUser.status === status.INACTIVE
-    ) {
-      throw new NotFoundException('Access denied');
+      const newUser = await this.userService.createNewUser(createUserData);
+      return await this.infoRepo.loggedUser(newUser.id);
     }
 
     if (existingUser.status === status.PARTIALACTIVE) {
@@ -76,17 +67,11 @@ export class AuthService {
         status: status.ACTIVE,
         providerAccountId: hashedProviderAccId,
       });
-      return await this.infoRepo.findOne({
-        where: { user: { id: existingUser.id } },
-        relations: ['user'],
-      });
+      return await this.infoRepo.loggedUser(existingUser.id);
     }
 
     if (existingUser.status === status.PENDING) {
-      return await this.infoRepo.findOne({
-        where: { user: { id: existingUser.id } },
-        relations: ['user'],
-      });
+      return await this.infoRepo.loggedUser(existingUser.id);
     }
     if (existingUser.status === status.ACTIVE) {
       if (
@@ -97,52 +82,21 @@ export class AuthService {
       ) {
         throw new NotFoundException('Invalid Credentials');
       }
-      return await this.infoRepo.findOne({
-        where: { user: { id: existingUser.id } },
-        relations: ['user'],
-      });
+      return await this.infoRepo.loggedUser(existingUser.id);
     }
-  }
-
-  async NEEDREFACTORIZATION(params) {
-    const newUser = await this.userService.createNewUser(params);
-    const newUserInformationTable = this.infoRepo.findOne({
-      where: { user: { id: newUser.id } },
-      relations: ['user'],
-    });
-    return newUserInformationTable;
-  }
-
-  async createNewUser(params) {
-    const newUser = await this.userService.createNewUser(params);
-    await this.mailerService.sendEmailWelcome({
-      name: newUser.name,
-      email: newUser.email,
-    });
-    const newUserInformationTable = this.infoRepo.findOne({
-      where: { user: { id: newUser.id } },
-      relations: ['user'],
-    });
-    return newUserInformationTable;
   }
 
   async loginUser(params) {
-    const existingUser: User | null = await this.userRepo.findUserByEmail(
-      params.email,
-    );
+    const existingUser = await this.userService.foundExistingUser(
+      params.email)
     if (!existingUser) {
       throw new NotFoundException('Invalid Credentials');
     }
-    if (
-      existingUser.status === status.BANNED ||
-      existingUser.status === status.INACTIVE
-    ) {
-      throw new NotFoundException('Access denied');
-    }
+    
     if (existingUser.status === status.PENDING) {
-      //? Lanzar excepción para que el controlador pueda manejarla
-      return { redirect: true };
+    return { redirect: true };
     }
+    
     if (
       existingUser.status === status.ACTIVE ||
       existingUser.status === status.PARTIALACTIVE
@@ -153,12 +107,7 @@ export class AuthService {
         throw new NotFoundException('Invalid Credentials');
       }
 
-      const loggedUser = await this.infoRepo.findOne({
-        where: { user: { id: existingUser.id } },
-        relations: ['user'],
-      });
-      const { id, user } = loggedUser;
-      return { creatorId: id, ...user };
+      return await this.infoRepo.loggedUser(existingUser.id);
     }
   }
 
@@ -170,20 +119,8 @@ export class AuthService {
     return existingUser;
   }
 
-  async ban(id: string) {
-    const foundUser = await this.userRepo.findOne({ where: { id } });
-    if (!foundUser) return new NotFoundException('User not found');
-    if (foundUser.status === status.ACTIVE) {
-      await this.userRepo.update(id, { status: status.BANNED });
-    } else if (foundUser.status === status.BANNED) {
-      await this.userRepo.update(id, { status: status.ACTIVE });
-    }
-    const updatedUser = await this.userRepo.findOne({ where: { id } });
-    return updatedUser;
-  }
-
   async completeRegister(params) {
-    const incompleteUser: User | null = await this.userRepo.findOneBy({
+    const incompleteUser = await this.userRepo.findOneBy({
       email: params.email,
     });
     if (!incompleteUser) return new NotFoundException('User not found');
@@ -218,5 +155,30 @@ export class AuthService {
     const { id, user } = completeUser;
     return { creatorId: id, ...user };
     //! -----------------------------------
+  }
+
+  async createNewUser(params) {
+    const newUser = await this.userService.createNewUser(params);
+    await this.mailerService.sendEmailWelcome({
+      name: newUser.name,
+      email: newUser.email,
+    });
+    const newUserInformationTable = this.infoRepo.findOne({
+      where: { user: { id: newUser.id } },
+      relations: ['user'],
+    });
+    return newUserInformationTable;
+  }
+
+  async ban(id: string) {
+    const foundUser = await this.userRepo.findOne({ where: { id } });
+    if (!foundUser) return new NotFoundException('User not found');
+    if (foundUser.status === status.ACTIVE) {
+      await this.userRepo.update(id, { status: status.BANNED });
+    } else if (foundUser.status === status.BANNED) {
+      await this.userRepo.update(id, { status: status.ACTIVE });
+    }
+    const updatedUser = await this.userRepo.findOne({ where: { id } });
+    return updatedUser;
   }
 }

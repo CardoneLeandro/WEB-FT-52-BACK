@@ -73,9 +73,17 @@ export class EventsController {
 
   @Get('getone')
   @ApiOperation({ summary: 'Ruta para la obtención de un evento por su ID' })
-  async findOne(@Param('id') id: string) {
+
+
+
+  async findOne(@Query('id') id: string) {
     return await this.eventsService.findOne(id);
   }
+
+
+
+
+
 
   @Patch('highlight/:id')
   @ApiOperation({

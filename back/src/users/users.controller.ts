@@ -33,10 +33,4 @@ export class UsersController {
   ) {
     return this.usersService.findAll(page, limit, sortBy, order, stat);
   }
-
-  @Get(':id')
-  @ApiOperation({ summary: 'Ruta caducada momentaneamente' })
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
-  }
 }

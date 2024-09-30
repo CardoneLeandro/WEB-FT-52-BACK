@@ -22,9 +22,13 @@ export class DataLogInterceptor implements NestInterceptor {
     const params = request.params;
     const query = request.query;
     const body = request.body;
+    
 
-    // Loguear la información de la solicitud
+    const refererUrl = headers['referer'] || headers['referrer'] || 'No disponible';
+
+
     console.log('---- Datos de la Solicitud ----');
+    console.log(`URL de Referencia: ${refererUrl}`);
     console.log(`Método: ${method}`);
     console.log(`Ruta: ${url}`);
     console.log('Headers:', headers);
@@ -33,27 +37,30 @@ export class DataLogInterceptor implements NestInterceptor {
     console.log('Body:', body);
     console.log('--------------------------------');
 
-    // Continuar con el siguiente interceptor o el controlador
-    const startTime = Date.now();
-    return next.handle().pipe(
-      tap((response) => {
-        const elapsedTime = Date.now() - startTime;
 
-        // Datos de la respuesta
-        const statusCode = context.switchToHttp().getResponse().statusCode;
-        const responseHeaders = context
-          .switchToHttp()
-          .getResponse()
-          .getHeaders();
-
-        // Log de salida
-        console.log('---- Datos de la Respuesta ----');
-        console.log(`Código de Estado: ${statusCode}`);
-        console.log('Respuesta:', response);
-        console.log('Headers de Respuesta:', responseHeaders);
-        console.log(`Tiempo de Respuesta: ${elapsedTime} ms`);
-        console.log('--------------------------------');
-      }),
-    );
+    return next.handle();
   }
+
+  //   const startTime = Date.now();
+  //   return next.handle().pipe(
+  //     tap((response) => {
+  //       const elapsedTime = Date.now() - startTime;
+
+
+  //       const statusCode = context.switchToHttp().getResponse().statusCode;
+  //       const responseHeaders = context
+  //         .switchToHttp()
+  //         .getResponse()
+  //         .getHeaders();
+
+
+  //       console.log('---- Datos de la Respuesta ----');
+  //       console.log(`Código de Estado: ${statusCode}`);
+  //       console.log('Respuesta:', response);
+  //       console.log('Headers de Respuesta:', responseHeaders);
+  //       console.log(`Tiempo de Respuesta: ${elapsedTime} ms`);
+  //       console.log('--------------------------------');
+  //     }),
+  //   );
+  // }
 }
