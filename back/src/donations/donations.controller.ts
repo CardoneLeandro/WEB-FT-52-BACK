@@ -1,7 +1,8 @@
-import { Controller, Post, Headers, Res, Body, Query, BadRequestException, HttpException, HttpStatus, Param, Get, Response } from '@nestjs/common';
+import { Controller, Post, Headers, Res, Body, Query, BadRequestException, HttpException, HttpStatus, Param, Get } from '@nestjs/common';
 import { DonationsService } from './donations.service';
 import { ApiTags } from '@nestjs/swagger';
-import { response } from 'express';
+import { Response}  from 'express';
+
 
 
 @ApiTags('Donations')
@@ -16,14 +17,14 @@ export class DonationsController {
     // @Headers('x-request-id') xRequestId: string,
     // @Query() queryParams,
     // req: Request,
-    // res: Response,
+    @Res() res: Response
   ) {
     // const dataId = queryParams['data.id'];
     // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---> QueryParams: ',queryParams)
     // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---> dataIdController: ', dataId)
     // await this.donationsService.webhook(xSignature, xRequestId, dataId);
     // console.log('-----------------> PAYMENT == ', payment)
-    return response.json({success: true})
+    return res.status(200).json({ success: true });
   }
 
   // @Get(':id')
