@@ -25,8 +25,8 @@ export class DataLogInterceptor implements NestInterceptor {
 
     const refererUrl =
       headers['referer'] || headers['referrer'] || 'No disponible';
-
-    console.log('---- Datos de la Solicitud ----');
+    
+    console.log('==== Datos de la Solicitud ====');
     console.log(`URL de Referencia: ${refererUrl}`);
     console.log(`Método: ${method}`);
     console.log(`Ruta: ${url}`);
@@ -34,29 +34,30 @@ export class DataLogInterceptor implements NestInterceptor {
     console.log('Params:', params);
     console.log('Query:', query);
     console.log('Body:', body);
-    console.log('--------------------------------');
-
-    return next.handle();
-  }
-
-  //   const startTime = Date.now();
-  //   return next.handle().pipe(
-  //     tap((response) => {
-  //       const elapsedTime = Date.now() - startTime;
-
-  //       const statusCode = context.switchToHttp().getResponse().statusCode;
-  //       const responseHeaders = context
-  //         .switchToHttp()
-  //         .getResponse()
-  //         .getHeaders();
-
-  //       console.log('---- Datos de la Respuesta ----');
-  //       console.log(`Código de Estado: ${statusCode}`);
-  //       console.log('Respuesta:', response);
-  //       console.log('Headers de Respuesta:', responseHeaders);
-  //       console.log(`Tiempo de Respuesta: ${elapsedTime} ms`);
-  //       console.log('--------------------------------');
-  //     }),
-  //   );
+    console.log('===============================');
+    
+  //   return next.handle();
   // }
+
+    const startTime = Date.now();
+    return next.handle().pipe(
+      tap((response) => {
+        const elapsedTime = Date.now() - startTime;
+
+        const statusCode = context.switchToHttp().getResponse().statusCode;
+        const responseHeaders = context
+          .switchToHttp()
+          .getResponse()
+          .getHeaders();
+        console.log('===============================');
+        console.log('==== Datos de la Respuesta ====');
+        console.log(`Código de Estado: ${statusCode}`);
+        console.log('Respuesta:', response);
+        console.log('Headers de Respuesta:', responseHeaders);
+        console.log(`Tiempo de Respuesta: ${elapsedTime} ms`);
+        console.log('===============================');
+      }),
+    );
+  }
 }
+

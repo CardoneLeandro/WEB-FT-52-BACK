@@ -20,7 +20,7 @@ export class addJWTInterceptor implements NestInterceptor {
         }
 
         const token = await this.jwtSv.generateJwt(result);
-        console.log('respuesta del interceptor', { user: result, token });
+        // console.log('respuesta del interceptor', { user: result, token });
         return { user: result, token };
       }),
     );

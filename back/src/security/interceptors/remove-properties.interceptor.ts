@@ -15,7 +15,7 @@ export class RemovePropertiesInterceptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler<any>,
   ): Observable<any> | Promise<Observable<any>> {
-    console.log('REMOVE PROPERTIES INTERCEPTOR');
+    // console.log('REMOVE PROPERTIES INTERCEPTOR');
     return next.handle().pipe(
       map((data) => {
         if (data && data.email === null) {

@@ -13,7 +13,7 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos permitidos
     allowedHeaders: 'Content-Type,Authorization', // Encabezados permitidos
   });
-  app.use(loggerGlobal);
+  // app.use(loggerGlobal);
 
   const apiDocumentation = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('documentation', app, apiDocumentation);
