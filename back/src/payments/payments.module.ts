@@ -7,6 +7,7 @@ import { Payment } from './entities/payment.entity';
 import { DonationsService } from 'src/donations/donations.service';
 import { DonationsRepository } from 'src/donations/donations.repository';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
+import { MailerService } from 'src/mailer/mailer.service';
 
 @Module({
   controllers: [PaymentsController],
@@ -16,6 +17,7 @@ import { UserInformationRepository } from 'src/user-information/user-information
     DonationsService,
     DonationsRepository,
     UserInformationRepository,
+    MailerService
   ],
   imports: [TypeOrmModule.forFeature([Payment])],
 })

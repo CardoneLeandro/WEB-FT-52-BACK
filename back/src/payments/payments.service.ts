@@ -10,6 +10,7 @@ import { DonationsRepository } from 'src/donations/donations.repository';
 import { UsersRepository } from 'src/users/users.repository';
 import { userInfo } from 'os';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
+import { MailerService } from 'src/mailer/mailer.service';
 
 @Injectable()
 export class PaymentsService {
@@ -18,7 +19,8 @@ export class PaymentsService {
     private readonly donationsSv: DonationsService,
     private readonly userInfoRepo: UserInformationRepository,
     private readonly dSource: DataSource,
-  ) {}
+    private readonly mailerService: MailerService
+  ){}
 
   async newDonation(params) {
     return await this.dSource.transaction(async (manager) => {
@@ -31,6 +33,8 @@ export class PaymentsService {
       };
       const newPayment = this.paymentsRepo.create({ ...parseParams });
       await this.paymentsRepo.savePayment(newPayment, manager);
+      const user = await this.userInfoRepo.findOne({where: {id: params.creator}, relations: {user: true}})
+      await this.mailerService.sendEmailDonation({name: user.user.name, email: user.user.email, amount: newDonation.amount})
       return await this.userInfoRepo.findOne({
         where: { id: params.creator },
         relations: ['donations'],
