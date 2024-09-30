@@ -2,7 +2,6 @@ import { Comment } from 'src/comments/entities/comments.entity';
 import { Donation } from 'src/donations/entities/donation.entity';
 import { Event } from 'src/events/entity/events.entity';
 import { File } from 'src/files/entities/file.entity';
-// import { File } from 'src/files/entities/file.entity';
 import { Order } from 'src/orders/entities/order.entity';
 import { PaymentCredential } from 'src/payment-credentials/entities/payment-credential.entity';
 import { Payment } from 'src/payments/entities/payment.entity';
@@ -11,6 +10,7 @@ import { Product } from 'src/products/entity/products.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Entity,
+  JoinTable,
   ManyToMany,
   OneToMany,
   OneToOne,
@@ -34,13 +34,13 @@ export class UserInformation {
   @OneToMany(() => Comment, (comment) => comment.creator)
   comments: Comment[];
 
-  @OneToMany(() => Order, (order) => order.id)
+  @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
 
   @OneToMany(() => Product, (product) => product.creator)
   products: Product[];
 
-  @OneToMany(() => Payment, (payment) => payment.id)
+  @OneToMany(() => Payment, (payment) => payment.user)
   payments: Payment[];
 
   @OneToMany(() => Donation, (donation) => donation.user)
@@ -48,7 +48,7 @@ export class UserInformation {
 
   @OneToMany(
     () => PaymentCredential,
-    (paymentCredential) => paymentCredential.id,
+    (paymentCredential) => paymentCredential.userInformation,
   )
   paymentCredentials: PaymentCredential[];
 
@@ -56,5 +56,6 @@ export class UserInformation {
   files: File[];
 
   @ManyToMany(() => Event, (event) => event.assistants)
+  @JoinTable()
   assistantEvents: Event[];
 }
