@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "prebuild": "npm install",
     "go": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" && nest build && ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./config/typeorm.config.ts && nest start --watch",
     "build": "node node_modules/@nestjs/cli/bin/nest.js build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
