@@ -10,7 +10,7 @@
     "go": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" && nest build && ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./config/typeorm.config.ts && nest start --watch",
     "build": "node node_modules/@nestjs/cli/bin/nest.js build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "node dist/main.js",
+    "start": "node dist/src/main.js",
     "start:dev": "nest start --watch",
     "start:full": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" && nest build && nest start --watch",
     "start:debug": "nest start --debug --watch",
