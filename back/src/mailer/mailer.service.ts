@@ -38,10 +38,13 @@ export class MailerService {
         },
         to: {
           name: userDonationDto.name,
-          address: userDonationDto.email
+          address: userDonationDto.email,
         },
         subject: '!Gracias por tu donación!',
-        html: donationTemplate({name: userDonationDto.name, amount: userDonationDto.amount})
+        html: donationTemplate({
+          name: userDonationDto.name,
+          amount: userDonationDto.amount,
+        }),
       };
       await transporter.sendMail(mailOptions);
       return { status: 'success' };

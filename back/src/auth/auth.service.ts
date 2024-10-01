@@ -17,6 +17,7 @@ import { MailerService } from 'src/mailer/mailer.service';
 import { encriptPasswordCompare } from 'src/common/utils/encript-passwordCompare.util';
 import { encriptProviderAccIdCompare } from 'src/common/utils/encript-providerAccIdCompare.util';
 import * as bcrypt from 'bcrypt';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,7 @@ export class AuthService {
     private readonly userService: UsersService,
     private readonly infoRepo: UserInformationRepository,
     private readonly mailerService: MailerService,
+    private readonly dSource: DataSource,
   ) {}
 
   async superAdminSeeder() {
@@ -119,6 +121,7 @@ export class AuthService {
   }
 
   async completeRegister(params) {
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', params.providerAccountId);
     const incompleteUser = await this.userRepo.findOneBy({
       email: params.email,
     });
@@ -130,30 +133,23 @@ export class AuthService {
       name: incompleteUser.name,
       email: incompleteUser.email,
     });
-    if (incompleteUser.providerAccountId !== params.providerAccountId) {
-      throw new BadRequestException('Invalid credentials');
+
+    if (params.providerAccountId !== incompleteUser.providerAccountId) {
+      throw new BadRequestException('invalid credentials');
     }
-    // if (
-    //   (await encriptProviderAccIdCompare(
-    //     incompleteUser,
-    //     params.providerAccountId,
-    //   )) === false
-    // ) {
-    //   throw new BadRequestException('Invalid credentials');
-    // }
     const { providerAccountId, ...updateParams } = params;
-    const hashedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
-    updateParams.providerAccountId = hashedProviderAccId;
-    const userData = { status: status.ACTIVE, ...updateParams };
+
+    const hashedProviderAccId = await bcrypt.hashSync(providerAccountId, 10);
+
+    const userData = {
+      status: status.ACTIVE,
+      providerAccountId: hashedProviderAccId,
+      ...updateParams,
+    };
+
     await this.userService.updateUserInformation(incompleteUser, userData);
-    //! -----------------------------------
-    const completeUser = await this.infoRepo.findOne({
-      where: { user: { id: incompleteUser.id } },
-      relations: ['user'],
-    });
-    const { id, user } = completeUser;
-    return { creatorId: id, ...user };
-    //! -----------------------------------
+
+    return await this.infoRepo.loggedUser(params.id);
   }
 
   async createNewUser(params) {
@@ -179,5 +175,9 @@ export class AuthService {
     }
     const updatedUser = await this.userRepo.findOne({ where: { id } });
     return updatedUser;
+  }
+
+  async getOne(id) {
+    return await this.infoRepo.findOneUser(id);
   }
 }

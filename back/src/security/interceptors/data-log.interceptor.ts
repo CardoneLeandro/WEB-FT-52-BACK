@@ -34,9 +34,10 @@ export class DataLogInterceptor implements NestInterceptor {
     console.log('Params:', params);
     console.log('Query:', query);
     console.log('Body:', body);
-    console.log('================================');
-  //   return next.handle();
-  // }
+    console.log('===============================');
+
+    //   return next.handle();
+    // }
 
     const startTime = Date.now();
     return next.handle().pipe(
@@ -48,13 +49,14 @@ export class DataLogInterceptor implements NestInterceptor {
           .switchToHttp()
           .getResponse()
           .getHeaders();
-        console.log('================================');
+        console.log('===============================');
         console.log('==== Datos de la Respuesta ====');
         console.log(`Código de Estado: ${statusCode}`);
         console.log('Respuesta:', response);
+        console.log('Body', response.body);
         console.log('Headers de Respuesta:', responseHeaders);
         console.log(`Tiempo de Respuesta: ${elapsedTime} ms`);
-        console.log('================================');
+        console.log('===============================');
       }),
     );
   }
