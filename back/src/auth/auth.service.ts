@@ -89,7 +89,7 @@ export class AuthService {
   }
 
   async loginUser(params) {
-    const existingUser = await this.userService.foundExistingUser(params.email);
+    const existingUser = await this.userService.foundExistingUser(params);
     if (!existingUser) {
       throw new NotFoundException('Invalid Credentials');
     }
@@ -153,16 +153,17 @@ export class AuthService {
   }
 
   async createNewUser(params) {
+    const existingUser = await this.userService.foundExistingUser(params.email);
+    if (existingUser === null) {
+      throw new NotFoundException('Email already in use');
+    }
+
     const newUser = await this.userService.createNewUser(params);
     await this.mailerService.sendEmailWelcome({
       name: newUser.name,
       email: newUser.email,
     });
-    const newUserInformationTable = this.infoRepo.findOne({
-      where: { user: { id: newUser.id } },
-      relations: ['user'],
-    });
-    return newUserInformationTable;
+    return await this.infoRepo.loggedUser(newUser.id);
   }
 
   async ban(id: string) {
