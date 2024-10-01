@@ -55,9 +55,12 @@ export class AuthService {
   async logginWithAuth0(params) {
     const existingUser = await this.userService.foundExistingUser(params);
     if (existingUser === null) {
+      const {providerAccountId, ...rest} = params
+      const encriptedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
       const createUserData = {
         status: status.PENDING,
-        ...params,
+        providerAccountId: encriptedProviderAccId,
+        ...rest,
       };
       const newUser = await this.userService.createNewUser(createUserData);
       return await this.infoRepo.loggedUser(newUser.id);
@@ -73,6 +76,14 @@ export class AuthService {
     }
 
     if (existingUser.status === status.PENDING) {
+      if (
+        (await encriptProviderAccIdCompare(
+          existingUser,
+          params.providerAccountId,
+        )) === false
+      ) {
+        throw new NotFoundException('Invalid Credentials');}
+        
       return await this.infoRepo.loggedUser(existingUser.id);
     }
     if (existingUser.status === status.ACTIVE) {
