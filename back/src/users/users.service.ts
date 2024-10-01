@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
 import { User } from './entities/user.entity';
@@ -15,16 +15,19 @@ export class UsersService {
     private readonly userRepo: UsersRepository,
     private readonly userInfoservice: UserInformationService,
   ) {}
-  async createNewUser(createUserData): Promise<Partial<User>> {
+
+  //-------------------------------------------------------------------------------
+
+  async createNewUser(params): Promise<Partial<User>> {
     return await this.dsource.transaction(async (manager) => {
-      const createdUser = this.userRepo.createUser(createUserData);
-
+      const createdUser = this.userRepo.createUser(params);
       const savedUser = await this.userRepo.saveUser(createdUser);
-
       await this.userInfoservice.createUserInformationTable(savedUser, manager);
       return savedUser;
     });
   }
+
+  //-------------------------------------------------------------------------------
 
   async findAll(
     page: number,
@@ -67,19 +70,30 @@ export class UsersService {
       nextPage,
     };
   }
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+
+  //-------------------------------------------------------------------------------
+  // solo returna al usuario si no existe, o si su estado es cualquiera excepto BANNED o INACTIVE, en cuyo caso lanza una excepcion
+  async foundExistingUser(params): Promise<User | null> {
+    const existingUser = await this.userRepo.findUserByEmail(params.email);
+    if (!existingUser) {
+      return null;
+    }
+    if (
+      (existingUser && existingUser.status === status.BANNED) ||
+      existingUser.status === status.INACTIVE
+    ) {
+      throw new NotFoundException('Access denied');
+    }
+    return existingUser;
   }
+
+  //-------------------------------------------------------------------------------
 
   async updateUserInformation(
     user: User,
     param: Partial<CompleteRegisterAuth0Dto>,
   ) {
     await this.userRepo.update(user.id, param);
-    return await this.userRepo.findOneBy({ id: user.id });
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    return;
   }
 }

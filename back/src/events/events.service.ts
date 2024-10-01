@@ -76,16 +76,11 @@ export class EventsService {
     return updatedEvent;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} event`;
-  }
-
   async highlight(id) {
     const event: Event | null = await this.eventRepo.findOneBy({ id });
     if (!event) {
       throw new BadRequestException(`Event not found`);
     }
-    await this.eventRepo.highlightEvent(id, !event.highlight);
-    return { highlight: !event.highlight, ...event };
+    return await this.eventRepo.highlightEvent(id, !event.highlight);
   }
 }

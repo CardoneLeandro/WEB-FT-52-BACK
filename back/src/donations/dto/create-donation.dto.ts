@@ -1,5 +1,9 @@
+import { UUID } from 'crypto';
+
 export class CreateDonationDto {
-  createdAt: Date;
-  userEmail: string;
+  creator: UUID;
+
+  title: string;
+
   amount: number;
 }

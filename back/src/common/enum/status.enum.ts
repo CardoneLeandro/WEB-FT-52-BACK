@@ -1,6 +1,7 @@
 export enum status {
-  PENDING = 'pending',
   ACTIVE = 'active',
+  PARTIALACTIVE = 'partialactive',
+  PENDING = 'pending',
   BANNED = 'banned',
   INACTIVE = 'inactive',
 }

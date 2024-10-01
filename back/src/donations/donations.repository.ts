@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Donation } from './entities/donation.entity';
 import { DataSource, Repository } from 'typeorm';
 

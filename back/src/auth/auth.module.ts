@@ -10,6 +10,7 @@ import { JsonWebTokenService } from './jsonWebToken/jsonWebToken.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import jwtConfig from 'config/jwt.config';
+import { MailerService } from 'src/mailer/mailer.service';
 
 @Module({
   controllers: [AuthController],
@@ -20,6 +21,7 @@ import jwtConfig from 'config/jwt.config';
     UsersRepository,
     UserInformationRepository,
     JsonWebTokenService,
+    MailerService,
   ],
   imports: [
     ConfigModule.forRoot({

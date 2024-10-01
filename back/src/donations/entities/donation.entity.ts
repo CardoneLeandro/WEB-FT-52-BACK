@@ -1,10 +1,12 @@
 import { status } from 'src/common/enum/status.enum';
+import { Payment } from 'src/payments/entities/payment.entity';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -22,7 +24,15 @@ export class Donation {
   @JoinColumn()
   user: UserInformation;
 
-  @Column({ type: 'date', nullable: false })
+  @Column({
+    type: 'varchar',
+    length: 100,
+    nullable: true,
+    default: 'Gracias por tu ayuda',
+  })
+  title: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   date: Date;
 
   @Column({ type: 'enum', enum: status, default: status.ACTIVE })
@@ -30,4 +40,8 @@ export class Donation {
 
   @Column({ type: 'integer', nullable: false })
   amount: number;
+
+  @OneToOne(() => Payment, (payment) => payment.donation)
+  @JoinColumn({ name: 'payments_id' })
+  payment: Payment;
 }

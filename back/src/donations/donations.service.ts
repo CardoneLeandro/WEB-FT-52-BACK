@@ -4,10 +4,21 @@ import * as crypto from 'crypto';
 
 
 const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN});
+import { DonationsRepository } from './donations.repository';
+import { Donation } from './entities/donation.entity';
 
 @Injectable()
 export class DonationsService {
-  constructor() {   
+  constructor(private readonly donationsRepo: DonationsRepository) {}
+
+  async createDonation({ creator, title, amount }) {
+    const parseParams = { user: creator, title, amount };
+    const newDonation = this.donationsRepo.create(parseParams);
+    return await this.donationsRepo.save(newDonation);
+  }
+
+  create(params) {
+    return this.createDonation(params);
   }
   
   async getPaymentById(id: string): Promise<any> {

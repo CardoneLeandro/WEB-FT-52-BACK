@@ -4,7 +4,6 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { swaggerConfig } from 'config/swagger.config';
 import { config as dotenvConfig } from 'dotenv';
 import { loggerGlobal } from './security/middlewares/logger.middleware';
-import { DataEntryInterceptor } from './security/interceptors/data-entry.interceptor';
 dotenvConfig({ path: './.env' });
 
 async function bootstrap() {
@@ -14,7 +13,8 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos permitidos
     allowedHeaders: 'Content-Type,Authorization', // Encabezados permitidos
   });
-  app.use(loggerGlobal);
+
+  //app.use(loggerGlobal);
 
   const apiDocumentation = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('documentation', app, apiDocumentation);

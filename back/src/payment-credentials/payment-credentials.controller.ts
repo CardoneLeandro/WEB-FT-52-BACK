@@ -12,7 +12,7 @@ import { CreatePaymentCredentialDto } from './dto/create-payment-credential.dto'
 import { UpdatePaymentCredentialDto } from './dto/update-payment-credential.dto';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Payment-credentials')
+@ApiTags('WorkInProgress')
 @Controller('payment-credentials')
 export class PaymentCredentialsController {
   constructor(
