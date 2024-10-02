@@ -11,6 +11,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { EventAssistants } from './event-assistants.entity';
 
 @Entity({
   name: 'event',
@@ -56,10 +57,12 @@ export class Event {
   @OneToMany(() => Comment, (comment) => comment.event)
   comments: Comment[];
 
-  @ManyToMany(
-    () => UserInformation,
-    (userInformation) => userInformation.assistantEvents,
-  )
-  @JoinColumn()
-  assistants: UserInformation[];
+  @OneToMany(() => EventAssistants, (eventAssistants) => eventAssistants.event)
+  assistants: EventAssistants[];
+
+  // @ManyToMany(
+  //   () => UserInformation,
+  //   (userInformation) => userInformation.assistantEvents,
+  // )
+  // assistants: UserInformation[];
 }

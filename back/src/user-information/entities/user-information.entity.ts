@@ -1,5 +1,6 @@
 import { Comment } from 'src/comments/entities/comments.entity';
 import { Donation } from 'src/donations/entities/donation.entity';
+import { EventAssistants } from 'src/events/entity/event-assistants.entity';
 import { Event } from 'src/events/entity/events.entity';
 import { File } from 'src/files/entities/file.entity';
 import { Order } from 'src/orders/entities/order.entity';
@@ -10,6 +11,7 @@ import { Product } from 'src/products/entity/products.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   OneToMany,
@@ -55,7 +57,10 @@ export class UserInformation {
   @ManyToMany(() => File, (file) => file.creator)
   files: File[];
 
-  @ManyToMany(() => Event, (event) => event.assistants)
-  @JoinTable()
-  assistantEvents: Event[];
+  @OneToMany(() => EventAssistants, (eventAssistants) => eventAssistants.user)
+  assistantEvents: EventAssistants[];
+
+  // @ManyToMany(() => Event, (event) => event.assistants)
+  // @JoinTable()
+  // assistantEvents: Event[];
 }
