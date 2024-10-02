@@ -111,4 +111,9 @@ export class AuthController {
   async getUser(@Query('id') id: string) {
     return await this.authService.getOne(id);
   }
+
+  // @Post('users/role/administrator')
+  // async makeAdmin(@Query('id') id: string) {
+  //   return await this.authService.makeAdmin(id);
+  // }
 }

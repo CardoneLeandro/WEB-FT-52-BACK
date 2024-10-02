@@ -73,7 +73,7 @@ export class UsersService {
 
   //-------------------------------------------------------------------------------
   // solo returna al usuario si no existe, o si su estado es cualquiera excepto BANNED o INACTIVE, en cuyo caso lanza una excepcion
-  async foundExistingUser({email}): Promise<User | null> {
+  async foundExistingUser({ email }): Promise<User | null> {
     const existingUser = await this.userRepo.findUserByEmail(email);
     if (!existingUser) {
       return null;
