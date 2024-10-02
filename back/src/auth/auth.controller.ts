@@ -13,6 +13,7 @@ import {
   NotFoundException,
   HttpException,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
@@ -61,7 +62,7 @@ export class AuthController {
     try {
       return await this.authService.completeRegister(confirmData);
     } catch (e) {
-      throw new BadRequestException({ 'ERROR:': `${e.message}` });
+      throw new BadRequestException(e.message);
     }
   }
 
@@ -95,7 +96,7 @@ export class AuthController {
     try {
       return await this.authService.loginUser(loginUserData);
     } catch (e) {
-      throw new BadRequestException({ 'ERROR:': `${e.message}` });
+      throw new BadRequestException(e.message);
     }
   }
 
@@ -106,5 +107,10 @@ export class AuthController {
   })
   async ban(@Param('id') id: string) {
     return await this.authService.ban(id);
+  }
+
+  @Post('get/one/user')
+  async getUser(@Query('id') id: string) {
+    return await this.authService.getOne(id);
   }
 }

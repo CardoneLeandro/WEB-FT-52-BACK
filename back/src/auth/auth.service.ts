@@ -17,6 +17,7 @@ import { MailerService } from 'src/mailer/mailer.service';
 import { encriptPasswordCompare } from 'src/common/utils/encript-passwordCompare.util';
 import { encriptProviderAccIdCompare } from 'src/common/utils/encript-providerAccIdCompare.util';
 import * as bcrypt from 'bcrypt';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,7 @@ export class AuthService {
     private readonly userService: UsersService,
     private readonly infoRepo: UserInformationRepository,
     private readonly mailerService: MailerService,
+    private readonly dSource: DataSource,
   ) {}
 
   async superAdminSeeder() {
@@ -53,9 +55,12 @@ export class AuthService {
   async logginWithAuth0(params) {
     const existingUser = await this.userService.foundExistingUser(params);
     if (existingUser === null) {
+      const {providerAccountId, ...rest} = params
+      const encriptedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
       const createUserData = {
         status: status.PENDING,
-        ...params,
+        providerAccountId: encriptedProviderAccId,
+        ...rest,
       };
       const newUser = await this.userService.createNewUser(createUserData);
       return await this.infoRepo.loggedUser(newUser.id);
@@ -66,11 +71,20 @@ export class AuthService {
       await this.userRepo.update(existingUser.id, {
         status: status.ACTIVE,
         providerAccountId: hashedProviderAccId,
+        image: params.image,
       });
       return await this.infoRepo.loggedUser(existingUser.id);
     }
 
     if (existingUser.status === status.PENDING) {
+      if (
+        (await encriptProviderAccIdCompare(
+          existingUser,
+          params.providerAccountId,
+        )) === false
+      ) {
+        throw new NotFoundException('Invalid Credentials');}
+        
       return await this.infoRepo.loggedUser(existingUser.id);
     }
     if (existingUser.status === status.ACTIVE) {
@@ -87,7 +101,7 @@ export class AuthService {
   }
 
   async loginUser(params) {
-    const existingUser = await this.userService.foundExistingUser(params.email);
+    const existingUser = await this.userService.foundExistingUser(params);
     if (!existingUser) {
       throw new NotFoundException('Invalid Credentials');
     }
@@ -119,6 +133,7 @@ export class AuthService {
   }
 
   async completeRegister(params) {
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', params.providerAccountId);
     const incompleteUser = await this.userRepo.findOneBy({
       email: params.email,
     });
@@ -130,43 +145,37 @@ export class AuthService {
       name: incompleteUser.name,
       email: incompleteUser.email,
     });
-    if (incompleteUser.providerAccountId !== params.providerAccountId) {
-      throw new BadRequestException('Invalid credentials');
+
+    if (params.providerAccountId !== incompleteUser.providerAccountId) {
+      throw new BadRequestException('invalid credentials');
     }
-    // if (
-    //   (await encriptProviderAccIdCompare(
-    //     incompleteUser,
-    //     params.providerAccountId,
-    //   )) === false
-    // ) {
-    //   throw new BadRequestException('Invalid credentials');
-    // }
     const { providerAccountId, ...updateParams } = params;
-    const hashedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
-    updateParams.providerAccountId = hashedProviderAccId;
-    const userData = { status: status.ACTIVE, ...updateParams };
+
+    const hashedProviderAccId = await bcrypt.hashSync(providerAccountId, 10);
+
+    const userData = {
+      status: status.ACTIVE,
+      providerAccountId: hashedProviderAccId,
+      ...updateParams,
+    };
+
     await this.userService.updateUserInformation(incompleteUser, userData);
-    //! -----------------------------------
-    const completeUser = await this.infoRepo.findOne({
-      where: { user: { id: incompleteUser.id } },
-      relations: ['user'],
-    });
-    const { id, user } = completeUser;
-    return { creatorId: id, ...user };
-    //! -----------------------------------
+
+    return await this.infoRepo.loggedUser(params.id);
   }
 
   async createNewUser(params) {
+    const existingUser = await this.userService.foundExistingUser(params.email);
+    if (existingUser === null) {
+      throw new NotFoundException('Email already in use');
+    }
+
     const newUser = await this.userService.createNewUser(params);
     await this.mailerService.sendEmailWelcome({
       name: newUser.name,
       email: newUser.email,
     });
-    const newUserInformationTable = this.infoRepo.findOne({
-      where: { user: { id: newUser.id } },
-      relations: ['user'],
-    });
-    return newUserInformationTable;
+    return await this.infoRepo.loggedUser(newUser.id);
   }
 
   async ban(id: string) {
@@ -179,5 +188,9 @@ export class AuthService {
     }
     const updatedUser = await this.userRepo.findOne({ where: { id } });
     return updatedUser;
+  }
+
+  async getOne(id) {
+    return await this.infoRepo.findOneUser(id);
   }
 }

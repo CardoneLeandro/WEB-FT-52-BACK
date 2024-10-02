@@ -21,9 +21,20 @@ export class UserInformationRepository extends Repository<UserInformation> {
   async loggedUser(params) {
     const loggedUser = await this.findOne({
       where: { user: { id: params } },
-      relations: { user: true, donations: true },
+      relations: { user: true, donations: true, events: true },
     });
-    const { id, user, donations } = loggedUser;
-    return { creatorId: id, ...user, donations };
+    const { id, user, donations, events } = loggedUser;
+    return { creatorId: id, ...user, donations, events };
+  }
+
+  async findOneUser(id) {
+    const mData = this.manager.connection.getMetadata(UserInformation);
+    const allRelation = mData.relations.map(
+      (relation) => relation.propertyPath,
+    );
+    return await this.findOne({
+      where: { user: { id } },
+      relations: allRelation,
+    });
   }
 }

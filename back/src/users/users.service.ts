@@ -73,8 +73,8 @@ export class UsersService {
 
   //-------------------------------------------------------------------------------
   // solo returna al usuario si no existe, o si su estado es cualquiera excepto BANNED o INACTIVE, en cuyo caso lanza una excepcion
-  async foundExistingUser(params): Promise<User | null> {
-    const existingUser = await this.userRepo.findUserByEmail(params.email);
+  async foundExistingUser({email}): Promise<User | null> {
+    const existingUser = await this.userRepo.findUserByEmail(email);
     if (!existingUser) {
       return null;
     }
@@ -94,6 +94,6 @@ export class UsersService {
     param: Partial<CompleteRegisterAuth0Dto>,
   ) {
     await this.userRepo.update(user.id, param);
-    return await this.userRepo.findOneBy({ id: user.id });
+    return;
   }
 }

@@ -25,7 +25,7 @@ export class DataLogInterceptor implements NestInterceptor {
 
     const refererUrl =
       headers['referer'] || headers['referrer'] || 'No disponible';
-      
+
     console.log('==== Datos de la Solicitud ====');
     console.log(`URL de Referencia: ${refererUrl}`);
     console.log(`Método: ${method}`);
@@ -35,10 +35,10 @@ export class DataLogInterceptor implements NestInterceptor {
     console.log('Query:', query);
     console.log('Body:', body);
     console.log('===============================');
-      
+
     //   return next.handle();
     // }
-      
+
     const startTime = Date.now();
     return next.handle().pipe(
       tap((response) => {
@@ -53,6 +53,7 @@ export class DataLogInterceptor implements NestInterceptor {
         console.log('==== Datos de la Respuesta ====');
         console.log(`Código de Estado: ${statusCode}`);
         console.log('Respuesta:', response);
+        console.log('Body', response.body);
         console.log('Headers de Respuesta:', responseHeaders);
         console.log(`Tiempo de Respuesta: ${elapsedTime} ms`);
         console.log('===============================');
