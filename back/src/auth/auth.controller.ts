@@ -96,7 +96,7 @@ export class AuthController {
     try {
       return await this.authService.loginUser(loginUserData);
     } catch (e) {
-      throw new BadRequestException({ 'ERROR:': `${e.message}` });
+      throw new BadRequestException(e.message);
     }
   }
 
