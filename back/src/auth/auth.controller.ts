@@ -66,8 +66,6 @@ export class AuthController {
     }
   }
 
-  //! FLUJO DE CREACION USUARIO E INICIO DE SESION MEDIANTE EL FORMULARIO DEL CLIENTE
-
   @Post('signup')
   @ApiOperation({
     summary: 'Ruta para el SignUp usando el formulario dado por la aplicación',
