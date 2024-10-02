@@ -17,14 +17,14 @@ export class EventAssistants {
   @Column({ type: 'enum', enum: status, default: status.ACTIVE })
   status: status;
 
-  @ManyToOne(
-    () => UserInformation,
-    (userInformation) => userInformation.assistantEvents,
-  )
+  @Column({ type: 'uuid', nullable: false })
+  eventId: string;
+
+  @ManyToOne(() => UserInformation, (userInformation) => userInformation.assistantEvents)
   @JoinColumn()
   user: UserInformation;
 
   @ManyToOne(() => Event, (event) => event.assistants)
   @JoinColumn()
-  event: Event;
+  event: Event;  
 }

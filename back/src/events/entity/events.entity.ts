@@ -1,12 +1,10 @@
 import { Comment } from 'src/comments/entities/comments.entity';
 import { status } from 'src/common/enum/status.enum';
-import { OrderDetail } from 'src/order-details/entities/order-detail.entity';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import {
   Column,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -59,10 +57,4 @@ export class Event {
 
   @OneToMany(() => EventAssistants, (eventAssistants) => eventAssistants.event)
   assistants: EventAssistants[];
-
-  // @ManyToMany(
-  //   () => UserInformation,
-  //   (userInformation) => userInformation.assistantEvents,
-  // )
-  // assistants: UserInformation[];
 }

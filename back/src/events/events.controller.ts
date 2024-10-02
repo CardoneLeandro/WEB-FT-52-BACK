@@ -5,23 +5,19 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   Query,
   HttpException,
   UsePipes,
-  ParseUUIDPipe,
-  UseGuards,
   UseInterceptors,
+  BadRequestException,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
-import { UUID } from 'crypto';
 import { IsUUIDPipe } from 'src/common/pipes/isUUID.pipe';
-import { ExistingEventGuard } from 'src/security/guards/existing-event.guard';
-import { EventsRepository } from './events.repository';
 import { ParseEventDataInterceptor } from 'src/security/interceptors/parse-event-data.interceptor';
 
 @ApiTags('Events')
@@ -29,7 +25,6 @@ import { ParseEventDataInterceptor } from 'src/security/interceptors/parse-event
 export class EventsController {
   constructor(
     private readonly eventsService: EventsService,
-    private readonly eventRepo: EventsRepository,
   ) {}
 
   @Post()
@@ -71,10 +66,19 @@ export class EventsController {
     return eventResponse;
   }
 
-  @Get('getone')
+  @Get('getone/:id')
   @ApiOperation({ summary: 'Ruta para la obtención de un evento por su ID' })
   async findOne(@Query('id') id: string) {
     return await this.eventsService.findOne(id);
+  }
+
+  @Post('updateattendance/:id')
+  async updateAttendanceStatus(@Param('id', ParseUUIDPipe) id: string, @Body() user: any) {
+    try {
+      return await this.eventsService.updateAttendanceStatus({eventId: id, ...user});
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   @Patch('highlight/:id')
