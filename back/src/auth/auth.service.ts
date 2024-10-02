@@ -55,7 +55,8 @@ export class AuthService {
   async logginWithAuth0(params) {
     const existingUser = await this.userService.foundExistingUser(params);
     if (existingUser === null) {
-      const {providerAccountId, ...rest} = params
+      console.log('ENTRAMOS EN EL PROCESO DE CREACION DE NUEVO USUARIO');
+      const { providerAccountId, ...rest } = params;
       const encriptedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
       const createUserData = {
         status: status.PENDING,
@@ -76,18 +77,11 @@ export class AuthService {
       return await this.infoRepo.loggedUser(existingUser.id);
     }
 
-    if (existingUser.status === status.PENDING) {
-      if (
-        (await encriptProviderAccIdCompare(
-          existingUser,
-          params.providerAccountId,
-        )) === false
-      ) {
-        throw new NotFoundException('Invalid Credentials');}
-        
-      return await this.infoRepo.loggedUser(existingUser.id);
-    }
-    if (existingUser.status === status.ACTIVE) {
+    if (
+      existingUser.status === status.PENDING ||
+      existingUser.status === status.ACTIVE
+    ) {
+      console.log('CONDICIONAL DE LOGIN, STATUS PENDING OR ACTIVE');
       if (
         (await encriptProviderAccIdCompare(
           existingUser,
@@ -96,6 +90,7 @@ export class AuthService {
       ) {
         throw new NotFoundException('Invalid Credentials');
       }
+      console.log('COMPROBACION EXITOSA DEL HASH DE PROVIDER ACCOUNT ID');
       return await this.infoRepo.loggedUser(existingUser.id);
     }
   }
@@ -146,16 +141,18 @@ export class AuthService {
       email: incompleteUser.email,
     });
 
-    if (params.providerAccountId !== incompleteUser.providerAccountId) {
-      throw new BadRequestException('invalid credentials');
+    if (
+      (await encriptProviderAccIdCompare(
+        incompleteUser,
+        params.providerAccountId,
+      )) === false
+    ) {
+      throw new NotFoundException('Invalid Credentials');
     }
-    const { providerAccountId, ...updateParams } = params;
-
-    const hashedProviderAccId = await bcrypt.hashSync(providerAccountId, 10);
+    const { providerAccountId, email, ...updateParams } = params;
 
     const userData = {
       status: status.ACTIVE,
-      providerAccountId: hashedProviderAccId,
       ...updateParams,
     };
 

@@ -17,7 +17,10 @@ export class EventAssistants {
   @Column({ type: 'enum', enum: status, default: status.ACTIVE })
   status: status;
 
-  @ManyToOne(() => UserInformation, (userInformation) => userInformation.assistantEvents)
+  @ManyToOne(
+    () => UserInformation,
+    (userInformation) => userInformation.assistantEvents,
+  )
   @JoinColumn()
   user: UserInformation;
 

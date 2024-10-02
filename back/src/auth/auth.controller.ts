@@ -66,8 +66,6 @@ export class AuthController {
     }
   }
 
-  //! FLUJO DE CREACION USUARIO E INICIO DE SESION MEDIANTE EL FORMULARIO DEL CLIENTE
-
   @Post('signup')
   @ApiOperation({
     summary: 'Ruta para el SignUp usando el formulario dado por la aplicación',
@@ -113,4 +111,9 @@ export class AuthController {
   async getUser(@Query('id') id: string) {
     return await this.authService.getOne(id);
   }
+
+  // @Post('users/role/administrator')
+  // async makeAdmin(@Query('id') id: string) {
+  //   return await this.authService.makeAdmin(id);
+  // }
 }
