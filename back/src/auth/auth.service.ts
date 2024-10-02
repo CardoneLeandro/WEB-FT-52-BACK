@@ -71,6 +71,7 @@ export class AuthService {
       await this.userRepo.update(existingUser.id, {
         status: status.ACTIVE,
         providerAccountId: hashedProviderAccId,
+        image: existingUser.image,
       });
       return await this.infoRepo.loggedUser(existingUser.id);
     }
