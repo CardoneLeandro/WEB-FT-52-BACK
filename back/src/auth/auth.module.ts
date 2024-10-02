@@ -11,6 +11,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import jwtConfig from 'config/jwt.config';
 import { MailerService } from 'src/mailer/mailer.service';
+import { EventsService } from 'src/events/events.service';
+import { EventsRepository } from 'src/events/events.repository';
+import { EventAssistantsRepository } from 'src/events/event-assistants.repository';
 
 @Module({
   controllers: [AuthController],
@@ -22,6 +25,9 @@ import { MailerService } from 'src/mailer/mailer.service';
     UserInformationRepository,
     JsonWebTokenService,
     MailerService,
+    EventsService,
+    EventsRepository,
+    EventAssistantsRepository,
   ],
   imports: [
     ConfigModule.forRoot({
