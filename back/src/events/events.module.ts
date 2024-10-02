@@ -11,7 +11,13 @@ import { EventAssistants } from './entity/event-assistants.entity';
 
 @Module({
   controllers: [EventsController],
-  providers: [EventsService, EventsRepository, UserInformationRepository, EventAssistantsRepository, MailerService],
+  providers: [
+    EventsService,
+    EventsRepository,
+    UserInformationRepository,
+    EventAssistantsRepository,
+    MailerService,
+  ],
   imports: [TypeOrmModule.forFeature([Event, EventAssistants])],
 })
 export class EventsModule {}

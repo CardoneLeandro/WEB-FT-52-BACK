@@ -23,9 +23,7 @@ import { ParseEventDataInterceptor } from 'src/security/interceptors/parse-event
 @ApiTags('Events')
 @Controller('events')
 export class EventsController {
-  constructor(
-    private readonly eventsService: EventsService,
-  ) {}
+  constructor(private readonly eventsService: EventsService) {}
 
   @Post()
   @ApiOperation({ summary: 'Ruta para la creación de eventos' })
@@ -73,9 +71,15 @@ export class EventsController {
   }
 
   @Post('updateattendance/:id')
-  async updateAttendanceStatus(@Param('id', ParseUUIDPipe) id: string, @Body() user: any) {
+  async updateAttendanceStatus(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() user: any,
+  ) {
     try {
-      return await this.eventsService.updateAttendanceStatus({eventId: id, ...user});
+      return await this.eventsService.updateAttendanceStatus({
+        eventId: id,
+        ...user,
+      });
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -92,17 +96,5 @@ export class EventsController {
     } catch (error) {
       throw new HttpException(error.message, 405);
     }
-  }
-
-  @Patch(':id')
-  @ApiOperation({
-    summary:
-      'Ruta para la actualización de eventos. Se debe enviar el ID del evento a querer editar por @Params y los campos a modificar por @Body',
-  })
-  updateEvent(
-    @Param('id') id: string,
-    @Body() updateEventData: UpdateEventDto,
-  ) {
-    return this.eventsService.updateEvent(id, updateEventData);
   }
 }

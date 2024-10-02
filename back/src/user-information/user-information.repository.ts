@@ -22,11 +22,24 @@ export class UserInformationRepository extends Repository<UserInformation> {
   async loggedUser(params) {
     const loggedUser = await this.findOne({
       where: { user: { id: params } },
-      relations: { user: true, donations: true, events: true, assistantEvents: true }
+      relations: {
+        user: true,
+        donations: true,
+        events: true,
+        assistantEvents: true,
+      },
     });
     const { id, user, donations, events, assistantEvents } = loggedUser;
-    const assistantsConfirmet = assistantEvents.filter((assistant) => assistant.status === status.ACTIVE)
-    return { creatorId: id, ...user, donations, events, assistantEvents: assistantsConfirmet};
+    const assistantsConfirmet = assistantEvents.filter(
+      (assistant) => assistant.status === status.ACTIVE,
+    );
+    return {
+      creatorId: id,
+      ...user,
+      donations,
+      events,
+      assistantEvents: assistantsConfirmet,
+    };
   }
 
   async findOneUser(id) {
