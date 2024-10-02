@@ -6,7 +6,7 @@ const eventSeeder = [
     eventDate: '2024-12-24',
     eventLocation: 'Teatro Central',
     price: 1500,
-    stock: 50,
+    stock: 0,
     images: [
       'https://img.freepik.com/foto-gratis/gente-tiro-medio-cantando-juntos_23-2149535685.jpg?t=st=1727361921~exp=1727365521~hmac=63e2f1c5913d923ed75f503c4a3b99d96658e748a882a1ce0e9763fbad7402c3&w=1380',
     ],

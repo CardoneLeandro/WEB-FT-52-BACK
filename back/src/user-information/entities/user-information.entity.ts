@@ -59,8 +59,4 @@ export class UserInformation {
 
   @OneToMany(() => EventAssistants, (eventAssistants) => eventAssistants.user)
   assistantEvents: EventAssistants[];
-
-  // @ManyToMany(() => Event, (event) => event.assistants)
-  // @JoinTable()
-  // assistantEvents: Event[];
 }
