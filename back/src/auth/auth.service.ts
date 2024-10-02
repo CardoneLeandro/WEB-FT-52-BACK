@@ -180,16 +180,24 @@ export class AuthService {
 
   async ban(id: string) {
     const foundUser = await this.userRepo.findOne({ where: { id } });
-    if (!foundUser) return new NotFoundException('User not found');
-    if (foundUser.status === status.ACTIVE) {
-      await this.userRepo.update(id, { status: status.BANNED });
-    } else if (foundUser.status === status.BANNED) {
-      await this.userRepo.update(id, { status: status.ACTIVE });
+    if (!foundUser)  throw new NotFoundException('User not found');
+    if (foundUser.status === status.ACTIVE || 
+      foundUser.status === status.PENDING || 
+      foundUser.status === status.PARTIALACTIVE) {
+    await this.userRepo.update(id, { status: status.BANNED });}
+
+    else if (foundUser.status === status.BANNED) {
+      if (!foundUser.password) {
+        await this.userRepo.update(id, { status: status.PENDING });
+      } else if (!foundUser.providerAccountId){
+      await this.userRepo.update(id,{status: status.PARTIALACTIVE})
+      } else if (foundUser.password){
+      await this.userRepo.update(id,{status: status.ACTIVE})
+      }
     }
     const updatedUser = await this.userRepo.findOne({ where: { id } });
     return updatedUser;
   }
-
   async getOne(id) {
     return await this.infoRepo.findOneUser(id);
   }
