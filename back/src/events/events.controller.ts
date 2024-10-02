@@ -12,6 +12,7 @@ import {
   ParseUUIDPipe,
   UseGuards,
   UseInterceptors,
+  NotFoundException,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -67,7 +68,6 @@ export class EventsController {
       year,
       title,
     );
-    console.log(eventResponse);
     return eventResponse;
   }
 
@@ -75,6 +75,18 @@ export class EventsController {
   @ApiOperation({ summary: 'Ruta para la obtención de un evento por su ID' })
   async findOne(@Query('id') id: string) {
     return await this.eventsService.findOne(id);
+  }
+
+  @Get('highlightactive')
+  @ApiOperation({ summary: 'Ruta para la obtención de los eventos cuyo Highlight sea True y su status sea ACTIVE'})
+  async findHighlightActive(){
+    return await this.eventsService.findHighlightActive();
+  }
+
+  @Get('highlightinactive')
+  @ApiOperation({ summary: 'Ruta para la obtención de los eventos cuyo Highlight sea True y su status sea INACTIVE'})
+  async findHighlightInactive(){
+    return await this.eventsService.findHighlightInactive();
   }
 
   @Patch('highlight/:id')
@@ -88,6 +100,16 @@ export class EventsController {
     } catch (error) {
       throw new HttpException(error.message, 405);
     }
+  }
+
+  @Patch()
+  @ApiOperation({ summary: 'Ruta para cambiar el estado del evento de ACTIVE a INACTIVE y viceversa'})
+  async switcheventstatus(@Param('id', new IsUUIDPipe()) id: string){
+    try {
+      return await this.eventsService.switcheventstatus(id)
+    } catch (error) {
+      throw new NotFoundException('Could not find the event')
+    } 
   }
 
   @Patch(':id')

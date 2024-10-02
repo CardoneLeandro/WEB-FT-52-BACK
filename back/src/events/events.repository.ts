@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Event } from './entity/events.entity';
 import { DataSource, Repository } from 'typeorm';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { status } from 'src/common/enum/status.enum';
 
 @Injectable()
 export class EventsRepository extends Repository<Event> {
@@ -18,6 +19,7 @@ export class EventsRepository extends Repository<Event> {
     title: string,
   ) {
     const query = this.createQueryBuilder('event')
+      .where('event.status = :status', { status: 'ACTIVE' })
       .skip((page - 1) * limit)
       .take(limit)
       .orderBy(`event.${sortBy}`, order);
@@ -37,6 +39,24 @@ export class EventsRepository extends Repository<Event> {
     }
 
     return await query.getManyAndCount();
+  }
+
+  async findHighlightActive() {
+    return await this.find({
+      where: {
+        status: status.ACTIVE,
+        highlight: true,
+      },
+    });
+  }
+
+  async findHighlightInactive() {
+    return await this.find({
+      where: {
+        status: status.INACTIVE,
+        highlight: true,
+      },
+    });
   }
 
   createEvent(event) {
@@ -59,5 +79,9 @@ export class EventsRepository extends Repository<Event> {
   async updateEvent(id: string, updateEventData: UpdateEventDto) {
     await this.update(id, updateEventData);
     return await this.findOne({ where: { id } });
+  }
+
+  async switcheventstatus(id){
+    
   }
 }
