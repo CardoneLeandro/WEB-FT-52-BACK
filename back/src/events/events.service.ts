@@ -66,6 +66,14 @@ export class EventsService {
     };
   }
 
+  async findHighlightActive(){
+    return this.eventRepo.findHighlightActive()
+  }
+
+  async findHighlightInactive(){
+    return this.eventRepo.findHighlightInactive()
+  }
+
   findOne(id) {
     const event = this.eventRepo.findOneBy({ id });
     if (!event) {
@@ -134,5 +142,13 @@ export class EventsService {
       throw new BadRequestException(`Event not found`);
     }
     return await this.eventRepo.highlightEvent(id, !event.highlight);
+  }
+
+  async switchEventStatus(id: string){
+    const event: Event | null = await this.eventRepo.findOneBy({ id });
+    if (!event) {
+      throw new BadRequestException(`Event not found`);
+    }
+    return await this.eventRepo.switchEventStatus(id, event);
   }
 }
