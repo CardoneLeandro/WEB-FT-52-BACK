@@ -100,19 +100,6 @@ export class EventsController {
     }
   }
 
-  @Patch('highlight/:id')
-  @ApiOperation({
-    summary:
-      'Ruta para cambiar el estado "highlight" de un evento. Pasa de false a true o viceversa',
-  })
-  async highlights(@Param('id', new IsUUIDPipe()) id: string) {
-    try {
-      return await this.eventsService.highlight(id);
-    } catch (error) {
-      throw new HttpException(error.message, 405);
-    }
-  }
-
   @Post('switcheventstatus/:id')
   @ApiOperation({ summary: 'Ruta para cambiar el estado del evento de ACTIVE a INACTIVE y viceversa'})
   async switchEventStatus(@Param('id', new IsUUIDPipe()) id: string){
