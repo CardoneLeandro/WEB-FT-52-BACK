@@ -71,6 +71,7 @@ export class EventsController {
   }
 
   @Post('updateattendance/:id')
+  @ApiOperation({ summary: 'Ruta para actualizar el estado de asistencia de un usuario a un evento' })
   async updateAttendanceStatus(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() user: any,
