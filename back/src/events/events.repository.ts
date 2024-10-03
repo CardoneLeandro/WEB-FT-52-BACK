@@ -81,7 +81,14 @@ export class EventsRepository extends Repository<Event> {
     return await this.findOne({ where: { id } });
   }
 
-  async switcheventstatus(id){
-    
+  async switchEventStatus(id: string, updatedEvent){
+    if (updatedEvent.status === status.ACTIVE){
+      updatedEvent.status = status.INACTIVE
+       await this.update(id, updatedEvent)
+    } else if (updatedEvent.status === status.INACTIVE){
+      updatedEvent.status = status.ACTIVE
+       await this.update(id, updatedEvent)
+    }
+    return await this.findOneBy({id})
   }
 }

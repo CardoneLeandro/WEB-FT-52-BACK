@@ -113,11 +113,11 @@ export class EventsController {
     }
   }
 
-  @Patch()
+  @Post('switcheventstatus/:id')
   @ApiOperation({ summary: 'Ruta para cambiar el estado del evento de ACTIVE a INACTIVE y viceversa'})
-  async switcheventstatus(@Param('id', new IsUUIDPipe()) id: string){
+  async switchEventStatus(@Param('id', new IsUUIDPipe()) id: string){
     try {
-      return await this.eventsService.switcheventstatus(id)
+      return await this.eventsService.switchEventStatus(id)
     } catch (error) {
       throw new NotFoundException('Could not find the event')
     } 

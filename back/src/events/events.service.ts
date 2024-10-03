@@ -144,7 +144,11 @@ export class EventsService {
     return await this.eventRepo.highlightEvent(id, !event.highlight);
   }
 
-  async switcheventstatus(id){
-    return await this.eventRepo.switcheventstatus(id)
+  async switchEventStatus(id: string){
+    const event: Event | null = await this.eventRepo.findOneBy({ id });
+    if (!event) {
+      throw new BadRequestException(`Event not found`);
+    }
+    return await this.eventRepo.switchEventStatus(id, event);
   }
 }
