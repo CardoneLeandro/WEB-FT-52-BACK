@@ -111,7 +111,12 @@ export class AuthController {
       'Ruta para banear usuarios. Pasa su estado "Active" a "Banned" y viceversa',
   })
   async ban(@Param('id') id: string) {
-    return await this.authService.ban(id);
+    try {
+      return await this.authService.ban(id);
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+    
   }
 
   @Get('get/one/user')
@@ -119,13 +124,22 @@ export class AuthController {
     summary: 'Ruta para obetener los datos de un usuario en específico por el ID',
   })
   async getUser(@Query('id') id: string) {
-    return await this.authService.getOne(id);
+    try {
+      return await this.authService.getOne(id);
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+    
   }
 
-  // @Post('users/role/administrator')
-  // async makeAdmin(@Query('id') id: string) {
-  //   return await this.authService.makeAdmin(id);
-  // }
+  @Post('users/role/administrator')
+  async makeAdmin(@Query('id') id: string) {
+    try {
+      return await this.authService.roleChangeAdminUser(id);
+    } catch (error) {
+      error.message = 'This action is not allowed';
+    }
+  }
 
   @Post('events/edit/:id')
   @UsePipes(new DTOValidationPipe())
@@ -136,6 +150,20 @@ export class AuthController {
   async editEvent(@Param('id') id: UUID, @Body() params: UpdateEventDto) {
     try {
       return await this.eventService.updateEvent(id, params);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  @Post('events/highlight/:id')
+  @UsePipes(new DTOValidationPipe())
+  @ApiOperation({
+    summary:
+      'Ruta para el Highlight de eventos. Se debe enviar el ID del evento a querer editar por @Params',
+  })
+  async highlightEvent(@Param('id') id: UUID) {
+    try {
+      return await this.authService.highlight(id);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

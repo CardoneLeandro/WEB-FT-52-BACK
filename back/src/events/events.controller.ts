@@ -11,6 +11,7 @@ import {
   UseInterceptors,
   BadRequestException,
   ParseUUIDPipe,
+  NotFoundException,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -19,11 +20,14 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
 import { IsUUIDPipe } from 'src/common/pipes/isUUID.pipe';
 import { ParseEventDataInterceptor } from 'src/security/interceptors/parse-event-data.interceptor';
+import { EventsRepository } from './events.repository';
 
 @ApiTags('Events')
 @Controller('events')
 export class EventsController {
-  constructor(private readonly eventsService: EventsService) {}
+  constructor(private readonly eventsService: EventsService,
+      private readonly eventRepo: EventsRepository,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Ruta para la creación de eventos' })
@@ -60,7 +64,6 @@ export class EventsController {
       year,
       title,
     );
-    console.log(eventResponse);
     return eventResponse;
   }
 
@@ -68,6 +71,18 @@ export class EventsController {
   @ApiOperation({ summary: 'Ruta para la obtención de un evento por su ID' })
   async findOne(@Query('id') id: string) {
     return await this.eventsService.findOne(id);
+  }
+
+  @Get('highlightactive')
+  @ApiOperation({ summary: 'Ruta para la obtención de los eventos cuyo Highlight sea True y su status sea ACTIVE'})
+  async findHighlightActive(){
+    return await this.eventsService.findHighlightActive();
+  }
+
+  @Get('highlightinactive')
+  @ApiOperation({ summary: 'Ruta para la obtención de los eventos cuyo Highlight sea True y su status sea INACTIVE'})
+  async findHighlightInactive(){
+    return await this.eventsService.findHighlightInactive();
   }
 
   @Post('updateattendance/:id')
@@ -86,16 +101,14 @@ export class EventsController {
     }
   }
 
-  @Patch('highlight/:id')
-  @ApiOperation({
-    summary:
-      'Ruta para cambiar el estado "highlight" de un evento. Pasa de false a true o viceversa',
-  })
-  async highlights(@Param('id', new IsUUIDPipe()) id: string) {
+  @Post('switcheventstatus/:id')
+  @ApiOperation({ summary: 'Ruta para cambiar el estado del evento de ACTIVE a INACTIVE y viceversa'})
+  async switchEventStatus(@Param('id', new IsUUIDPipe()) id: string){
     try {
-      return await this.eventsService.highlight(id);
+      return await this.eventsService.switchEventStatus(id)
     } catch (error) {
-      throw new HttpException(error.message, 405);
-    }
+      throw new NotFoundException('Could not find the event')
+    } 
   }
+
 }

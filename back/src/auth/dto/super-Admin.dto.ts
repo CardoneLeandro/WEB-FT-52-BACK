@@ -50,4 +50,12 @@ export class SuperAdminDto{
   })
   @IsString()
   status: string;
+
+  @ApiProperty({
+    description: 'Contraseña del SuperAdmin',
+    example: '@IsStrongPassword1',
+    type: String,
+  })
+  @IsString()
+  password: string;
 }
