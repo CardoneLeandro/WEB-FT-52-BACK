@@ -108,7 +108,7 @@ export class AuthController {
     }
   }
 
-  @Patch('ban/:id')
+  @Patch('user/ban/:id')
   @ApiOperation({
     summary:
       'Ruta para banear usuarios. Pasa su estado "Active" a "Banned" y viceversa',
@@ -121,12 +121,12 @@ export class AuthController {
     }
   }
 
-  @Get('get/one/user')
+  @Get('user/get/one/:id')
   @ApiOperation({
     summary:
       'Ruta para obetener los datos de un usuario en específico por el ID',
   })
-  async getUser(@Query('id') id: string) {
+  async getUser(@Param('id') id: string) {
     try {
       return await this.authService.getOne(id);
     } catch (e) {
@@ -134,8 +134,8 @@ export class AuthController {
     }
   }
 
-  @Post('users/role/administrator')
-  async makeAdmin(@Query('id') id: string) {
+  @Post('users/role/administrator/:id')
+  async makeAdmin(@Param('id') id: string) {
     try {
       return await this.authService.roleChangeAdminUser(id);
     } catch (error) {
@@ -169,5 +169,25 @@ export class AuthController {
     } catch (error) {
       throw new BadRequestException(error.message);
     }
+  }
+
+
+  //CAMBIA EL ESTADO DE UNA DONACION DE PENDING A ACTIVE O INACTIVE
+  @Patch('payment/donation/confirm/:id')
+  async confirmDonation(@Param('id') id: string) {
+  try {
+    
+  } catch (e) {
+    throw new BadRequestException(e.message);
+  }    
+  }
+  
+  @Patch('payment/donation/reject/:id')
+  async rejectDonation(@Param('id') id: string) {
+  try {
+    
+  } catch (e) {
+    throw new BadRequestException(e.message);
+  }    
   }
 }

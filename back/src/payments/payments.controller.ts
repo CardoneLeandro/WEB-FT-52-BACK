@@ -9,6 +9,7 @@ import {
   Headers,
   UseInterceptors,
   UsePipes,
+  BadRequestException,
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
@@ -18,7 +19,7 @@ import { CreateDonationDto } from 'src/donations/dto/create-donation.dto';
 import { StringToNumberInterceptor } from 'src/security/interceptors/string-toNumber.interceptor';
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
 import { DonationFormaterInterceptor } from 'src/security/interceptors/donation-formater.interceptor';
-
+import { status } from 'src/common/enum/status.enum';
 @ApiTags('Payments')
 @Controller('payments')
 export class PaymentsController {
@@ -27,35 +28,29 @@ export class PaymentsController {
     private readonly donationsSv: DonationsService,
   ) {}
 
-  @Post('pay-donations')
+  @Post('pay-donations/success')
   @UseInterceptors(StringToNumberInterceptor)
   @UseInterceptors(DonationFormaterInterceptor)
   @UsePipes(new DTOValidationPipe())
-  async payDonations(@Body() params: CreateDonationDto) {
-    return await this.paymentsService.newDonation(params);
+  async payDonationSuccess(@Body() params: CreateDonationDto) {
+    try {
+      const parseParams = {status: status.ACTIVE, ...params}
+      return await this.paymentsService.newDonation(params);
+    } catch (e) {
+      throw new BadRequestException(e.error.message)
+    }
   }
-  @Post()
-  create(@Body() createPaymentDto) {
-    return this.paymentsService.create(createPaymentDto);
+  @Post('pay-donations/pending')
+  @UseInterceptors(StringToNumberInterceptor)
+  @UseInterceptors(DonationFormaterInterceptor)
+  @UsePipes(new DTOValidationPipe())
+  async payDonationPending(@Body() params: CreateDonationDto) {
+    try {
+      const parseParams = {status: status.PENDING, ...params}
+      return await this.paymentsService.newDonation(params);
+    } catch (e) {
+      throw new BadRequestException(e.error.message)
+    }
   }
-
-  @Get()
-  findAll() {
-    return this.paymentsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.paymentsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePaymentDto: UpdatePaymentDto) {
-    return this.paymentsService.update(+id, updatePaymentDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.paymentsService.remove(+id);
-  }
+  
 }

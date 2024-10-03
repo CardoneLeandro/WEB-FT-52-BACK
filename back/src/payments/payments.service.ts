@@ -11,6 +11,7 @@ import { UsersRepository } from 'src/users/users.repository';
 import { userInfo } from 'os';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
 import { MailerService } from 'src/mailer/mailer.service';
+import { status } from 'src/common/enum/status.enum';
 
 @Injectable()
 export class PaymentsService {
@@ -37,35 +38,15 @@ export class PaymentsService {
         where: { id: params.creator },
         relations: { user: true },
       });
-      await this.mailerService.sendEmailDonation({
+      if (params.status === status.ACTIVE) {await this.mailerService.sendEmailDonation({
         name: user.user.name,
         email: user.user.email,
         amount: newDonation.amount,
-      });
+      });}
       return await this.userInfoRepo.findOne({
         where: { id: params.creator },
         relations: ['donations'],
       });
     });
-  }
-
-  create(createPaymentDto) {
-    return 'This action adds a new payment';
-  }
-
-  findAll() {
-    return `This action returns all payments`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} payment`;
-  }
-
-  update(id: number, updatePaymentDto: UpdatePaymentDto) {
-    return `This action updates a #${id} payment`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} payment`;
   }
 }
