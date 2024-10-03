@@ -84,17 +84,4 @@ export class EventsController {
       throw new BadRequestException(error.message);
     }
   }
-
-  @Patch('highlight/:id')
-  @ApiOperation({
-    summary:
-      'Ruta para cambiar el estado "highlight" de un evento. Pasa de false a true o viceversa',
-  })
-  async highlights(@Param('id', new IsUUIDPipe()) id: string) {
-    try {
-      return await this.eventsService.highlight(id);
-    } catch (error) {
-      throw new HttpException(error.message, 405);
-    }
-  }
 }
