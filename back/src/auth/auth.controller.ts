@@ -65,9 +65,9 @@ export class AuthController {
   ) //INTERCEPTOPS APLICADOS AL REQUEST
   @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor) // INTERCEPTORS APLICADOS AL RESPONSE
   @UsePipes(new DTOValidationPipe())
-  async completeRegister(@Body() confirmData: CompleteRegisterAuth0Dto) {
+  async completeRegister(@Body() params: CompleteRegisterAuth0Dto) {
     try {
-      return await this.authService.completeRegister(confirmData);
+      return await this.authService.completeRegister(params);
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -80,11 +80,14 @@ export class AuthController {
   @UsePipes(new DTOValidationPipe())
   @UseGuards()
   @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
-  @UseInterceptors(CompareAndRemovePasswordInterceptor)
-  async signupUser(@Body() signUpData: SignUpDto) {
+  @UseInterceptors(
+    CompareAndRemovePasswordInterceptor,
+    StringToNumberInterceptor,
+  )
+  async signupUser(@Body() params: SignUpDto) {
     try {
-      const params = { status: status.PARTIALACTIVE, ...signUpData };
-      return await this.authService.createNewUser(params);
+      const parseParams = { status: status.PARTIALACTIVE, ...params };
+      return await this.authService.createNewUser(parseParams);
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -97,9 +100,9 @@ export class AuthController {
   })
   @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
   @UsePipes(new DTOValidationPipe())
-  async login(@Body() loginUserData: LoginUserDto): Promise<any> {
+  async login(@Body() params: LoginUserDto): Promise<any> {
     try {
-      return await this.authService.loginUser(loginUserData);
+      return await this.authService.loginUser(params);
     } catch (e) {
       throw new BadRequestException(e.message);
     }
