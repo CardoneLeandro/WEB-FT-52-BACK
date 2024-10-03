@@ -13,7 +13,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Products')
+@ApiTags('WorkInProgress')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
@@ -32,8 +32,8 @@ export class ProductsController {
   findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 5,
-    @Query('sortBy') sortBy: string = 'createDate', // Campo de ordenamiento
-    @Query('order') order: 'ASC' | 'DESC' = 'DESC', // Dirección de orden
+    @Query('sortBy') sortBy: string = 'createDate',
+    @Query('order') order: 'ASC' | 'DESC' = 'DESC',
   ) {
     return this.productsService.findAll(page, limit, sortBy, order);
   }

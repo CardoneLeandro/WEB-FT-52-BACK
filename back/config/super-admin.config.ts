@@ -10,6 +10,7 @@ export const SUPERADMIN: SuperAdminDto = {
   email: process.env.SUPERADMIN_EMAIL,
   providerAccountId: process.env.SUPERADMIN_PROVIDERACCID,
   image: process.env.SUPERADMIN_IMAGE,
+  password: process.env.SUPERADMIN_PASSWORD,
   role: UserRole.SUPERADMIN,
   status: status.PENDING,
 };

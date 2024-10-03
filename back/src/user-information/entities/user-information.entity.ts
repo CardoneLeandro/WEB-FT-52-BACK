@@ -2,22 +2,11 @@ import { Comment } from 'src/comments/entities/comments.entity';
 import { Donation } from 'src/donations/entities/donation.entity';
 import { EventAssistants } from 'src/events/entity/event-assistants.entity';
 import { Event } from 'src/events/entity/events.entity';
-import { File } from 'src/files/entities/file.entity';
-import { Order } from 'src/orders/entities/order.entity';
-import { PaymentCredential } from 'src/payment-credentials/entities/payment-credential.entity';
 import { Payment } from 'src/payments/entities/payment.entity';
 import { Post } from 'src/posts/entities/post.entity';
 import { Product } from 'src/products/entity/products.entity';
 import { User } from 'src/users/entities/user.entity';
-import {
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'userInformation' })
 export class UserInformation {
@@ -36,9 +25,6 @@ export class UserInformation {
   @OneToMany(() => Comment, (comment) => comment.creator)
   comments: Comment[];
 
-  @OneToMany(() => Order, (order) => order.user)
-  orders: Order[];
-
   @OneToMany(() => Product, (product) => product.creator)
   products: Product[];
 
@@ -47,15 +33,6 @@ export class UserInformation {
 
   @OneToMany(() => Donation, (donation) => donation.user)
   donations: Donation[];
-
-  @OneToMany(
-    () => PaymentCredential,
-    (paymentCredential) => paymentCredential.userInformation,
-  )
-  paymentCredentials: PaymentCredential[];
-
-  @ManyToMany(() => File, (file) => file.creator)
-  files: File[];
 
   @OneToMany(() => EventAssistants, (eventAssistants) => eventAssistants.user)
   assistantEvents: EventAssistants[];

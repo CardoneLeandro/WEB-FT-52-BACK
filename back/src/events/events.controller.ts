@@ -25,8 +25,9 @@ import { EventsRepository } from './events.repository';
 @ApiTags('Events')
 @Controller('events')
 export class EventsController {
-  constructor(private readonly eventsService: EventsService,
-      private readonly eventRepo: EventsRepository,
+  constructor(
+    private readonly eventsService: EventsService,
+    private readonly eventRepo: EventsRepository,
   ) {}
 
   @Post()
@@ -74,18 +75,28 @@ export class EventsController {
   }
 
   @Get('highlightactive')
-  @ApiOperation({ summary: 'Ruta para la obtención de los eventos cuyo Highlight sea True y su status sea ACTIVE'})
-  async findHighlightActive(){
+  @ApiOperation({
+    summary:
+      'Ruta para la obtención de los eventos cuyo Highlight sea True y su status sea ACTIVE',
+  })
+  async findHighlightActive() {
     return await this.eventsService.findHighlightActive();
   }
 
   @Get('highlightinactive')
-  @ApiOperation({ summary: 'Ruta para la obtención de los eventos cuyo Highlight sea True y su status sea INACTIVE'})
-  async findHighlightInactive(){
+  @ApiOperation({
+    summary:
+      'Ruta para la obtención de los eventos cuyo Highlight sea True y su status sea INACTIVE',
+  })
+  async findHighlightInactive() {
     return await this.eventsService.findHighlightInactive();
   }
 
   @Post('updateattendance/:id')
+  @ApiOperation({
+    summary:
+      'Ruta para actualizar el estado de asistencia de un usuario a un evento',
+  })
   async updateAttendanceStatus(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() user: any,
@@ -101,13 +112,15 @@ export class EventsController {
   }
 
   @Post('switcheventstatus/:id')
-  @ApiOperation({ summary: 'Ruta para cambiar el estado del evento de ACTIVE a INACTIVE y viceversa'})
-  async switchEventStatus(@Param('id', new IsUUIDPipe()) id: string){
+  @ApiOperation({
+    summary:
+      'Ruta para cambiar el estado del evento de ACTIVE a INACTIVE y viceversa',
+  })
+  async switchEventStatus(@Param('id', new IsUUIDPipe()) id: string) {
     try {
-      return await this.eventsService.switchEventStatus(id)
+      return await this.eventsService.switchEventStatus(id);
     } catch (error) {
-      throw new NotFoundException('Could not find the event')
-    } 
+      throw new NotFoundException('Could not find the event');
+    }
   }
-
 }

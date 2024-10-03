@@ -19,7 +19,7 @@ import { StringToNumberInterceptor } from 'src/security/interceptors/string-toNu
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
 import { DonationFormaterInterceptor } from 'src/security/interceptors/donation-formater.interceptor';
 
-@ApiTags('WorkInProgress')
+@ApiTags('Payments')
 @Controller('payments')
 export class PaymentsController {
   constructor(

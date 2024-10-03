@@ -111,12 +111,24 @@ export class AuthController {
       'Ruta para banear usuarios. Pasa su estado "Active" a "Banned" y viceversa',
   })
   async ban(@Param('id') id: string) {
-    return await this.authService.ban(id);
+    try {
+      return await this.authService.ban(id);
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 
-  @Post('get/one/user')
+  @Get('get/one/user')
+  @ApiOperation({
+    summary:
+      'Ruta para obetener los datos de un usuario en específico por el ID',
+  })
   async getUser(@Query('id') id: string) {
-    return await this.authService.getOne(id);
+    try {
+      return await this.authService.getOne(id);
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 
   @Post('users/role/administrator')

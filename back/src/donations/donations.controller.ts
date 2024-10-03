@@ -12,7 +12,7 @@ import { CreateDonationDto } from './dto/create-donation.dto';
 import { UpdateDonationDto } from './dto/update-donation.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Donations')
+@ApiTags('WorkInProgress')
 @Controller('donations')
 export class DonationsController {
   constructor(private readonly donationsService: DonationsService) {}
