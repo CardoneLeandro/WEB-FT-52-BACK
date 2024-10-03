@@ -16,7 +16,7 @@ import { MailerService } from 'src/mailer/mailer.service';
 import { encriptPasswordCompare } from 'src/common/utils/encript-passwordCompare.util';
 import { encriptProviderAccIdCompare } from 'src/common/utils/encript-providerAccIdCompare.util';
 import * as bcrypt from 'bcrypt';
-import { DataSource } from 'typeorm';
+import { ChildEntity, DataSource } from 'typeorm';
 import { EventsRepository } from 'src/events/events.repository';
 import { Event } from 'src/events/entity/events.entity';
 
@@ -58,10 +58,10 @@ export class AuthService {
     const existingUser = await this.userService.foundExistingUser(params);
     if (existingUser === null) {
       const { providerAccountId, ...rest } = params;
-      const encriptedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
+      const hashedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
       const createUserData = {
         status: status.PENDING,
-        providerAccountId: encriptedProviderAccId,
+        providerAccountId: hashedProviderAccId,
         ...rest,
       };
       const newUser = await this.userService.createNewUser(createUserData);
@@ -88,7 +88,7 @@ export class AuthService {
           params.providerAccountId,
         )) === false
       ) {
-        throw new NotFoundException('Invalid Credentials');
+        throw new BadRequestException('Invalid Credentials');
       }
       return await this.infoRepo.loggedUser(existingUser.id);
     }
@@ -96,8 +96,8 @@ export class AuthService {
 
   async loginUser(params) {
     const existingUser = await this.userService.foundExistingUser(params);
-    if (!existingUser) {
-      throw new NotFoundException('Invalid Credentials');
+    if (existingUser === null) {
+      throw new BadRequestException('Invalid Credentials');
     }
 
     if (existingUser.status === status.PENDING) {
@@ -111,7 +111,7 @@ export class AuthService {
       if (
         (await encriptPasswordCompare(existingUser, params.password)) === false
       ) {
-        throw new NotFoundException('Invalid Credentials');
+        throw new BadRequestException('Invalid Credentials');
       }
 
       return await this.infoRepo.loggedUser(existingUser.id);
@@ -121,7 +121,7 @@ export class AuthService {
   async signUp(params) {
     const existingUser = await this.userRepo.findUserByEmail(params.email);
     if (!existingUser) {
-      throw new NotFoundException('User not found');
+      throw new BadRequestException('User not found');
     }
     return existingUser;
   }
@@ -130,9 +130,11 @@ export class AuthService {
     const incompleteUser = await this.userRepo.findOneBy({
       email: params.email,
     });
-    if (!incompleteUser) return new NotFoundException('User not found');
+    if (!incompleteUser) {
+      throw new BadRequestException('User not found');
+    }
     if (incompleteUser.status !== status.PENDING) {
-      return new NotFoundException('User register is allready Completed');
+      throw new BadRequestException('User register is allready Completed');
     }
     await this.mailerService.sendEmailWelcome({
       name: incompleteUser.name,
@@ -145,27 +147,24 @@ export class AuthService {
         params.providerAccountId,
       )) === false
     ) {
-      throw new NotFoundException('Invalid Credentials');
+      throw new BadRequestException('Invalid Credentials');
     }
-    const { providerAccountId, email, password, ...updateParams } = params;
-
-    const hashedPassword = bcrypt.hashSync(password, 10);
+    const { providerAccountId, email, ...updateParams } = params;
 
     const userData = {
       status: status.ACTIVE,
-      password: hashedPassword,
       ...updateParams,
     };
 
     await this.userService.updateUserInformation(incompleteUser, userData);
 
-    return await this.infoRepo.loggedUser(params.id);
+    return await this.infoRepo.loggedUser(incompleteUser.id);
   }
 
   async createNewUser(params) {
-    const existingUser = await this.userService.foundExistingUser(params.email);
-    if (existingUser === null) {
-      throw new NotFoundException('Email already in use');
+    const existingUser = await this.userService.foundExistingUser(params);
+    if (existingUser) {
+      throw new BadRequestException('Email already in use');
     }
 
     const newUser = await this.userService.createNewUser(params);

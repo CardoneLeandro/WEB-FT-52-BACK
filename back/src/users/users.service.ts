@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
 import { User } from './entities/user.entity';
@@ -82,7 +86,7 @@ export class UsersService {
       (existingUser && existingUser.status === status.BANNED) ||
       existingUser.status === status.INACTIVE
     ) {
-      throw new NotFoundException('Access denied');
+      throw new BadRequestException('Access denied');
     }
     return existingUser;
   }

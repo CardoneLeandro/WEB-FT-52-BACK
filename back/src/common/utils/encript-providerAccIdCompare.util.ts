@@ -5,9 +5,9 @@ export const encriptProviderAccIdCompare = async (
   user: User,
   providerAccountId: string,
 ): Promise<boolean> => {
-  const IsValidPassword = await bcrypt.compare(
+  const IsValidProviderAccId = await bcrypt.compare(
     providerAccountId,
     user.providerAccountId,
   );
-  return IsValidPassword;
+  return IsValidProviderAccId;
 };
