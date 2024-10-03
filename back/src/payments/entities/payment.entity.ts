@@ -1,7 +1,6 @@
 import { elementType } from 'src/common/enum/elementType.enum';
 import { status } from 'src/common/enum/status.enum';
 import { Donation } from 'src/donations/entities/donation.entity';
-import { Order } from 'src/orders/entities/order.entity';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import {
   Column,
@@ -34,10 +33,6 @@ export class Payment {
 
   @Column({ type: 'enum', enum: elementType, nullable: false })
   type: elementType;
-
-  @OneToOne(() => Order, (order) => order.paymentInformation)
-  @JoinColumn({ name: 'order' })
-  order: Order;
 
   @OneToOne(() => Donation, (donation) => donation.payment)
   donation: Donation;

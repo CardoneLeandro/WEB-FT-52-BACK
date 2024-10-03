@@ -7,10 +7,7 @@ import { PostsModule } from './posts/posts.module';
 import { EventsModule } from './events/events.module';
 import { UserInformationModule } from './user-information/user-information.module';
 import { CommentsModule } from './comments/comments.module';
-import { OrdersModule } from './orders/orders.module';
-import { OrderDetailsModule } from './order-details/order-details.module';
 import { PaymentsModule } from './payments/payments.module';
-import { PaymentCredentialsModule } from './payment-credentials/payment-credentials.module';
 import { DonationsModule } from './donations/donations.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -38,11 +35,8 @@ import { MailerModule } from './mailer/mailer.module';
     PostsModule,
     EventsModule,
     CommentsModule,
-    OrdersModule,
-    OrderDetailsModule,
     ProductsModule,
     PaymentsModule,
-    PaymentCredentialsModule,
     DonationsModule,
     SeederModule,
     MailerModule,
@@ -57,9 +51,3 @@ import { MailerModule } from './mailer/mailer.module';
   ],
 })
 export class AppModule {}
-
-/*,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: DataLogInterceptor,
-    }, */

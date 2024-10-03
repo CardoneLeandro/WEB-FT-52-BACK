@@ -1,5 +1,4 @@
 import { status } from 'src/common/enum/status.enum';
-import { File } from 'src/files/entities/file.entity';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import {
   Column,
@@ -34,8 +33,4 @@ export class Post {
 
   @Column({ type: 'varchar', length: 100, nullable: false })
   image: string[];
-
-  @ManyToMany(() => File, (file) => file.posts)
-  @JoinColumn({ name: 'file_id' })
-  files: File[];
 }
