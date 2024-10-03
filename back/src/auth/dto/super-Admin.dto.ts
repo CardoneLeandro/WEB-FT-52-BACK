@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class SuperAdminDto{
+export class SuperAdminDto {
   @ApiProperty({
     description: 'Nombre del SuperAdmin',
     example: 'Super Admin',

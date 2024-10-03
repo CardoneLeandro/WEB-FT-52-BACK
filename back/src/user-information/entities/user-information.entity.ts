@@ -6,12 +6,7 @@ import { Payment } from 'src/payments/entities/payment.entity';
 import { Post } from 'src/posts/entities/post.entity';
 import { Product } from 'src/products/entity/products.entity';
 import { User } from 'src/users/entities/user.entity';
-import {
-  Entity,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'userInformation' })
 export class UserInformation {

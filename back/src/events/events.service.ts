@@ -66,12 +66,12 @@ export class EventsService {
     };
   }
 
-  async findHighlightActive(){
-    return this.eventRepo.findHighlightActive()
+  async findHighlightActive() {
+    return this.eventRepo.findHighlightActive();
   }
 
-  async findHighlightInactive(){
-    return this.eventRepo.findHighlightInactive()
+  async findHighlightInactive() {
+    return this.eventRepo.findHighlightInactive();
   }
 
   findOne(id) {
@@ -144,7 +144,7 @@ export class EventsService {
     return await this.eventRepo.highlightEvent(id, !event.highlight);
   }
 
-  async switchEventStatus(id: string){
+  async switchEventStatus(id: string) {
     const event: Event | null = await this.eventRepo.findOneBy({ id });
     if (!event) {
       throw new BadRequestException(`Event not found`);

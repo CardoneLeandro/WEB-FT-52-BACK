@@ -32,7 +32,7 @@ export class ProductsController {
   findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 5,
-    @Query('sortBy') sortBy: string = 'createDate', 
+    @Query('sortBy') sortBy: string = 'createDate',
     @Query('order') order: 'ASC' | 'DESC' = 'DESC',
   ) {
     return this.productsService.findAll(page, limit, sortBy, order);

@@ -116,12 +116,12 @@ export class AuthController {
     } catch (e) {
       throw new BadRequestException(e.message);
     }
-    
   }
 
   @Get('get/one/user')
   @ApiOperation({
-    summary: 'Ruta para obetener los datos de un usuario en específico por el ID',
+    summary:
+      'Ruta para obetener los datos de un usuario en específico por el ID',
   })
   async getUser(@Query('id') id: string) {
     try {
@@ -129,7 +129,6 @@ export class AuthController {
     } catch (e) {
       throw new BadRequestException(e.message);
     }
-    
   }
 
   @Post('users/role/administrator')
