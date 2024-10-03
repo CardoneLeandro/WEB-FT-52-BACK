@@ -13,7 +13,7 @@ export class EventsService {
     private readonly eventRepo: EventsRepository,
     private readonly userInfoRepo: UserInformationRepository,
     private readonly eventAssistantsRepo: EventAssistantsRepository,
-    private readonly mailerService: MailerService
+    private readonly mailerService: MailerService,
   ) {}
 
   async create(eventData) {
@@ -86,48 +86,58 @@ export class EventsService {
   async updateAttendanceStatus(param) {
     const event = await this.eventRepo.findOne({
       where: { id: param.eventId },
-      relations: { assistants: true }
+      relations: { assistants: true },
     });
-    if (!event) throw new BadRequestException(`User or Event not found`)
+    if (!event) throw new BadRequestException(`User or Event not found`);
     const user = await this.userInfoRepo.findOne({
       where: { id: param.creator },
-      relations: { user: true }
+      relations: { user: true },
     });
-    if (!user) throw new BadRequestException(`User or Event not found`)
+    if (!user) throw new BadRequestException(`User or Event not found`);
     const attendance = await this.eventAssistantsRepo.findOne({
-      where: { user: { id: user.id }, event: { id: event.id } }
-    })
+      where: { user: { id: user.id }, event: { id: event.id } },
+    });
     const mailDto = {
       name: user.user.name,
       email: user.user.email,
       title: event.title,
       eventDate: event.eventDate,
-      eventLocation: event.eventLocation
-    }
+      eventLocation: event.eventLocation,
+    };
     if (attendance && attendance.status === status.ACTIVE) {
-      await this.eventAssistantsRepo.update(attendance.id, { status: status.INACTIVE });
-      await this.mailerService.sendMailLeaveEvent(mailDto)
+      await this.eventAssistantsRepo.update(attendance.id, {
+        status: status.INACTIVE,
+      });
+      await this.mailerService.sendMailLeaveEvent(mailDto);
     }
     if (event.stock !== 0) {
-      const assistantsActive = event.assistants.filter(assistant => assistant.status === status.ACTIVE)
-      if (assistantsActive.length >= event.stock) throw new BadRequestException(`Event ${event.title} is full`)
+      const assistantsActive = event.assistants.filter(
+        (assistant) => assistant.status === status.ACTIVE,
+      );
+      if (assistantsActive.length >= event.stock)
+        throw new BadRequestException(`Event ${event.title} is full`);
     }
     if (!attendance) {
       const newEventAttendant = await this.eventAssistantsRepo.create({
         user,
         event,
         eventId: param.eventId,
-        status: status.ACTIVE
-      })
+        status: status.ACTIVE,
+      });
       await this.eventAssistantsRepo.save(newEventAttendant);
-      await this.mailerService.sendMailJoininEvent(mailDto)
+      await this.mailerService.sendMailJoininEvent(mailDto);
     } else if (attendance.status === status.INACTIVE) {
-      await this.eventAssistantsRepo.update(attendance.id, { status: status.ACTIVE });
-      await this.mailerService.sendMailJoininEvent(mailDto)
+      await this.eventAssistantsRepo.update(attendance.id, {
+        status: status.ACTIVE,
+      });
+      await this.mailerService.sendMailJoininEvent(mailDto);
     }
-    const updatedEvent = await this.eventRepo.findOne({ where: { id: param.eventId }, relations: { assistants: true } })
-    const updateUser = await this.userInfoRepo.loggedUser(user.user.id)
-    return { updatedEvent, updateUser }
+    const updatedEvent = await this.eventRepo.findOne({
+      where: { id: param.eventId },
+      relations: { assistants: true },
+    });
+    const updateUser = await this.userInfoRepo.loggedUser(user.user.id);
+    return { updatedEvent, updateUser };
   }
 
   async updateEvent(id: string, updateEventData: UpdateEventDto) {

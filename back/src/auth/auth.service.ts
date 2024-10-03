@@ -55,6 +55,7 @@ export class AuthService {
   //________________________
 
   async logginWithAuth0(params) {
+    //------------------------------------------------------------------------------ SE CREA
     const existingUser = await this.userService.foundExistingUser(params);
     if (existingUser === null) {
       const { providerAccountId, ...rest } = params;
@@ -67,7 +68,19 @@ export class AuthService {
       const newUser = await this.userService.createNewUser(createUserData);
       return await this.infoRepo.loggedUser(newUser.id);
     }
-
+    //------------------------------------------------------------------------------ SE RETORNA EL USUARIO PENDIENTE
+    if (existingUser.status === status.PENDING) {
+      if (
+        (await encriptProviderAccIdCompare(
+          existingUser,
+          params.providerAccountId,
+        )) === false
+      ) {
+        throw new BadRequestException('Invalid Credentials');
+      }
+      return await this.infoRepo.loggedUser(existingUser.id);
+    }
+    //------------------------------------------------------------------------------  SE AGREGA EL PAID + IMAGEN
     if (existingUser.status === status.PARTIALACTIVE) {
       const hashedProviderAccId = bcrypt.hashSync(params.providerAccountId, 10);
       await this.userRepo.update(existingUser.id, {
@@ -77,11 +90,8 @@ export class AuthService {
       });
       return await this.infoRepo.loggedUser(existingUser.id);
     }
-
-    if (
-      existingUser.status === status.PENDING ||
-      existingUser.status === status.ACTIVE
-    ) {
+    //------------------------------------------------------------------------------  SE INICIA SESION
+    if (existingUser.status === status.ACTIVE) {
       if (
         (await encriptProviderAccIdCompare(
           existingUser,

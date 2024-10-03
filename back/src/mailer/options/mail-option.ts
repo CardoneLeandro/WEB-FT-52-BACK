@@ -1,6 +1,6 @@
 import Mail from 'nodemailer/lib/mailer';
 
-export const mailOptions = (dto, subject, template) : Mail.Options => {
+export const mailOptions = (dto, subject, template): Mail.Options => {
   return {
     from: {
       name: 'Movimiento Juvenil Peregrinos',

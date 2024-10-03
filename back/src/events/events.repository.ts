@@ -19,7 +19,7 @@ export class EventsRepository extends Repository<Event> {
     title: string,
   ) {
     const query = this.createQueryBuilder('event')
-      .where('event.status = :status', { status: 'ACTIVE' })
+      .where('event.status = :status', { status: status.ACTIVE })
       .skip((page - 1) * limit)
       .take(limit)
       .orderBy(`event.${sortBy}`, order);

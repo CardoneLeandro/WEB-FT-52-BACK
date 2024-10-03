@@ -41,12 +41,6 @@ export class RemovePropertiesInterceptor implements NestInterceptor {
         ) {
           delete data.status;
         }
-        if (
-          (data && data.providerAccountId && data.status !== status.PENDING) ||
-          data.providerAccountId === null
-        ) {
-          delete data.providerAccountId;
-        }
         if ((data && data.updateDate) || data.updateDate === null) {
           delete data.updateDate;
         }
@@ -61,6 +55,12 @@ export class RemovePropertiesInterceptor implements NestInterceptor {
         }
         if (data && data.image === null) {
           delete data.image;
+        }
+        if (
+          (data && data.providerAccountId) ||
+          data.providerAccountId === null
+        ) {
+          delete data.providerAccountId;
         }
         return data;
       }),

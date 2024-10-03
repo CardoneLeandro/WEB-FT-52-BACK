@@ -45,7 +45,7 @@ export class MailerService {
         name: userJoininEventDto.name,
         title: userJoininEventDto.title,
         eventDate: userJoininEventDto.eventDate,
-        eventLocation: userJoininEventDto.eventLocation
+        eventLocation: userJoininEventDto.eventLocation,
       });
       const mail = mailOptions(userJoininEventDto, subject, template);
       await transporter.sendMail(mail);
@@ -62,8 +62,8 @@ export class MailerService {
         name: userleaveEventDto.name,
         title: userleaveEventDto.title,
         eventDate: userleaveEventDto.eventDate,
-        eventLocation: userleaveEventDto.eventLocation
-      })
+        eventLocation: userleaveEventDto.eventLocation,
+      });
       const mail = mailOptions(userleaveEventDto, subject, template);
       await transporter.sendMail(mail);
       return { status: 'success' };
