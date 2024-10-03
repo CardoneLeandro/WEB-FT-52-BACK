@@ -119,10 +119,14 @@ export class AuthController {
     return await this.authService.getOne(id);
   }
 
-  // @Post('users/role/administrator')
-  // async makeAdmin(@Query('id') id: string) {
-  //   return await this.authService.makeAdmin(id);
-  // }
+  @Post('users/role/administrator')
+  async makeAdmin(@Query('id') id: string) {
+    try {
+      return await this.authService.roleChangeAdminUser(id);
+    } catch (error) {
+      error.message = 'This action is not allowed';
+    }
+  }
 
   @Post('events/edit/:id')
   @UsePipes(new DTOValidationPipe())
@@ -133,6 +137,20 @@ export class AuthController {
   async editEvent(@Param('id') id: UUID, @Body() params: UpdateEventDto) {
     try {
       return await this.eventService.updateEvent(id, params);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  @Post('events/highlight/:id')
+  @UsePipes(new DTOValidationPipe())
+  @ApiOperation({
+    summary:
+      'Ruta para el Highlight de eventos. Se debe enviar el ID del evento a querer editar por @Params',
+  })
+  async highlightEvent(@Param('id') id: UUID) {
+    try {
+      return await this.authService.highlight(id);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
