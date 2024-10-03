@@ -114,7 +114,10 @@ export class AuthController {
     return await this.authService.ban(id);
   }
 
-  @Post('get/one/user')
+  @Get('get/one/user')
+  @ApiOperation({
+    summary: 'Ruta para obetener los datos de un usuario en específico por el ID',
+  })
   async getUser(@Query('id') id: string) {
     return await this.authService.getOne(id);
   }
