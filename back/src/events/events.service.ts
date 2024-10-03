@@ -1,12 +1,19 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { UpdateEventDto } from './dto/update-event.dto';
 import { EventsRepository } from './events.repository';
-import { response } from 'express';
 import { Event } from './entity/events.entity';
+import { UserInformationRepository } from 'src/user-information/user-information.repository';
+import { MailerService } from 'src/mailer/mailer.service';
+import { EventAssistantsRepository } from './event-assistants.repository';
+import { status } from 'src/common/enum/status.enum';
 
 @Injectable()
 export class EventsService {
-  constructor(private readonly eventRepo: EventsRepository) {}
+  constructor(
+    private readonly eventRepo: EventsRepository,
+    private readonly userInfoRepo: UserInformationRepository,
+    private readonly eventAssistantsRepo: EventAssistantsRepository,
+    private readonly mailerService: MailerService,
+  ) {}
 
   async create(eventData) {
     const createdEvent = this.eventRepo.create(eventData);
@@ -75,13 +82,58 @@ export class EventsService {
     return event;
   }
 
-  async updateEvent(id: string, updateEventData: UpdateEventDto) {
+  async updateAttendanceStatus(param) {
+    const event = await this.eventRepo.findOne({
+      where: { id: param.eventId },
+      relations: { assistants: true },
+    });
+    if (!event) throw new BadRequestException(`User or Event not found`);
+    if (event.stock !== 0) {
+      const assistantsActive = event.assistants.filter(
+        (assistant) => assistant.status === status.ACTIVE,
+      );
+      if (assistantsActive.length >= event.stock)
+        throw new BadRequestException(`Event with id:${param.eventId} is full`);
+    }
+    const user = await this.userInfoRepo.findOne({
+      where: { id: param.creator },
+      relations: { user: true },
+    });
+    if (!user) throw new BadRequestException(`User or Event not found`);
+    const attendance = await this.eventAssistantsRepo.findOne({
+      where: { user: { id: user.id }, event: { id: event.id } },
+    });
+    if (!attendance) {
+      const newEventAttendant = await this.eventAssistantsRepo.create({
+        user,
+        event,
+        eventId: param.eventId,
+        status: status.ACTIVE,
+      });
+      await this.eventAssistantsRepo.save(newEventAttendant);
+    } else if (attendance.status === status.ACTIVE) {
+      await this.eventAssistantsRepo.update(attendance.id, {
+        status: status.INACTIVE,
+      });
+    } else {
+      await this.eventAssistantsRepo.update(attendance.id, {
+        status: status.ACTIVE,
+      });
+    }
+    const updatedEvent = await this.eventRepo.findOne({
+      where: { id: param.eventId },
+      relations: { assistants: true },
+    });
+    const updateUser = await this.userInfoRepo.loggedUser(user.user.id);
+    return { updatedEvent, updateUser };
+  }
+
+  async updateEvent(id, params) {
     const foundEvent = await this.eventRepo.findOneBy({ id });
     if (!foundEvent) {
       throw new BadRequestException('Event not found');
     }
-    const updatedEvent = await this.eventRepo.updateEvent(id, updateEventData);
-    return updatedEvent;
+    return await this.eventRepo.updateEvent(id, params);
   }
 
   async highlight(id) {

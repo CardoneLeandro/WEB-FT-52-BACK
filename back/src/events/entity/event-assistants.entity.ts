@@ -17,6 +17,9 @@ export class EventAssistants {
   @Column({ type: 'enum', enum: status, default: status.ACTIVE })
   status: status;
 
+  @Column({ type: 'uuid', nullable: false })
+  eventId: string;
+
   @ManyToOne(
     () => UserInformation,
     (userInformation) => userInformation.assistantEvents,

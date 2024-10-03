@@ -5,13 +5,12 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   Query,
   HttpException,
   UsePipes,
-  ParseUUIDPipe,
-  UseGuards,
   UseInterceptors,
+  BadRequestException,
+  ParseUUIDPipe,
   NotFoundException,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
@@ -19,18 +18,15 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
-import { UUID } from 'crypto';
 import { IsUUIDPipe } from 'src/common/pipes/isUUID.pipe';
-import { ExistingEventGuard } from 'src/security/guards/existing-event.guard';
-import { EventsRepository } from './events.repository';
 import { ParseEventDataInterceptor } from 'src/security/interceptors/parse-event-data.interceptor';
+import { EventsRepository } from './events.repository';
 
 @ApiTags('Events')
 @Controller('events')
 export class EventsController {
-  constructor(
-    private readonly eventsService: EventsService,
-    private readonly eventRepo: EventsRepository,
+  constructor(private readonly eventsService: EventsService,
+      private readonly eventRepo: EventsRepository,
   ) {}
 
   @Post()
@@ -71,7 +67,7 @@ export class EventsController {
     return eventResponse;
   }
 
-  @Get('getone')
+  @Get('getone/:id')
   @ApiOperation({ summary: 'Ruta para la obtención de un evento por su ID' })
   async findOne(@Query('id') id: string) {
     return await this.eventsService.findOne(id);
@@ -87,6 +83,21 @@ export class EventsController {
   @ApiOperation({ summary: 'Ruta para la obtención de los eventos cuyo Highlight sea True y su status sea INACTIVE'})
   async findHighlightInactive(){
     return await this.eventsService.findHighlightInactive();
+  }
+
+  @Post('updateattendance/:id')
+  async updateAttendanceStatus(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() user: any,
+  ) {
+    try {
+      return await this.eventsService.updateAttendanceStatus({
+        eventId: id,
+        ...user,
+      });
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   @Patch('highlight/:id')
@@ -112,15 +123,4 @@ export class EventsController {
     } 
   }
 
-  @Patch(':id')
-  @ApiOperation({
-    summary:
-      'Ruta para la actualización de eventos. Se debe enviar el ID del evento a querer editar por @Params y los campos a modificar por @Body',
-  })
-  updateEvent(
-    @Param('id') id: string,
-    @Body() updateEventData: UpdateEventDto,
-  ) {
-    return this.eventsService.updateEvent(id, updateEventData);
-  }
 }

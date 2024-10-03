@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserInformation } from './entities/user-information.entity';
 import { DataSource, EntityManager, Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
+import { status } from 'src/common/enum/status.enum';
 
 @Injectable()
 export class UserInformationRepository extends Repository<UserInformation> {
@@ -21,10 +22,24 @@ export class UserInformationRepository extends Repository<UserInformation> {
   async loggedUser(params) {
     const loggedUser = await this.findOne({
       where: { user: { id: params } },
-      relations: { user: true, donations: true, events: true },
+      relations: {
+        user: true,
+        donations: true,
+        events: true,
+        assistantEvents: true,
+      },
     });
-    const { id, user, donations, events } = loggedUser;
-    return { creatorId: id, ...user, donations, events };
+    const { id, user, donations, events, assistantEvents } = loggedUser;
+    const assistantsConfirmet = assistantEvents.filter(
+      (assistant) => assistant.status === status.ACTIVE,
+    );
+    return {
+      creatorId: id,
+      ...user,
+      donations,
+      events,
+      assistantEvents: assistantsConfirmet,
+    };
   }
 
   async findOneUser(id) {

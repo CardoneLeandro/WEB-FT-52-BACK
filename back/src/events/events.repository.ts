@@ -76,8 +76,8 @@ export class EventsRepository extends Repository<Event> {
     return await this.findOne({ where: { id } });
   }
 
-  async updateEvent(id: string, updateEventData: UpdateEventDto) {
-    await this.update(id, updateEventData);
+  async updateEvent(id: string, params: UpdateEventDto) {
+    await this.update(id, params);
     return await this.findOne({ where: { id } });
   }
 

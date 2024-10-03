@@ -28,10 +28,17 @@ import { CompleteRegisterAuth0Dto } from './dto/complete-register-auth0.dto';
 import { CompareAndRemovePasswordInterceptor } from 'src/security/interceptors/compare&remove-password.interceptor';
 import { StringToNumberInterceptor } from 'src/security/interceptors/string-toNumber.interceptor';
 import { status } from 'src/common/enum/status.enum';
+import { UUID } from 'crypto';
+import { EventsService } from 'src/events/events.service';
+import { UpdateEventDto } from 'src/events/dto/update-event.dto';
+import { IsUUID } from 'class-validator';
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly eventService: EventsService,
+  ) {}
 
   @Post('auth0/signup')
   @ApiOperation({
@@ -116,4 +123,18 @@ export class AuthController {
   // async makeAdmin(@Query('id') id: string) {
   //   return await this.authService.makeAdmin(id);
   // }
+
+  @Post('events/edit/:id')
+  @UsePipes(new DTOValidationPipe())
+  @ApiOperation({
+    summary:
+      'Ruta para la actualización de eventos. Se debe enviar el ID del evento a querer editar por @Params y los campos a modificar por @Body',
+  })
+  async editEvent(@Param('id') id: UUID, @Body() params: UpdateEventDto) {
+    try {
+      return await this.eventService.updateEvent(id, params);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
 }

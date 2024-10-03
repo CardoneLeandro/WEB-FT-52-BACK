@@ -10,6 +10,7 @@ import { UserInformationService } from 'src/user-information/user-information.se
 import { EventsService } from 'src/events/events.service';
 import { EventsRepository } from 'src/events/events.repository';
 import { MailerService } from 'src/mailer/mailer.service';
+import { EventAssistantsRepository } from 'src/events/event-assistants.repository';
 
 @Module({
   controllers: [SeederController],
@@ -23,6 +24,7 @@ import { MailerService } from 'src/mailer/mailer.service';
     UserInformationService,
     EventsService,
     EventsRepository,
+    EventAssistantsRepository,
     MailerService,
   ],
   exports: [SeederService],

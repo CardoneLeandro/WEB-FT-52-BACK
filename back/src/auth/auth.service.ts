@@ -55,7 +55,6 @@ export class AuthService {
   async logginWithAuth0(params) {
     const existingUser = await this.userService.foundExistingUser(params);
     if (existingUser === null) {
-      console.log('ENTRAMOS EN EL PROCESO DE CREACION DE NUEVO USUARIO');
       const { providerAccountId, ...rest } = params;
       const encriptedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
       const createUserData = {
@@ -81,7 +80,6 @@ export class AuthService {
       existingUser.status === status.PENDING ||
       existingUser.status === status.ACTIVE
     ) {
-      console.log('CONDICIONAL DE LOGIN, STATUS PENDING OR ACTIVE');
       if (
         (await encriptProviderAccIdCompare(
           existingUser,
@@ -90,7 +88,6 @@ export class AuthService {
       ) {
         throw new NotFoundException('Invalid Credentials');
       }
-      console.log('COMPROBACION EXITOSA DEL HASH DE PROVIDER ACCOUNT ID');
       return await this.infoRepo.loggedUser(existingUser.id);
     }
   }
@@ -128,7 +125,6 @@ export class AuthService {
   }
 
   async completeRegister(params) {
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', params.providerAccountId);
     const incompleteUser = await this.userRepo.findOneBy({
       email: params.email,
     });
@@ -149,10 +145,13 @@ export class AuthService {
     ) {
       throw new NotFoundException('Invalid Credentials');
     }
-    const { providerAccountId, email, ...updateParams } = params;
+    const { providerAccountId, email, password, ...updateParams } = params;
+
+    const hashedPassword = bcrypt.hashSync(password, 10);
 
     const userData = {
       status: status.ACTIVE,
+      password: hashedPassword,
       ...updateParams,
     };
 
