@@ -4,6 +4,7 @@ import { UserInformationRepository } from 'src/user-information/user-information
 import { UserRole } from 'src/common/enum/userRole.enum';
 import { ProductsRepository } from 'src/products/products.repository';
 import { EventsRepository } from 'src/events/events.repository';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class SeederService {
@@ -12,6 +13,7 @@ export class SeederService {
     private readonly userRepo: UsersRepository,
     private readonly productRepo: ProductsRepository,
     private readonly eventRepo: EventsRepository,
+    private readonly authService: AuthService
   ) {}
 
   async superAdmin() {
@@ -54,5 +56,19 @@ export class SeederService {
       await this.eventRepo.saveEvent(createdEvent);
     }
     return;
+  }
+
+  async addUserSeeder(seed){
+    for (const user of seed){
+      const exsitingUser = await this.userRepo.findOne({
+        where: {email: user.email}
+      });
+      if(exsitingUser){
+        console.log(`User with email ${user.email} already exist`);
+        continue;
+      }
+      const newUser = {...user};
+      await this.authService.createNewUser(newUser)
+    }
   }
 }

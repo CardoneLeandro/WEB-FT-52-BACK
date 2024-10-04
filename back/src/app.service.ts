@@ -4,6 +4,7 @@ import { SeederService } from './seeder/seeder.service';
 import { UserInformationRepository } from './user-information/user-information.repository';
 import productsSeeder from './seeder/seeders/product.seed';
 import eventSeeder from './seeder/seeders/event.seed';
+import userSeeder from './seeder/seeders/user.seed';
 
 @Injectable()
 export class AppService {
@@ -16,6 +17,7 @@ export class AppService {
     const id = await this.authSv.superAdminSeeder();
     await this.seederSv.addProductSeeder(id, productsSeeder);
     await this.seederSv.addEventSeeder(id, eventSeeder);
+    await this.seederSv.addUserSeeder(userSeeder);
 
     const allRelations = await this.userInfoRepo.findOne({
       where: { id },

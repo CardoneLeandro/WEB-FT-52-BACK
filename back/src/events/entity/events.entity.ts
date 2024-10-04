@@ -31,10 +31,10 @@ export class Event {
   @Column({ type: 'enum', enum: status, default: status.ACTIVE })
   status: status;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 100, nullable: false })
   title: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: false })
+  @Column({ type: 'varchar', length: 500, nullable: false })
   description: string;
 
   @Column({ type: 'timestamp', nullable: true })
