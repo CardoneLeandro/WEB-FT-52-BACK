@@ -16,10 +16,11 @@ export class DonationFormaterInterceptor implements NestInterceptor {
         const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
         const { id, ...rest } = donation;
         return {
-          ok:true,
-          donation:{
-          ...rest,
-          date: formattedDate,}
+          ok: true,
+          donation: {
+            ...rest,
+            date: formattedDate,
+          },
         };
       }),
     );

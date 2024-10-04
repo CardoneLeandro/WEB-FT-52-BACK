@@ -14,6 +14,7 @@ import {
   HttpException,
   HttpStatus,
   Query,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
@@ -32,12 +33,14 @@ import { UUID } from 'crypto';
 import { EventsService } from 'src/events/events.service';
 import { UpdateEventDto } from 'src/events/dto/update-event.dto';
 import { IsUUID } from 'class-validator';
+import { DonationsService } from 'src/donations/donations.service';
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly eventService: EventsService,
+    private readonly donationService: DonationsService,
   ) {}
 
   @Post('auth0/signup')
@@ -171,18 +174,26 @@ export class AuthController {
     }
   }
 
-  //CAMBIA EL ESTADO DE UNA DONACION DE PENDING A ACTIVE O INACTIVE
+  //CAMBIA EL ESTADO DE UNA DONACION DE PENDING A ACTIVE O REJECTED
   @Patch('payment/donation/confirm/:id')
-  async confirmDonation(@Param('id') id: string) {
+  async cofirmDonation(@Param('id', ParseUUIDPipe) id: string) {
     try {
+      return this.donationService.updateDonation({
+        id: id,
+        status: status.ACTIVE,
+      });
     } catch (e) {
       throw new BadRequestException(e.message);
     }
   }
 
   @Patch('payment/donation/reject/:id')
-  async rejectDonation(@Param('id') id: string) {
+  async rejectDonation(@Param('id', ParseUUIDPipe) id: string) {
     try {
+      return this.donationService.updateDonation({
+        id: id,
+        status: status.REJECTED,
+      });
     } catch (e) {
       throw new BadRequestException(e.message);
     }

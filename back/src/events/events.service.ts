@@ -145,7 +145,8 @@ export class EventsService {
     if (!foundEvent) {
       throw new BadRequestException('Event not found');
     }
-    const updatedEvent = await this.eventRepo.updateEvent(id, updateEventData);
+    await this.eventRepo.updateEvent(id, updateEventData);
+    const updatedEvent = await this.eventRepo.findOneBy({ id });
     return updatedEvent;
   }
 
