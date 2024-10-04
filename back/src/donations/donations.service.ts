@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDonationDto } from './dto/create-donation.dto';
-import { UpdateDonationDto } from './dto/update-donation.dto';
 import { DonationsRepository } from './donations.repository';
-import { Donation } from './entities/donation.entity';
+import { status } from 'src/common/enum/status.enum';
 
 @Injectable()
 export class DonationsService {
@@ -14,23 +12,14 @@ export class DonationsService {
     return await this.donationsRepo.save(newDonation);
   }
 
-  create(params) {
-    return this.createDonation(params);
-  }
-
-  findAll() {
-    return `This action returns all donations`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} donation`;
-  }
-
-  update(id: number, updateDonationDto: UpdateDonationDto) {
-    return `This action updates a #${id} donation`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} donation`;
+  async updateDonation(params: { id: string; status: status }) {
+    const donation = this.donationsRepo.findOneBy({ id: params.id });
+    if (!donation) throw new Error('This action is not allowed');
+    await this.donationsRepo.update(
+      { id: params.id },
+      { status: params.status },
+    );
+    return await this.donationsRepo.findOneBy({ id: params.id });
+    //return {ok:true};
   }
 }

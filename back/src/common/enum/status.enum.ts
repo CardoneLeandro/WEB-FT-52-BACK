@@ -4,4 +4,5 @@ export enum status {
   PENDING = 'pending',
   BANNED = 'banned',
   INACTIVE = 'inactive',
+  REJECTED = 'rejected',
 }
