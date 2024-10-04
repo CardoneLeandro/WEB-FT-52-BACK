@@ -119,6 +119,97 @@ const eventSeeder = [
       'https://colbifficartagena.edu.co/es/wp-content/uploads/2022/04/3-scaled.jpg',
     ],
   },
+  {
+    title: 'Encuentro de Coros Parroquiales',
+    description: 'Una reunión para compartir y disfrutar de los coros de las parroquias locales.',
+    eventDate: '2023-05-12',
+    eventLocation: 'Capilla San José',
+    price: 300,
+    stock: 45,
+    images: [
+      'https://unam.edu.ar/images/2023/septiembre/encuentros_corales.png',
+    ],
+    status: 'inactive',
+    highlight: true
+  },
+  {
+    title: 'Torneo de Fútbol Parroquial',
+    description: 'Competencia de fútbol entre las comunidades parroquiales de la región.',
+    eventDate: '2024-04-10',
+    eventLocation: 'Estadio Municipal',
+    price: 0,
+    stock: 200,
+    images: [
+      'https://fmella.com.ar/wp-content/uploads/2023/10/campeones-tapa.jpg',
+    ],
+    status: 'inactive',
+    highlight: true
+  },
+  {
+    title: 'Taller de Iconografía',
+    description: 'Aprende sobre el arte de los íconos religiosos y su significado espiritual.',
+    eventDate: '2023-09-07',
+    eventLocation: 'Salón Cultural',
+    price: 1500,
+    stock: 20,
+    images: [
+      'https://www.religionenlibertad.com/images/carpeta_gestor/archivos/2021/04/23/ICONOS_INTERIOR_1200_675.jpg?r=9',
+    ],
+    status: 'inactive',
+    highlight: true
+  },
+  {
+    title: 'Retiro Familiar',
+    description: 'Un día para la familia en el que se fortalecerán los lazos y la fe.',
+    eventDate: '2024-05-15',
+    eventLocation: 'Centro de Retiros Nazaret',
+    price: 1200,
+    stock: 60,
+    images: [
+      'https://www.aciprensa.com/imagespp/Cruz-por-que-ir-a-un-retiro-Shutterstock-21032023.jpg',
+    ],
+    status: 'inactive',
+    highlight: true
+  },
+  {
+    title: 'Charla sobre Ecología y Fe',
+    description: 'Reflexión sobre la responsabilidad ambiental desde una perspectiva religiosa.',
+    eventDate: '2023-08-19',
+    eventLocation: 'Auditorio San Francisco',
+    price: 500,
+    stock: 80,
+    images: [
+      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh0wezSj4eW5NUKQIfIZUpOBVNgFJKpG8PPgCY3jO0ZC28nwhrIJy2PnttDVHBk8L8h5JqgV3JRZf7ilW2wJXqIjaBAVSZwn57y9mloHSVsbDDSRFARVJQsz5p1muz_U5NOk24anR4HA-0z/s600/dibu-14-septiembre-08-color.jpg',
+    ],
+    status: 'inactive',
+    highlight: true
+  },
+  {
+    title: 'Encuentro Interparroquial de Jóvenes',
+    description: 'Un espacio para compartir experiencias de fe y crecimiento personal entre jóvenes de distintas parroquias.',
+    eventDate: '2025-02-11',
+    eventLocation: 'Centro Deportivo La Esperanza',
+    price: 900,
+    stock: 150,
+    images: [
+      'https://www.diocesismalaga.es/cms/media/articulos/articulos-232283.jpg',
+    ],
+    status: 'active',
+    highlight: true
+  },
+  {
+    title: 'Concierto de Alabanza',
+    description: 'Una noche de música y oración para alabar a Dios a través de canciones.',
+    eventDate: '2025-07-30',
+    eventLocation: 'Parque de la Ciudad',
+    price: 1000,
+    stock: 300,
+    images: [
+      'https://st4.depositphotos.com/18365422/20615/i/450/depositphotos_206151796-stock-photo-church-worship-concept-christians-raising.jpg',
+    ],
+    status: 'active',
+    highlight: true
+  }
 ];
 
 export default eventSeeder;
