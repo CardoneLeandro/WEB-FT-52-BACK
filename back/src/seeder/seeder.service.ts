@@ -5,6 +5,7 @@ import { UserRole } from 'src/common/enum/userRole.enum';
 import { ProductsRepository } from 'src/products/products.repository';
 import { EventsRepository } from 'src/events/events.repository';
 import { AuthService } from 'src/auth/auth.service';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class SeederService {
@@ -13,7 +14,7 @@ export class SeederService {
     private readonly userRepo: UsersRepository,
     private readonly productRepo: ProductsRepository,
     private readonly eventRepo: EventsRepository,
-    private readonly authService: AuthService
+    private readonly userService: UsersService
   ) {}
 
   async superAdmin() {
@@ -68,7 +69,7 @@ export class SeederService {
         continue;
       }
       const newUser = {...user};
-      await this.authService.createNewUser(newUser)
+      await this.userService.createNewUser(newUser)
     }
   }
 }
