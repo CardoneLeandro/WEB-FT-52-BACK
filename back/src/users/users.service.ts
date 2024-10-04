@@ -34,45 +34,17 @@ export class UsersService {
   //-------------------------------------------------------------------------------
 
   async findAll(
-    page: number,
-    limit: number,
     sortBy: string = 'createDate',
-    order: 'ASC' | 'DESC' = 'ASC',
-    stat: status | 'all' = status.ACTIVE,
+    order: 'ASC' | 'DESC' = 'ASC'
   ) {
     const validSortFields = ['price', 'title', 'updateDate'];
     if (!validSortFields.includes(sortBy)) {
       throw new Error(`Invalid sort field: ${sortBy}`);
     }
 
-    const [users, totalElements] =
-      stat === 'all'
-        ? await this.userRepo.findAndCountUsers(page, limit, sortBy, order)
-        : await this.userRepo.findAndCountUsers(
-            page,
-            limit,
-            sortBy,
-            order,
-            stat,
-          );
-
-    const totalPages = Math.ceil(totalElements / Number(limit));
-    const hasPrevPage = Number(page) > 1;
-    const hasNextPage = Number(page) < totalPages;
-    const prevPage = hasPrevPage ? Number(page) - 1 : null;
-    const nextPage = hasNextPage ? Number(page) + 1 : null;
-
-    return {
-      users,
-      totalElements,
-      page,
-      limit,
-      totalPages,
-      hasPrevPage,
-      hasNextPage,
-      prevPage,
-      nextPage,
-    };
+    const users = await this.userRepo.findUsers(sortBy, order)
+    
+    return  users
   }
 
   //-------------------------------------------------------------------------------
