@@ -25,12 +25,9 @@ export class UsersController {
       'Ruta para obtener todos los usuarios. Por defecto se devuelve 1 página con 5 usuarios ordenados por fecha de actualización',
   })
   findAll(
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 5,
     @Query('sortBy') sortBy: string = 'updateDate',
-    @Query('order') order: 'ASC' | 'DESC' = 'DESC',
-    @Query('status') stat: status | 'all' = status.ACTIVE,
+    @Query('order') order: 'ASC' | 'DESC' = 'DESC'
   ) {
-    return this.usersService.findAll(page, limit, sortBy, order, stat);
+    return this.usersService.findAll(sortBy, order);
   }
 }

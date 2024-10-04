@@ -24,17 +24,11 @@ export class UsersRepository extends Repository<User> {
     });
   }
 
-  async findAndCountUsers(
-    page: number,
-    limit: number,
+  async findUsers(
     sortBy: string,
     order: 'ASC' | 'DESC',
-    stat?: status,
   ) {
-    return await this.findAndCount({
-      skip: (page - 1) * limit,
-      take: limit,
-      where: { status: stat },
+    return await this.find({
       order: {
         [sortBy]: order,
       },
