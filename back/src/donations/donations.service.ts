@@ -8,8 +8,8 @@ import { Donation } from './entities/donation.entity';
 export class DonationsService {
   constructor(private readonly donationsRepo: DonationsRepository) {}
 
-  async createDonation({ creator, title, amount }) {
-    const parseParams = { user: creator, title, amount };
+  async createDonation({ creator, title, amount, status }) {
+    const parseParams = { user: creator, title, amount, status };
     const newDonation = this.donationsRepo.create(parseParams);
     return await this.donationsRepo.save(newDonation);
   }

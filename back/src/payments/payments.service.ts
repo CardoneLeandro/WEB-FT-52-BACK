@@ -21,6 +21,7 @@ export class PaymentsService {
     private readonly userInfoRepo: UserInformationRepository,
     private readonly dSource: DataSource,
     private readonly mailerService: MailerService,
+    private readonly donationsRepo: DonationsRepository,
   ) {}
 
   async newDonation(params) {
@@ -38,14 +39,15 @@ export class PaymentsService {
         where: { id: params.creator },
         relations: { user: true },
       });
-      if (params.status === status.ACTIVE) {await this.mailerService.sendEmailDonation({
-        name: user.user.name,
-        email: user.user.email,
-        amount: newDonation.amount,
-      });}
-      return await this.userInfoRepo.findOne({
-        where: { id: params.creator },
-        relations: ['donations'],
+      if (params.status === status.ACTIVE) {
+        await this.mailerService.sendEmailDonation({
+          name: user.user.name,
+          email: user.user.email,
+          amount: newDonation.amount,
+        });
+      }
+      return await this.donationsRepo.findOne({
+        where: { id: newDonation.id },
       });
     });
   }

@@ -34,10 +34,10 @@ export class PaymentsController {
   @UsePipes(new DTOValidationPipe())
   async payDonationSuccess(@Body() params: CreateDonationDto) {
     try {
-      const parseParams = {status: status.ACTIVE, ...params}
-      return await this.paymentsService.newDonation(params);
+      const parseParams = { status: status.ACTIVE, ...params };
+      return await this.paymentsService.newDonation(parseParams);
     } catch (e) {
-      throw new BadRequestException(e.error.message)
+      throw new BadRequestException(e.message);
     }
   }
   @Post('pay-donations/pending')
@@ -46,11 +46,10 @@ export class PaymentsController {
   @UsePipes(new DTOValidationPipe())
   async payDonationPending(@Body() params: CreateDonationDto) {
     try {
-      const parseParams = {status: status.PENDING, ...params}
-      return await this.paymentsService.newDonation(params);
+      const parseParams = { status: status.PENDING, ...params };
+      return await this.paymentsService.newDonation(parseParams);
     } catch (e) {
-      throw new BadRequestException(e.error.message)
+      throw new BadRequestException(e.message);
     }
   }
-  
 }

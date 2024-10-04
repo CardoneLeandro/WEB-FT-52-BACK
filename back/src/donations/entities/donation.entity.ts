@@ -35,7 +35,7 @@ export class Donation {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   date: Date;
 
-  @Column({ type: 'enum', enum: status, default: status.ACTIVE })
+  @Column({ type: 'enum', enum: status })
   status: status;
 
   @Column({ type: 'integer', nullable: false })

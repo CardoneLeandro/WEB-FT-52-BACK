@@ -171,23 +171,20 @@ export class AuthController {
     }
   }
 
-
   //CAMBIA EL ESTADO DE UNA DONACION DE PENDING A ACTIVE O INACTIVE
   @Patch('payment/donation/confirm/:id')
   async confirmDonation(@Param('id') id: string) {
-  try {
-    
-  } catch (e) {
-    throw new BadRequestException(e.message);
-  }    
+    try {
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
-  
+
   @Patch('payment/donation/reject/:id')
   async rejectDonation(@Param('id') id: string) {
-  try {
-    
-  } catch (e) {
-    throw new BadRequestException(e.message);
-  }    
+    try {
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 }
