@@ -14,6 +14,8 @@ import { MailerService } from 'src/mailer/mailer.service';
 import { EventsService } from 'src/events/events.service';
 import { EventsRepository } from 'src/events/events.repository';
 import { EventAssistantsRepository } from 'src/events/event-assistants.repository';
+import { DonationsService } from 'src/donations/donations.service';
+import { DonationsRepository } from 'src/donations/donations.repository';
 
 @Module({
   controllers: [AuthController],
@@ -28,6 +30,8 @@ import { EventAssistantsRepository } from 'src/events/event-assistants.repositor
     EventsService,
     EventsRepository,
     EventAssistantsRepository,
+    DonationsService,
+    DonationsRepository,
   ],
   imports: [
     ConfigModule.forRoot({
