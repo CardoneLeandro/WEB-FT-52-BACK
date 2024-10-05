@@ -16,7 +16,7 @@ import {
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
 import { IsUUIDPipe } from 'src/common/pipes/isUUID.pipe';
 import { ParseEventDataInterceptor } from 'src/security/interceptors/parse-event-data.interceptor';
@@ -104,6 +104,12 @@ export class EventsController {
   @ApiOperation({
     summary:
       'Ruta para actualizar el estado de asistencia de un usuario a un evento',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'El CreatorID del evento al que se quiere actualizar la asistencia',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',  // Ejemplo de un UUID
   })
   async updateAttendanceStatus(
     @Param('id', ParseUUIDPipe) id: string,
