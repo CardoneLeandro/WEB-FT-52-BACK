@@ -16,7 +16,7 @@ import {
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
 import { IsUUIDPipe } from 'src/common/pipes/isUUID.pipe';
 import { ParseEventDataInterceptor } from 'src/security/interceptors/parse-event-data.interceptor';
@@ -47,6 +47,13 @@ export class EventsController {
     summary:
       'Ruta para la obtención de todos los eventos creados. Por defecto se devuelve 1 pagina con 9 eventos ordenados por fecha de creación de más reciente a más antiguo',
   })
+  @ApiQuery({ name: 'page', required: false, example: 1, description: 'Número de página' })
+  @ApiQuery({ name: 'limit', required: false, example: 5, description: 'Cantidad de eventos por página' })
+  @ApiQuery({ name: 'sortBy', required: false, example: 'createDate', description: 'Campo por el que se ordenarán los eventos' })
+  @ApiQuery({ name: 'order', required: false, enum: ['ASC', 'DESC'], example: 'DESC', description: 'Orden de los resultados (ascendente o descendente)' })
+  @ApiQuery({ name: 'month', required: false, example: 'all', description: 'Filtrar eventos por mes (por defecto todos los meses)' })
+  @ApiQuery({ name: 'year', required: false, example: 2024, description: 'Filtrar eventos por año' })
+  @ApiQuery({ name: 'title', required: false, example: '', description: 'Filtrar eventos por título' })
   async findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 5,
