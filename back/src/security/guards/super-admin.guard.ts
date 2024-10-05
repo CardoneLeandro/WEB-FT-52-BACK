@@ -36,7 +36,9 @@ export class RolesGuard implements CanActivate {
       const decodedToken = this.jwtService.verify(token) as DecodedToken;
 
       if (decodedToken.role !== UserRole.SUPERADMIN) {
-        throw new ForbiddenException('You do not have permission to access this resource');
+        throw new ForbiddenException(
+          'You do not have permission to access this resource',
+        );
       }
 
       return true;
@@ -44,4 +46,4 @@ export class RolesGuard implements CanActivate {
       throw new ForbiddenException('Invalid or expired token');
     }
   }
-  }
+}

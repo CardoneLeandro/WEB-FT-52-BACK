@@ -67,7 +67,6 @@ export class AuthService {
       }
     }
     return await this.userRepo.getUser({ where: { id } });
-    
   }
   async getOne(id) {
     return await this.infoRepo.findOneUser(id);

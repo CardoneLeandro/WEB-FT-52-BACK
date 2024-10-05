@@ -94,13 +94,11 @@ export class AuthController {
   @UsePipes(new DTOValidationPipe())
   async create(@Body() createEventDto: CreateEventDto) {
     try {
-      
       return await this.eventService.create(createEventDto);
     } catch (e) {
       throw new BadRequestException(e.message);
     }
   }
-
 
   // ruta para editar eventos, retornar ok:true como response
   @Post('events/edit/:id')

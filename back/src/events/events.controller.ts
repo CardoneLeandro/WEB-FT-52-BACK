@@ -30,7 +30,6 @@ export class EventsController {
     private readonly eventRepo: EventsRepository,
   ) {}
 
-
   @Get()
   @ApiOperation({
     summary:

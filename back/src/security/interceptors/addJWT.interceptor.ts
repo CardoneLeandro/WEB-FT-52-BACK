@@ -24,7 +24,7 @@ export class addJWTInterceptor implements NestInterceptor {
           return { user: result, token };
         } catch (error) {
           throw new Error('Error al generar el token');
-      }
+        }
       }),
     );
   }
