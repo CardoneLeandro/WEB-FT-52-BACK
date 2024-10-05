@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -10,13 +8,10 @@ import { UserRole } from 'src/common/enum/userRole.enum';
 import { UsersService } from 'src/users/users.service';
 import { SUPERADMIN } from 'config/super-admin.config';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
-import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import { status } from 'src/common/enum/status.enum';
 import { MailerService } from 'src/mailer/mailer.service';
-import { encriptPasswordCompare } from 'src/common/utils/encript-passwordCompare.util';
-import { encriptProviderAccIdCompare } from 'src/common/utils/encript-providerAccIdCompare.util';
 import * as bcrypt from 'bcrypt';
-import { ChildEntity, DataSource } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { EventsRepository } from 'src/events/events.repository';
 import { Event } from 'src/events/entity/events.entity';
 

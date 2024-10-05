@@ -1,9 +1,7 @@
 import {
   BadRequestException,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
 import { User } from './entities/user.entity';
 import { UserInformationService } from 'src/user-information/user-information.service';
@@ -168,7 +166,11 @@ export class UsersService {
   //-------------------------------------------------------------------------------
 
   async findAll(sortBy, order) {
-    return await this.userRepo.findUsers(sortBy, order);
+    const allUsers:User[] = await this.userRepo.findUsers(sortBy, order);
+    return allUsers.map((user) =>{
+      const {userInformation, password, providerAccountId, address, phone, updateDate, ...rest} = user
+      return rest
+    })
   }
 
   //-------------------------------------------------------------------------------
