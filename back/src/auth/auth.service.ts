@@ -71,8 +71,8 @@ export class AuthService {
         await this.userRepo.update(id, { status: status.ACTIVE });
       }
     }
-    const updatedUser = await this.userRepo.findOne({ where: { id } });
-    return updatedUser;
+    return await this.userRepo.getUser({ where: { id } });
+    
   }
   async getOne(id) {
     return await this.infoRepo.findOneUser(id);
