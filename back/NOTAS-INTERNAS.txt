@@ -1,0 +1,18 @@
+consultar con el front,
+
+LAS VISTAS VAN A ESTAR BLOQUEADAS POR EL ROL QUE LE ENVIA BACK
+PARA LAS PETICIONES ENVIA EL TOKEN.
+ESTE TOKEN SEBE CONTENER EL ROL, EL CREATOR ID Y EL ID
+
+IMPLEMENTAR GUARDIAN QUE BUSQUE AL USUARIO EN BASE DE DATOS, 
+VERIFIQUE LOS PARAMETROS CONTENIDOS EN EL TOKEN.
+
+
+
+controlar todas las rutas que modifican entidades.
+retornar la entidad una vez modificada y controlar la modificacion
+recargar las rutas que modifican una entidad una vez tener la respuesta.
+
+
+en este caso se tendra que regargar la pagina, y esta misma volver a solicitar
+

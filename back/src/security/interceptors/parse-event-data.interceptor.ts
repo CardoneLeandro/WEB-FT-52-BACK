@@ -14,10 +14,10 @@ export class ParseEventDataInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     // se extrae la peticion HTTP
     const request = context.switchToHttp().getRequest();
-    // si la propiedad 'phone' existe se parcea a Number para que coincida con el DTO
+    // si la propiedad 'price' existe se parcea a Number para que coincida con el DTO
     if (request.body && request.body.price) {
       // se modifica su valor
-      request.body.price = Number(request.body.phone);
+      request.body.price = Number(request.body.price);
     }
     if (request.body && request.body.stock) {
       // se modifica su valor

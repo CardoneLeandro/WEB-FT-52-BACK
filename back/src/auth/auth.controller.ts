@@ -9,12 +9,8 @@ import {
   UsePipes,
   UseInterceptors,
   UseGuards,
-  Res,
-  NotFoundException,
-  HttpException,
-  HttpStatus,
-  Query,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
@@ -32,7 +28,6 @@ import { status } from 'src/common/enum/status.enum';
 import { UUID } from 'crypto';
 import { EventsService } from 'src/events/events.service';
 import { UpdateEventDto } from 'src/events/dto/update-event.dto';
-import { IsUUID } from 'class-validator';
 import { DonationsService } from 'src/donations/donations.service';
 @ApiTags('Auth')
 @Controller('auth')
@@ -42,75 +37,7 @@ export class AuthController {
     private readonly eventService: EventsService,
     private readonly donationService: DonationsService,
   ) {}
-
-  @Post('auth0/signup')
-  @ApiOperation({
-    summary: 'Ruta para el SignUp con cuentas de Google usando Auth0',
-  })
-  @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
-  @UsePipes(new DTOValidationPipe())
-  async signup(@Body() auth0Data: Auth0LogInDto) {
-    try {
-      return await this.authService.logginWithAuth0(auth0Data);
-    } catch (e) {
-      throw new BadRequestException(e.message);
-    }
-  }
-
-  @Post('auth0/completeregister')
-  @ApiOperation({
-    summary:
-      'Ruta para completar los datos del usuario una vez que se haya registrado con Google usando Auth0',
-  })
-  @UseInterceptors(
-    CompareAndRemovePasswordInterceptor,
-    StringToNumberInterceptor,
-  ) //INTERCEPTOPS APLICADOS AL REQUEST
-  @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor) // INTERCEPTORS APLICADOS AL RESPONSE
-  @UsePipes(new DTOValidationPipe())
-  async completeRegister(@Body() params: CompleteRegisterAuth0Dto) {
-    try {
-      return await this.authService.completeRegister(params);
-    } catch (e) {
-      throw new BadRequestException(e.message);
-    }
-  }
-
-  @Post('signup')
-  @ApiOperation({
-    summary: 'Ruta para el SignUp usando el formulario dado por la aplicación',
-  })
-  @UsePipes(new DTOValidationPipe())
-  @UseGuards()
-  @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
-  @UseInterceptors(
-    CompareAndRemovePasswordInterceptor,
-    StringToNumberInterceptor,
-  )
-  async signupUser(@Body() params: SignUpDto) {
-    try {
-      const parseParams = { status: status.PARTIALACTIVE, ...params };
-      return await this.authService.createNewUser(parseParams);
-    } catch (e) {
-      throw new BadRequestException(e.message);
-    }
-  }
-
-  @Post('login')
-  @ApiOperation({
-    summary:
-      'Ruta para el LogIn usando los datos dado por el formulario de la aplicación',
-  })
-  @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
-  @UsePipes(new DTOValidationPipe())
-  async login(@Body() params: LoginUserDto): Promise<any> {
-    try {
-      return await this.authService.loginUser(params);
-    } catch (e) {
-      throw new BadRequestException(e.message);
-    }
-  }
-
+  // retornar ok:true como response para recargar y volver a solicitar la lista de usuarios
   @Patch('user/ban/:id')
   @ApiOperation({
     summary:
@@ -124,6 +51,7 @@ export class AuthController {
     }
   }
 
+  // consultar por esta ruta! que funcionalidad esta ?
   @Get('user/get/one/:id')
   @ApiOperation({
     summary:
@@ -137,6 +65,23 @@ export class AuthController {
     }
   }
 
+  @Get('user/get/all/:id')
+  @ApiOperation({
+    summary:
+      'Ruta para obtener todos los usuarios. Por defecto se devuelve 1 página con 5 usuarios ordenados por fecha de actualización',
+  })
+  findAll(
+    @Query('sortBy') sortBy: string = 'updateDate',
+    @Query('order') order: 'ASC' | 'DESC' = 'DESC',
+  ) {
+    try {
+      return this.authService.getAllUsers(sortBy, order);
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
+
+  // retornar ok:true como response para recargar y volver a solicitar la lista de usuarios
   @Post('users/role/administrator/:id')
   async makeAdmin(@Param('id') id: string) {
     try {
@@ -146,6 +91,7 @@ export class AuthController {
     }
   }
 
+  // ruta para editar eventos, retornar ok:true como response
   @Post('events/edit/:id')
   @UsePipes(new DTOValidationPipe())
   @ApiOperation({
@@ -160,6 +106,7 @@ export class AuthController {
     }
   }
 
+  // ruta para destacar eventos, retornar ok:true como response
   @Post('events/highlight/:id')
   @UsePipes(new DTOValidationPipe())
   @ApiOperation({
@@ -174,7 +121,8 @@ export class AuthController {
     }
   }
 
-  //CAMBIA EL ESTADO DE UNA DONACION DE PENDING A ACTIVE O REJECTED
+  // CAMBIA EL ESTADO DE UNA DONACION DE PENDING A ACTIVE O REJECTED
+  // retornar ok:true como response para recargar y volver a solicitar la lista de donaciones
   @Patch('payment/donation/confirm/:id')
   async cofirmDonation(@Param('id', ParseUUIDPipe) id: string) {
     try {

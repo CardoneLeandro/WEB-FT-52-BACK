@@ -14,7 +14,7 @@ export class SeederService {
     private readonly userRepo: UsersRepository,
     private readonly productRepo: ProductsRepository,
     private readonly eventRepo: EventsRepository,
-    private readonly userService: UsersService
+    private readonly userService: UsersService,
   ) {}
 
   async superAdmin() {
@@ -59,17 +59,17 @@ export class SeederService {
     return;
   }
 
-  async addUserSeeder(seed){
-    for (const user of seed){
+  async addUserSeeder(seed) {
+    for (const user of seed) {
       const exsitingUser = await this.userRepo.findOne({
-        where: {email: user.email}
+        where: { email: user.email },
       });
-      if(exsitingUser){
+      if (exsitingUser) {
         console.log(`User with email ${user.email} already exist`);
         continue;
       }
-      const newUser = {...user};
-      await this.userService.createNewUser(newUser)
+      const newUser = { ...user };
+      await this.userService.createNewUser(newUser);
     }
   }
 }
