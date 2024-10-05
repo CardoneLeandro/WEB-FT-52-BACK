@@ -107,7 +107,7 @@ export class EventsController {
   })
   @ApiParam({
     name: 'id',
-    description: 'El CreatorID del evento al que se quiere actualizar la asistencia',
+    description: 'El ID del evento al que se quiere actualizar la asistencia',
     type: String,
     example: '123e4567-e89b-12d3-a456-426614174000',  // Ejemplo de un UUID
   })

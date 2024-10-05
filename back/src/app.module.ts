@@ -6,7 +6,6 @@ import { ProductsModule } from './products/products.module';
 import { PostsModule } from './posts/posts.module';
 import { EventsModule } from './events/events.module';
 import { UserInformationModule } from './user-information/user-information.module';
-import { CommentsModule } from './comments/comments.module';
 import { PaymentsModule } from './payments/payments.module';
 import { DonationsModule } from './donations/donations.module';
 import { AuthModule } from './auth/auth.module';
@@ -34,7 +33,6 @@ import { MailerModule } from './mailer/mailer.module';
     UserInformationModule,
     PostsModule,
     EventsModule,
-    CommentsModule,
     ProductsModule,
     PaymentsModule,
     DonationsModule,
