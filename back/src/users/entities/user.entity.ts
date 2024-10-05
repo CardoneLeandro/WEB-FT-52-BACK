@@ -31,7 +31,7 @@ export class User {
   @Column({ type: 'varchar', length: 80, nullable: true })
   providerAccountId: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: true })
+  @Column({ type: 'varchar', length: 500, nullable: true })
   image: string;
 
   @Column({ type: 'varchar', length: 100, nullable: true })

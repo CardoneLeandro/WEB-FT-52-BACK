@@ -5,7 +5,7 @@ import { UUID } from 'crypto';
 export class CreateDonationDto {
   @ApiProperty({
     description: 'Id de la tabla de información del creador de la donación',
-    example: '102036134540783805687',
+    example: '',
     type: String,
   })
   @IsUUID()
