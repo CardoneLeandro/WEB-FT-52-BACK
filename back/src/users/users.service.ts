@@ -11,40 +11,164 @@ import { DataSource } from 'typeorm';
 import { UserRole } from 'src/common/enum/userRole.enum';
 import { status } from 'src/common/enum/status.enum';
 import { CompleteRegisterAuth0Dto } from 'src/auth/dto/complete-register-auth0.dto';
-
+import * as bcrypt from 'bcrypt';
+import { MailerService } from 'src/mailer/mailer.service';
+import { UserInformationRepository } from 'src/user-information/user-information.repository';
+import { encriptProviderAccIdCompare } from 'src/common/utils/encript-providerAccIdCompare.util';
+import { encriptPasswordCompare } from 'src/common/utils/encript-passwordCompare.util';
 @Injectable()
 export class UsersService {
   constructor(
     private readonly dsource: DataSource,
     private readonly userRepo: UsersRepository,
-    private readonly userInfoservice: UserInformationService,
+    private readonly infoService: UserInformationService,
+    private readonly infoRepo: UserInformationRepository,
+    private readonly mailerService: MailerService,
   ) {}
+  // =====================> LOGGIN CON AUTH0 <=======================
+
+  async logginWithAuth0(params) {
+    // SE CREA
+    const existingUser = await this.foundExistingUser(params);
+    if (existingUser === null) {
+      const { providerAccountId, ...rest } = params;
+      const hashedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
+      const createUserData = {
+        status: status.PENDING,
+        providerAccountId: hashedProviderAccId,
+        ...rest,
+      };
+      const newUser = await this.createNewUser(createUserData);
+      return await this.infoRepo.loggedUser(newUser.id);
+    }
+    // SE RETORNA EL USUARIO PENDIENTE
+    if (existingUser.status === status.PENDING) {
+      if (
+        (await encriptProviderAccIdCompare(
+          existingUser,
+          params.providerAccountId,
+        )) === false
+      ) {
+        throw new BadRequestException('Invalid Credentials');
+      }
+      return await this.infoRepo.loggedUser(existingUser.id);
+    }
+    //  SE AGREGA EL PAID + IMAGEN
+    if (existingUser.status === status.PARTIALACTIVE) {
+      const hashedProviderAccId = bcrypt.hashSync(params.providerAccountId, 10);
+      await this.userRepo.update(existingUser.id, {
+        status: status.ACTIVE,
+        providerAccountId: hashedProviderAccId,
+        image: params.image,
+      });
+      return await this.infoRepo.loggedUser(existingUser.id);
+    }
+    // SE INICIA SESION
+    if (existingUser.status === status.ACTIVE) {
+      if (
+        (await encriptProviderAccIdCompare(
+          existingUser,
+          params.providerAccountId,
+        )) === false
+      ) {
+        throw new BadRequestException('Invalid Credentials');
+      }
+      return await this.infoRepo.loggedUser(existingUser.id);
+    }
+  }
+
+  // =================> COMPLETE REGISTER AUTH0 <====================
+
+  async completeRegister(params) {
+    const incompleteUser = await this.userRepo.findOneBy({
+      email: params.email,
+    });
+    if (!incompleteUser) {
+      throw new BadRequestException('User not found');
+    }
+    if (incompleteUser.status !== status.PENDING) {
+      throw new BadRequestException('User register is allready Completed');
+    }
+    await this.mailerService.sendEmailWelcome({
+      name: incompleteUser.name,
+      email: incompleteUser.email,
+    });
+
+    if (
+      (await encriptProviderAccIdCompare(
+        incompleteUser,
+        params.providerAccountId,
+      )) === false
+    ) {
+      throw new BadRequestException('Invalid Credentials');
+    }
+    const { providerAccountId, email, ...updateParams } = params;
+
+    const userData = {
+      status: status.ACTIVE,
+      ...updateParams,
+    };
+
+    await this.updateUserInformation(incompleteUser, userData);
+
+    return await this.infoRepo.loggedUser(incompleteUser.id);
+  }
+
+  // ========================> LOGIN <========================
+
+  async loginUser(params) {
+    const existingUser = await this.foundExistingUser(params);
+    if (existingUser === null) {
+      throw new BadRequestException('Invalid Credentials');
+    }
+
+    if (existingUser.status === status.PENDING) {
+      return { redirect: true };
+    }
+
+    if (
+      existingUser.status === status.ACTIVE ||
+      existingUser.status === status.PARTIALACTIVE
+    ) {
+      if (
+        (await encriptPasswordCompare(existingUser, params.password)) === false
+      ) {
+        throw new BadRequestException('Invalid Credentials');
+      }
+
+      return await this.infoRepo.loggedUser(existingUser.id);
+    }
+  }
 
   //-------------------------------------------------------------------------------
 
-  async createNewUser(params): Promise<Partial<User>> {
+  async createNewUser(params) {
+    const existingUser = await this.foundExistingUser(params);
+    if (existingUser) {
+      throw new BadRequestException('Email already in use');
+    }
+
+    const newUser = await this.createUser(params);
+    await this.mailerService.sendEmailWelcome({
+      name: newUser.name,
+      email: newUser.email,
+    });
+    return await this.infoRepo.loggedUser(newUser.id);
+  }
+
+  async createUser(params): Promise<Partial<User>> {
     return await this.dsource.transaction(async (manager) => {
       const createdUser = this.userRepo.createUser(params);
       const savedUser = await this.userRepo.saveUser(createdUser);
-      await this.userInfoservice.createUserInformationTable(savedUser, manager);
+      await this.infoService.createUserInformationTable(savedUser, manager);
       return savedUser;
     });
   }
 
   //-------------------------------------------------------------------------------
 
-  async findAll(
-    sortBy: string = 'createDate',
-    order: 'ASC' | 'DESC' = 'ASC'
-  ) {
-    const validSortFields = ['price', 'title', 'updateDate'];
-    if (!validSortFields.includes(sortBy)) {
-      throw new Error(`Invalid sort field: ${sortBy}`);
-    }
-
-    const users = await this.userRepo.findUsers(sortBy, order)
-    
-    return  users
+  async findAll(sortBy, order) {
+    return await this.userRepo.findUsers(sortBy, order);
   }
 
   //-------------------------------------------------------------------------------

@@ -47,6 +47,6 @@ import { DonationsRepository } from 'src/donations/donations.repository';
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
-  exports: [AuthService],
+  exports: [AuthService, JsonWebTokenService],
 })
 export class AuthModule {}

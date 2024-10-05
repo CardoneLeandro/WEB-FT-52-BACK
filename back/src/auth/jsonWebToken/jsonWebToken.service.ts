@@ -14,8 +14,11 @@ export class JsonWebTokenService {
   //*     PARAMETROS PARA LA GENERACION DE JSON WEB TOKEN
   async generateJwt(user: any): Promise<string> {
     const payload = {
-      name: user.name,
-      sub: user.userId,
+      //! parametros para crear el JWT
+      //! con esto se puede implementar un guardian que busque en base de datos la
+      //! concordancia entre los datos del token y los datos la DB
+      name: user.creatorId,
+      sub: user.id,
       role: user.role, //! ==> INCLUCION DEL ROL
     };
     const secret = this.configService.get<string>('jwt.secret');
