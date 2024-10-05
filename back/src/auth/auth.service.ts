@@ -53,138 +53,6 @@ export class AuthService {
     return userAdminTable.userInformation.id;
   }
   //________________________
-
-  async logginWithAuth0(params) {
-    //------------------------------------------------------------------------------ SE CREA
-    const existingUser = await this.userService.foundExistingUser(params);
-    if (existingUser === null) {
-      const { providerAccountId, ...rest } = params;
-      const hashedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
-      const createUserData = {
-        status: status.PENDING,
-        providerAccountId: hashedProviderAccId,
-        ...rest,
-      };
-      const newUser = await this.userService.createNewUser(createUserData);
-      return await this.infoRepo.loggedUser(newUser.id);
-    }
-    //------------------------------------------------------------------------------ SE RETORNA EL USUARIO PENDIENTE
-    if (existingUser.status === status.PENDING) {
-      if (
-        (await encriptProviderAccIdCompare(
-          existingUser,
-          params.providerAccountId,
-        )) === false
-      ) {
-        throw new BadRequestException('Invalid Credentials');
-      }
-      return await this.infoRepo.loggedUser(existingUser.id);
-    }
-    //------------------------------------------------------------------------------  SE AGREGA EL PAID + IMAGEN
-    if (existingUser.status === status.PARTIALACTIVE) {
-      const hashedProviderAccId = bcrypt.hashSync(params.providerAccountId, 10);
-      await this.userRepo.update(existingUser.id, {
-        status: status.ACTIVE,
-        providerAccountId: hashedProviderAccId,
-        image: params.image,
-      });
-      return await this.infoRepo.loggedUser(existingUser.id);
-    }
-    //------------------------------------------------------------------------------  SE INICIA SESION
-    if (existingUser.status === status.ACTIVE) {
-      if (
-        (await encriptProviderAccIdCompare(
-          existingUser,
-          params.providerAccountId,
-        )) === false
-      ) {
-        throw new BadRequestException('Invalid Credentials');
-      }
-      return await this.infoRepo.loggedUser(existingUser.id);
-    }
-  }
-
-  async loginUser(params) {
-    const existingUser = await this.userService.foundExistingUser(params);
-    if (existingUser === null) {
-      throw new BadRequestException('Invalid Credentials');
-    }
-
-    if (existingUser.status === status.PENDING) {
-      return { redirect: true };
-    }
-
-    if (
-      existingUser.status === status.ACTIVE ||
-      existingUser.status === status.PARTIALACTIVE
-    ) {
-      if (
-        (await encriptPasswordCompare(existingUser, params.password)) === false
-      ) {
-        throw new BadRequestException('Invalid Credentials');
-      }
-
-      return await this.infoRepo.loggedUser(existingUser.id);
-    }
-  }
-
-  async signUp(params) {
-    const existingUser = await this.userRepo.findUserByEmail(params.email);
-    if (!existingUser) {
-      throw new BadRequestException('User not found');
-    }
-    return existingUser;
-  }
-
-  async completeRegister(params) {
-    const incompleteUser = await this.userRepo.findOneBy({
-      email: params.email,
-    });
-    if (!incompleteUser) {
-      throw new BadRequestException('User not found');
-    }
-    if (incompleteUser.status !== status.PENDING) {
-      throw new BadRequestException('User register is allready Completed');
-    }
-    await this.mailerService.sendEmailWelcome({
-      name: incompleteUser.name,
-      email: incompleteUser.email,
-    });
-
-    if (
-      (await encriptProviderAccIdCompare(
-        incompleteUser,
-        params.providerAccountId,
-      )) === false
-    ) {
-      throw new BadRequestException('Invalid Credentials');
-    }
-    const { providerAccountId, email, ...updateParams } = params;
-
-    const userData = {
-      status: status.ACTIVE,
-      ...updateParams,
-    };
-
-    await this.userService.updateUserInformation(incompleteUser, userData);
-
-    return await this.infoRepo.loggedUser(incompleteUser.id);
-  }
-
-  async createNewUser(params) {
-    const existingUser = await this.userService.foundExistingUser(params);
-    if (existingUser) {
-      throw new BadRequestException('Email already in use');
-    }
-
-    const newUser = await this.userService.createNewUser(params);
-    await this.mailerService.sendEmailWelcome({
-      name: newUser.name,
-      email: newUser.email,
-    });
-    return await this.infoRepo.loggedUser(newUser.id);
-  }
-
   async ban(id: string) {
     const foundUser = await this.userRepo.findOne({ where: { id } });
     if (!foundUser) throw new NotFoundException('User not found');
@@ -234,5 +102,16 @@ export class AuthService {
       throw new BadRequestException(`Event not found`);
     }
     return await this.eventRepo.highlightEvent(id, !event.highlight);
+  }
+
+  async getAllUsers(
+    sortBy: string = 'createDate',
+    order: 'ASC' | 'DESC' = 'ASC',
+  ) {
+    const validSortFields = ['price', 'title', 'updateDate'];
+    if (!validSortFields.includes(sortBy)) {
+      throw new Error(`Invalid sort field: ${sortBy}`);
+    }
+    return await this.userService.findAll(sortBy, order);
   }
 }

@@ -24,10 +24,7 @@ export class UsersRepository extends Repository<User> {
     });
   }
 
-  async findUsers(
-    sortBy: string,
-    order: 'ASC' | 'DESC',
-  ) {
+  async findUsers(sortBy: string, order: 'ASC' | 'DESC') {
     return await this.find({
       order: {
         [sortBy]: order,
