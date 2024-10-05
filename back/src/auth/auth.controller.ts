@@ -138,6 +138,10 @@ export class AuthController {
   }
 
   @Post('users/role/administrator/:id')
+  @ApiOperation({
+    summary:
+      'Ruta para cambiar el rol del usuario. Si es usuario normal, su rol pasa a ser Admin. Si es Admin, su rol pasa a ser User',
+  })
   async makeAdmin(@Param('id') id: string) {
     try {
       return await this.authService.roleChangeAdminUser(id);
@@ -176,6 +180,10 @@ export class AuthController {
 
   //CAMBIA EL ESTADO DE UNA DONACION DE PENDING A ACTIVE O REJECTED
   @Patch('payment/donation/confirm/:id')
+  @ApiOperation({
+    summary:
+      'Ruta para cambiar el estado de la donación a APPROVED. Se debe enviar el ID de la donación a querer editar por @Param',
+  })
   async cofirmDonation(@Param('id', ParseUUIDPipe) id: string) {
     try {
       return this.donationService.updateDonation({
@@ -188,6 +196,10 @@ export class AuthController {
   }
 
   @Patch('payment/donation/reject/:id')
+  @ApiOperation({
+    summary:
+      'Ruta para cambiar el estado de la donación a REJECTED. Se debe enviar el ID de la donación a querer editar por @Param',
+  })
   async rejectDonation(@Param('id', ParseUUIDPipe) id: string) {
     try {
       return this.donationService.updateDonation({
