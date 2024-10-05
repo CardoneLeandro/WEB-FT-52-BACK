@@ -39,8 +39,11 @@ export class Event {
   @Column({ type: 'timestamp', nullable: true })
   eventDate: Date;
 
-  @Column({ type: 'varchar', length: 100, nullable: true })
+  @Column({ type: 'varchar', length: 500, nullable: true })
   eventLocation: string;
+
+  @Column({type: 'varchar', length: 500, nullable: false})
+  eventAdress: string;
 
   @Column({ type: 'int', nullable: false })
   price: number;
