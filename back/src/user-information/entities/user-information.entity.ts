@@ -1,4 +1,3 @@
-import { Comment } from 'src/comments/entities/comments.entity';
 import { Donation } from 'src/donations/entities/donation.entity';
 import { EventAssistants } from 'src/events/entity/event-assistants.entity';
 import { Event } from 'src/events/entity/events.entity';
@@ -21,9 +20,6 @@ export class UserInformation {
 
   @OneToMany(() => Post, (post) => post.creator)
   posts: Post[];
-
-  @OneToMany(() => Comment, (comment) => comment.creator)
-  comments: Comment[];
 
   @OneToMany(() => Product, (product) => product.creator)
   products: Product[];

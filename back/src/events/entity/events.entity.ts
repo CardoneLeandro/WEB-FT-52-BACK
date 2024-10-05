@@ -1,4 +1,3 @@
-import { Comment } from 'src/comments/entities/comments.entity';
 import { status } from 'src/common/enum/status.enum';
 import { UserInformation } from 'src/user-information/entities/user-information.entity';
 import {
@@ -51,9 +50,6 @@ export class Event {
 
   @Column({ type: 'varchar', array: true, nullable: false })
   images: string[];
-
-  @OneToMany(() => Comment, (comment) => comment.event)
-  comments: Comment[];
 
   @OneToMany(() => EventAssistants, (eventAssistants) => eventAssistants.event)
   assistants: EventAssistants[];

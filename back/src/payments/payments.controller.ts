@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DonationsService } from 'src/donations/donations.service';
 import { CreateDonationDto } from 'src/donations/dto/create-donation.dto';
 import { StringToNumberInterceptor } from 'src/security/interceptors/string-toNumber.interceptor';
@@ -29,6 +29,10 @@ export class PaymentsController {
   ) {}
 
   @Post('pay-donations/success')
+  @ApiOperation({
+    summary:
+      'Ruta para guardar una donación que venga desde la página de "success" de Mercado Pago',
+  })
   @UseInterceptors(StringToNumberInterceptor)
   @UseInterceptors(DonationFormaterInterceptor)
   @UsePipes(new DTOValidationPipe())
@@ -41,6 +45,10 @@ export class PaymentsController {
     }
   }
   @Post('pay-donations/pending')
+  @ApiOperation({
+    summary:
+      'Ruta para guardar una donación que venga desde la página de "pending" de Mercado Pago',
+  })
   @UseInterceptors(StringToNumberInterceptor)
   @UseInterceptors(DonationFormaterInterceptor)
   @UsePipes(new DTOValidationPipe())
