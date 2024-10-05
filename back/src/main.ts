@@ -4,6 +4,7 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { swaggerConfig } from 'config/swagger.config';
 import { config as dotenvConfig } from 'dotenv';
 import { loggerGlobal } from './security/middlewares/logger.middleware';
+import { ValidationPipe } from '@nestjs/common';
 dotenvConfig({ path: './.env' });
 
 async function bootstrap() {
@@ -18,6 +19,7 @@ async function bootstrap() {
 
   const apiDocumentation = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('documentation', app, apiDocumentation);
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   const port = process.env.APP_PORT || 3000;
   await app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
