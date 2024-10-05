@@ -51,7 +51,7 @@ export class EventsController {
   @ApiQuery({ name: 'limit', required: false, example: 5, description: 'Cantidad de eventos por página' })
   @ApiQuery({ name: 'sortBy', required: false, example: 'createDate', description: 'Campo por el que se ordenarán los eventos' })
   @ApiQuery({ name: 'order', required: false, enum: ['ASC', 'DESC'], example: 'DESC', description: 'Orden de los resultados (ascendente o descendente)' })
-  @ApiQuery({ name: 'month', required: false, example: 'all', description: 'Filtrar eventos por mes (por defecto todos los meses)' })
+  @ApiQuery({ name: 'month', required: false, example: 'all', description: 'Filtrar eventos por mes (Si deseas todos los meses ingresa el Param "all")' })
   @ApiQuery({ name: 'year', required: false, example: 2024, description: 'Filtrar eventos por año' })
   @ApiQuery({ name: 'title', required: false, example: '', description: 'Filtrar eventos por título' })
   async findAll(

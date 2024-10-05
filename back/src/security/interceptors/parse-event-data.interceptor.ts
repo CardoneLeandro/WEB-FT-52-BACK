@@ -17,7 +17,7 @@ export class ParseEventDataInterceptor implements NestInterceptor {
     // si la propiedad 'phone' existe se parcea a Number para que coincida con el DTO
     if (request.body && request.body.price) {
       // se modifica su valor
-      request.body.price = Number(request.body.phone);
+      request.body.price = Number(request.body.price);
     }
     if (request.body && request.body.stock) {
       // se modifica su valor
