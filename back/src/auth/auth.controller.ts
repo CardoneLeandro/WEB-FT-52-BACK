@@ -65,10 +65,10 @@ export class AuthController {
     }
   }
 
-  @Get('user/get/all/:id')
+  @Get('user/get/all')
   @ApiOperation({
     summary:
-      'Ruta para obtener todos los usuarios. Por defecto se devuelve 1 página con 5 usuarios ordenados por fecha de actualización',
+      'Ruta para obtener todos los usuarios. Por defecto se devuelve los usuarios ordenados por updateDate de manera Descendente',
   })
   findAll(
     @Query('sortBy') sortBy: string = 'updateDate',
