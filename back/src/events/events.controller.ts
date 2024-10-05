@@ -21,6 +21,7 @@ import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
 import { IsUUIDPipe } from 'src/common/pipes/isUUID.pipe';
 import { ParseEventDataInterceptor } from 'src/security/interceptors/parse-event-data.interceptor';
 import { EventsRepository } from './events.repository';
+import { ConfirmAssistEventDto } from './dto/asistance-event.dts';
 
 @ApiTags('Events')
 @Controller('events')
@@ -106,7 +107,7 @@ export class EventsController {
   })
   async updateAttendanceStatus(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() user: any,
+    @Body() user: ConfirmAssistEventDto,
   ) {
     try {
       return await this.eventsService.updateAttendanceStatus({
