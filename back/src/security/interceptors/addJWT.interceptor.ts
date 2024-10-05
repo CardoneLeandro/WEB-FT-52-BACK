@@ -18,10 +18,13 @@ export class addJWTInterceptor implements NestInterceptor {
         if (result && result.redirect === true) {
           return result;
         }
-
-        const token = await this.jwtSv.generateJwt(result);
-        console.log('respuesta del interceptor', { user: result, token });
-        return { user: result, token };
+        try {
+          const token = await this.jwtSv.generateJwt(result);
+          console.log('respuesta del interceptor', { user: result, token });
+          return { user: result, token };
+        } catch (error) {
+          throw new Error('Error al generar el token');
+        }
       }),
     );
   }

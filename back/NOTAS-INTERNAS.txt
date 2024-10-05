@@ -16,3 +16,14 @@ recargar las rutas que modifican una entidad una vez tener la respuesta.
 
 en este caso se tendra que regargar la pagina, y esta misma volver a solicitar
 
+{
+    retornar en el inicio normal de sesion el rol del usuario
+    role: "user" - "admin" - "superadmin",
+}
+
+{
+    
+    para las consultas del administrador, 
+    retornar al usuario con el el rol y el status correspondiente
+
+}

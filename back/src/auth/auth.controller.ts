@@ -7,28 +7,21 @@ import {
   Param,
   BadRequestException,
   UsePipes,
-  UseInterceptors,
-  UseGuards,
   ParseUUIDPipe,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { LoginUserDto } from './dto/login-user.dto';
-import { Auth0LogInDto } from './dto/auth0-logIn.dto';
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
-import { addJWTInterceptor } from 'src/security/interceptors/addJWT.interceptor';
-import { RemovePropertiesInterceptor } from 'src/security/interceptors/remove-properties.interceptor';
-import { SignUpDto } from './dto/signUp-user.dto';
-import { CompleteRegisterAuth0Dto } from './dto/complete-register-auth0.dto';
-import { CompareAndRemovePasswordInterceptor } from 'src/security/interceptors/compare&remove-password.interceptor';
-import { StringToNumberInterceptor } from 'src/security/interceptors/string-toNumber.interceptor';
 import { status } from 'src/common/enum/status.enum';
 import { UUID } from 'crypto';
 import { EventsService } from 'src/events/events.service';
 import { UpdateEventDto } from 'src/events/dto/update-event.dto';
 import { DonationsService } from 'src/donations/donations.service';
+import { ParseEventDataInterceptor } from 'src/security/interceptors/parse-event-data.interceptor';
+import { CreateEventDto } from 'src/events/dto/create-event.dto';
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
@@ -92,6 +85,18 @@ export class AuthController {
       return await this.authService.roleChangeAdminUser(id);
     } catch (error) {
       error.message = 'This action is not allowed';
+    }
+  }
+
+  @Post('events/create')
+  @ApiOperation({ summary: 'Ruta para la creación de eventos' })
+  @UseInterceptors(ParseEventDataInterceptor)
+  @UsePipes(new DTOValidationPipe())
+  async create(@Body() createEventDto: CreateEventDto) {
+    try {
+      return await this.eventService.create(createEventDto);
+    } catch (e) {
+      throw new BadRequestException(e.message);
     }
   }
 

@@ -17,8 +17,8 @@ export class JsonWebTokenService {
       //! parametros para crear el JWT
       //! con esto se puede implementar un guardian que busque en base de datos la
       //! concordancia entre los datos del token y los datos la DB
-      name: user.creatorId,
-      sub: user.id,
+      id: user.id,
+      creatorId: user.creatorId,
       role: user.role, //! ==> INCLUCION DEL ROL
     };
     const secret = this.configService.get<string>('jwt.secret');

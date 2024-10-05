@@ -5,7 +5,8 @@ const eventSeeder = [
       'Un evento musical para celebrar la Navidad con villancicos tradicionales.',
     eventDate: '2024-12-24',
     eventAdress: 'Teatro Central',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 1500,
     stock: 0,
     images: [
@@ -18,7 +19,8 @@ const eventSeeder = [
       'Una jornada de reflexión y oración dirigida por el padre Juan.',
     eventDate: '2024-02-15',
     eventAdress: 'Parroquia San Pablo',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 500,
     stock: 20,
     images: [
@@ -31,7 +33,8 @@ const eventSeeder = [
       'Tres días de retiro espiritual en las montañas para reconectar con la fe.',
     eventDate: '2024-03-10',
     eventAdress: 'Casa de Retiros Los Pinos',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 3000,
     stock: 15,
     images: [
@@ -44,7 +47,8 @@ const eventSeeder = [
       'Misa para agradecer por las bendiciones recibidas durante el año.',
     eventDate: '2025-12-31',
     eventAdress: 'Catedral Metropolitana',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 0,
     stock: 100,
     images: [
@@ -57,7 +61,8 @@ const eventSeeder = [
       'Un seminario dedicado a fortalecer los lazos familiares a través de la fe.',
     eventDate: '2024-06-20',
     eventAdress: 'Auditorio Juan XXIII',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 2000,
     stock: 30,
     images: [
@@ -70,7 +75,8 @@ const eventSeeder = [
       'Peregrinación por el Camino de Santiago con la comunidad parroquial.',
     eventDate: '2024-07-15',
     eventAdress: 'Santiago de Compostela',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 5000,
     stock: 25,
     images: [
@@ -83,7 +89,8 @@ const eventSeeder = [
       'Cena para recaudar fondos para la renovación del templo parroquial.',
     eventDate: '2025-09-10',
     eventAdress: 'Salón de la Parroquia',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 2500,
     stock: 100,
     images: [
@@ -96,7 +103,8 @@ const eventSeeder = [
       'Conferencia impartida por teólogos internacionales sobre los desafíos actuales de la Iglesia.',
     eventDate: '2024-11-20',
     eventAdress: 'Universidad Católica',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 1000,
     stock: 40,
     images: [
@@ -109,7 +117,8 @@ const eventSeeder = [
       'Un festival para celebrar la fe con actividades para toda la familia.',
     eventDate: '2025-05-05',
     eventAdress: 'Plaza Mayor',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 1200,
     stock: 200,
     images: [
@@ -122,7 +131,8 @@ const eventSeeder = [
       'Encuentro juvenil de un día lleno de actividades para reflexionar sobre la fe.',
     eventDate: '2024-08-25',
     eventAdress: 'Centro de Pastoral',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 800,
     stock: 50,
     images: [
@@ -135,7 +145,8 @@ const eventSeeder = [
       'Una reunión para compartir y disfrutar de los coros de las parroquias locales.',
     eventDate: '2023-05-12',
     eventAdress: 'Capilla San José',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 300,
     stock: 45,
     images: [
@@ -150,7 +161,8 @@ const eventSeeder = [
       'Competencia de fútbol entre las comunidades parroquiales de la región.',
     eventDate: '2024-04-10',
     eventAdress: 'Estadio Municipal',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 0,
     stock: 200,
     images: [
@@ -165,7 +177,8 @@ const eventSeeder = [
       'Aprende sobre el arte de los íconos religiosos y su significado espiritual.',
     eventDate: '2023-09-07',
     eventAdress: 'Salón Cultural',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 1500,
     stock: 20,
     images: [
@@ -180,7 +193,8 @@ const eventSeeder = [
       'Un día para la familia en el que se fortalecerán los lazos y la fe.',
     eventDate: '2024-05-15',
     eventAdress: 'Centro de Retiros Nazaret',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 1200,
     stock: 60,
     images: [
@@ -195,7 +209,8 @@ const eventSeeder = [
       'Reflexión sobre la responsabilidad ambiental desde una perspectiva religiosa.',
     eventDate: '2023-08-19',
     eventAdress: 'Auditorio San Francisco',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 500,
     stock: 80,
     images: [
@@ -210,7 +225,8 @@ const eventSeeder = [
       'Un espacio para compartir experiencias de fe y crecimiento personal entre jóvenes de distintas parroquias.',
     eventDate: '2025-02-11',
     eventAdress: 'Centro Deportivo La Esperanza',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 900,
     stock: 150,
     images: [
@@ -225,7 +241,8 @@ const eventSeeder = [
       'Una noche de música y oración para alabar a Dios a través de canciones.',
     eventDate: '2025-07-30',
     eventAdress: 'Parque de la Ciudad',
-    eventLocation:'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+    eventLocation:
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 1000,
     stock: 300,
     images: [

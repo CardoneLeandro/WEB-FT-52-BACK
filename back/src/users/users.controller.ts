@@ -58,7 +58,7 @@ export class UsersController {
     }
   }
 
-  @Post('signup')
+  @Post('auth/signup')
   @ApiOperation({
     summary: 'Ruta para el SignUp usando el formulario dado por la aplicación',
   })
@@ -78,7 +78,7 @@ export class UsersController {
     }
   }
 
-  @Post('login')
+  @Post('auth/login')
   @ApiOperation({
     summary:
       'Ruta para el LogIn usando los datos dado por el formulario de la aplicación',

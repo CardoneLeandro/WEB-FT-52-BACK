@@ -9,6 +9,37 @@ export class UsersRepository extends Repository<User> {
     super(User, dSource.getRepository(User).manager);
   }
 
+  async getUser(id) {
+    const user: User = await this.findOneBy({ id });
+    const {
+      userInformation,
+      password,
+      providerAccountId,
+      address,
+      phone,
+      updateDate,
+      ...rest
+    } = user;
+    return rest;
+  }
+
+  async getAllUsers() {
+    const users: User[] = await this.find();
+    const filteredUsers = users.map((user) => {
+      const {
+        userInformation,
+        password,
+        providerAccountId,
+        address,
+        phone,
+        updateDate,
+        ...rest
+      } = user;
+      return rest;
+    });
+    return filteredUsers;
+  }
+
   createUser(user: Partial<User>): DeepPartial<User> {
     return this.create(user);
   }
@@ -30,15 +61,5 @@ export class UsersRepository extends Repository<User> {
         [sortBy]: order,
       },
     });
-  }
-
-  async findUserById(param: string): Promise<User[] | null> {
-    const lowerParam = param.toLowerCase();
-    const filter: User[] = await this.find();
-    const result = filter.filter((user) =>
-      user.name.toLowerCase().includes(lowerParam),
-    );
-    //! aplicar los filtros restantes al resultado de los usuarios filtrados por "name"
-    return result;
   }
 }
