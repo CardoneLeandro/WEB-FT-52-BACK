@@ -109,7 +109,7 @@ export class EventsController {
     name: 'id',
     description: 'El ID del evento al que se quiere actualizar la asistencia',
     type: String,
-    example: '123e4567-e89b-12d3-a456-426614174000',  // Ejemplo de un UUID
+    example: '123e4567-e89b-12d3-a456-426614174000'
   })
   async updateAttendanceStatus(
     @Param('id', ParseUUIDPipe) id: string,
