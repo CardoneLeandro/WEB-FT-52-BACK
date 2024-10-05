@@ -42,7 +42,7 @@ export class Event {
   @Column({ type: 'varchar', length: 500, nullable: true })
   eventLocation: string;
 
-  @Column({type: 'varchar', length: 100, nullable: false})
+  @Column({type: 'varchar', length: 500, nullable: false})
   eventAdress: string;
 
   @Column({ type: 'int', nullable: false })
