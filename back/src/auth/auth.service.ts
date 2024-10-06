@@ -32,10 +32,12 @@ export class AuthService {
     });
 
     if (!existingSuperAdmin) {
-      const { providerAccountId, ...params } = SUPERADMIN;
+      const { providerAccountId, password, ...params } = SUPERADMIN;
       const encriptedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
+      const encriptedPassword = bcrypt.hashSync(password, 10);
       const superAdminCreationData = {
         providerAccountId: encriptedProviderAccId,
+        password: encriptedPassword,
         ...params,
       };
       await this.userService.createNewUser(superAdminCreationData);
@@ -49,7 +51,9 @@ export class AuthService {
   }
   //________________________
   async ban(id: string) {
+    console.log('servicio ban', id);
     const foundUser = await this.userRepo.findOne({ where: { id } });
+    console.log('servicio ban, resultado de busqueda de usuario', foundUser);
     if (!foundUser) throw new NotFoundException('User not found');
     if (
       foundUser.status === status.ACTIVE ||
@@ -66,8 +70,10 @@ export class AuthService {
         await this.userRepo.update(id, { status: status.ACTIVE });
       }
     }
-    return await this.userRepo.getUser({ where: { id } });
+    console.log('console.log previo al return dentro del servicio');
+    return await this.userRepo.getUser(id);
   }
+
   async getOne(id) {
     return await this.infoRepo.findOneUser(id);
   }

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class SuperAdminDto {
   @ApiProperty({
@@ -58,4 +58,10 @@ export class SuperAdminDto {
   })
   @IsString()
   password: string;
+
+  @IsString()
+  phone: string;
+
+  @IsString()
+  address: string;
 }

@@ -34,8 +34,10 @@ export class RolesGuard implements CanActivate {
 
     try {
       const decodedToken = this.jwtService.verify(token) as DecodedToken;
-
-      if (decodedToken.role !== UserRole.ADMIN) {
+      if (
+        decodedToken.role !== UserRole.SUPERADMIN &&
+        decodedToken.role !== UserRole.ADMIN
+      ) {
         throw new ForbiddenException(
           'You do not have permission to access this resource',
         );

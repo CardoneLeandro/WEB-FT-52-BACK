@@ -6,11 +6,13 @@ import { status } from 'src/common/enum/status.enum';
 dotenvConfig({path: './.env'});
 
 export const SUPERADMIN: SuperAdminDto = {
+  role: UserRole.SUPERADMIN,
+  status: status.ACTIVE,
   name: process.env.SUPERADMIN_NAME,
   email: process.env.SUPERADMIN_EMAIL,
   providerAccountId: process.env.SUPERADMIN_PROVIDERACCID,
-  image: process.env.SUPERADMIN_IMAGE,
   password: process.env.SUPERADMIN_PASSWORD,
-  role: UserRole.SUPERADMIN,
-  status: status.PENDING,
+  image: process.env.SUPERADMIN_IMAGE,
+  phone: process.env.SUPERADMIN_PHONE,
+  address: process.env.SUPERADMIN_ADDRESS,
 };
