@@ -17,6 +17,14 @@ export class EventsService {
   ) {}
 
   async create(eventData) {
+    const currentDate = new Date()
+    
+    if (currentDate > eventData.eventDate){
+      eventData.status = status.INACTIVE
+    } else {
+      eventData.status = status.ACTIVE
+    }
+
     const createdEvent = this.eventRepo.create(eventData);
     if (!createdEvent) {
       throw new Error('Could not create event');
