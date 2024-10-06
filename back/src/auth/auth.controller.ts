@@ -10,6 +10,7 @@ import {
   ParseUUIDPipe,
   Query,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
@@ -22,6 +23,13 @@ import { UpdateEventDto } from 'src/events/dto/update-event.dto';
 import { DonationsService } from 'src/donations/donations.service';
 import { ParseEventDataInterceptor } from 'src/security/interceptors/parse-event-data.interceptor';
 import { CreateEventDto } from 'src/events/dto/create-event.dto';
+import { AuthHeaderGuard } from 'src/security/guards/auth-headers.guard';
+import { RolesGuard } from 'src/security/guards/roles.guard';
+import { SuperAdminProtectionGuard } from 'src/security/guards/super-admin-protection.guard';
+import { SelfProtectionGuard } from 'src/security/guards/self-protection.guard';
+
+//
+@UseGuards(AuthHeaderGuard, RolesGuard)
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
@@ -31,14 +39,18 @@ export class AuthController {
     private readonly donationService: DonationsService,
   ) {}
   // retornar ok:true como response para recargar y volver a solicitar la lista de usuarios
+  @UseGuards(SuperAdminProtectionGuard, SelfProtectionGuard)
   @Patch('user/ban/:id')
   @ApiOperation({
     summary:
       'Ruta para banear usuarios. Pasa su estado "Active" a "Banned" y viceversa',
   })
-  async ban(@Param('id') id: string) {
+  async ban(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      return await this.authService.ban(id);
+      console.log('controlador =>', id);
+      const user = await this.authService.ban(id);
+      console.log('controlador previo al return, user', user);
+      return user;
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -75,7 +87,8 @@ export class AuthController {
   }
 
   // retornar ok:true como response para recargar y volver a solicitar la lista de usuarios
-  @Post('users/role/administrator/:id')
+  @UseGuards(SuperAdminProtectionGuard, SelfProtectionGuard)
+  @Post('user/role/administrator/:id')
   @ApiOperation({
     summary:
       'Ruta para cambiar el rol del usuario. Si es usuario normal, su rol pasa a ser Admin. Si es Admin, su rol pasa a ser User',

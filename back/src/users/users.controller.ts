@@ -19,6 +19,7 @@ import { StringToNumberInterceptor } from 'src/security/interceptors/string-toNu
 import { CompleteRegisterAuth0Dto } from 'src/auth/dto/complete-register-auth0.dto';
 import { SignUpDto } from 'src/auth/dto/signUp-user.dto';
 import { LoginUserDto } from 'src/auth/dto/login-user.dto';
+import { AuthHeaderGuard } from 'src/security/guards/auth-headers.guard';
 
 @ApiTags('Users')
 @Controller('users')
@@ -39,6 +40,7 @@ export class UsersController {
     }
   }
 
+  @UseGuards(AuthHeaderGuard)
   @Post('auth0/completeregister')
   @ApiOperation({
     summary:

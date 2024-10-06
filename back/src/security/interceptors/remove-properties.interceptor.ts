@@ -30,17 +30,10 @@ export class RemovePropertiesInterceptor implements NestInterceptor {
           delete data.id;
         }
 
-        if ((data && data.role) || data.role === null) {
+        if (data.role === null) {
           delete data.role;
         }
-        if (
-          (data && data.status === status.ACTIVE) ||
-          data.status === status.BANNED ||
-          data.status === status.INACTIVE ||
-          data.status === status.PARTIALACTIVE
-        ) {
-          delete data.status;
-        }
+
         if ((data && data.updateDate) || data.updateDate === null) {
           delete data.updateDate;
         }

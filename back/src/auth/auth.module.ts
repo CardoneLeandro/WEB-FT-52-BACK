@@ -16,6 +16,7 @@ import { EventsRepository } from 'src/events/events.repository';
 import { EventAssistantsRepository } from 'src/events/event-assistants.repository';
 import { DonationsService } from 'src/donations/donations.service';
 import { DonationsRepository } from 'src/donations/donations.repository';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   controllers: [AuthController],
@@ -25,6 +26,7 @@ import { DonationsRepository } from 'src/donations/donations.repository';
     UserInformationService,
     UsersRepository,
     UserInformationRepository,
+    JwtStrategy,
     JsonWebTokenService,
     MailerService,
     EventsService,
@@ -41,12 +43,12 @@ import { DonationsRepository } from 'src/donations/donations.repository';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('jwt.secret'),
-        signOptions: { expiresIn: '1h' },
+        signOptions: { expiresIn: '8h' },
       }),
       inject: [ConfigService],
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
-  exports: [AuthService, JsonWebTokenService],
+  exports: [AuthService, JsonWebTokenService, JwtStrategy],
 })
 export class AuthModule {}
