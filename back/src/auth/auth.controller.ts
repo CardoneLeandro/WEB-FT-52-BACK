@@ -88,7 +88,7 @@ export class AuthController {
 
   // retornar ok:true como response para recargar y volver a solicitar la lista de usuarios
   @UseGuards(SuperAdminProtectionGuard, SelfProtectionGuard)
-  @Post('user/role/administrator/:id')
+  @Patch('user/role/administrator/:id')
   @ApiOperation({
     summary:
       'Ruta para cambiar el rol del usuario. Si es usuario normal, su rol pasa a ser Admin. Si es Admin, su rol pasa a ser User',
@@ -114,7 +114,7 @@ export class AuthController {
   }
 
   // ruta para editar eventos, retornar ok:true como response
-  @Post('events/edit/:id')
+  @Patch('events/edit/:id')
   @UsePipes(new DTOValidationPipe())
   @ApiOperation({
     summary:
@@ -129,7 +129,7 @@ export class AuthController {
   }
 
   // ruta para destacar eventos, retornar ok:true como response
-  @Post('events/highlight/:id')
+  @Patch('events/highlight/:id')
   @UsePipes(new DTOValidationPipe())
   @ApiOperation({
     summary:
