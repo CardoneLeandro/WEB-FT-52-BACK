@@ -12,6 +12,10 @@ export class DonationsService {
     return await this.donationsRepo.save(newDonation);
   }
 
+  async getDonations(){
+    return this.donationsRepo.getDonations()
+  }
+
   async updateDonation(params: { id: string; status: status }) {
     const donation = this.donationsRepo.findOneBy({ id: params.id });
     if (!donation) throw new Error('This action is not allowed');

@@ -28,6 +28,15 @@ export class PaymentsController {
     private readonly donationsSv: DonationsService,
   ) {}
 
+  @Get()
+  async getDonations(){
+    try {
+      return await this.donationsSv.getDonations()
+    } catch (error) {
+      throw new BadRequestException()
+    }
+  }
+
   @Post('pay-donations/success')
   @ApiOperation({
     summary:
