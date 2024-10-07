@@ -120,7 +120,7 @@ export class UsersController {
     @Param('email') email: string,
     @Param('token') token: string,
     @Param('password') password: string,
-    @Body() newPassword: string,
+    @Body() newPassword,
   ) {
     try {
       const request = await this.usersService.changePassword({

@@ -10,6 +10,8 @@ import { UserJoininEventDto } from './dto/user-joinin-event.dtos';
 import { UserLeaveEventDto } from './dto/user-leave-event.dtos';
 import { leaveEventTemplate } from './templates/leaveEvent.templante';
 import { User } from 'src/users/entities/user.entity';
+import { changePasswordTemplate } from './templates/changePassword.template';
+import { UserChangePasswordDto } from './dto/user-change-password.dtos';
 @Injectable()
 export class MailerService {
   async sendEmailWelcome(userWelcomeDto: UserWelcomeDto) {
@@ -73,15 +75,15 @@ export class MailerService {
     }
   }
 
-  async sendEmailChangePasswordRequest(user: User) {
+  async sendEmailChangePasswordRequest(userChangePasswordDto: UserChangePasswordDto) {
     try {
       const subject = 'Has sido solicitado un cambio de contraseña';
-      const template = leaveEventTemplate({
-        name: user.name,
-        title: user.email,
-        token: user.token,
+      const template = changePasswordTemplate({
+        name: userChangePasswordDto.name,
+        email: userChangePasswordDto.email,
+        token: userChangePasswordDto.token
       });
-      const mail = mailOptions(user, subject, template);
+      const mail = mailOptions(userChangePasswordDto, subject, template);
       await transporter.sendMail(mail);
       return { status: 'success' };
     } catch (error) {

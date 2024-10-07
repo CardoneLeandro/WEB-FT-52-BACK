@@ -40,7 +40,7 @@ export class User {
   @Column({ type: 'bigint', nullable: true })
   phone: number;
 
-  @Column({ type: 'varchar', length: 100, nullable: true, default: '' })
+  @Column({ type: 'text', nullable: true, default: '' })
   token: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
