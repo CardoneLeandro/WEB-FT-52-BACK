@@ -17,6 +17,15 @@ export class EventsService {
   ) {}
 
   async create(eventData) {
+    const currentDate = new Date();
+    const eventDate = new Date(eventData.eventDate);
+
+    if (currentDate > eventDate) {
+      eventData.status = status.INACTIVE;
+    } else {
+      eventData.status = status.ACTIVE;
+    }
+
     const createdEvent = this.eventRepo.create(eventData);
     if (!createdEvent) {
       throw new Error('Could not create event');
@@ -43,7 +52,7 @@ export class EventsService {
       year,
       title,
     );
-    const validSortFields = ['price', 'createDate', 'title'];
+    const validSortFields = ['createDate', 'eventDate', 'title'];
     if (!validSortFields.includes(sortBy)) {
       throw new Error(`Invalid sort field: ${sortBy}`);
     }

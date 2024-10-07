@@ -82,8 +82,8 @@ export class EventsController {
   async findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 5,
-    @Query('sortBy') sortBy: string = 'createDate',
-    @Query('order') order: 'ASC' | 'DESC' = 'DESC',
+    @Query('sortBy') sortBy: string = 'eventDate',
+    @Query('order') order: 'ASC' | 'DESC' = 'ASC',
     @Query('month') month: string = 'all',
     @Query('year') year: number,
     @Query('title') title: string = '',

@@ -1,6 +1,8 @@
 import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { CreateEventDto } from './create-event.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsDate } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class UpdateEventDto extends OmitType(PartialType(CreateEventDto), [
   'creator',
@@ -21,9 +23,11 @@ export class UpdateEventDto extends OmitType(PartialType(CreateEventDto), [
 
   @ApiProperty({
     description: 'Fecha actualizada del evento',
-    example: '2023-01-01',
+    example: '2023-01-01T03:00:00.000Z',
     type: Date,
   })
+  @IsDate()
+  @Type(() => Date)
   eventDate?: Date;
 
   @ApiProperty({

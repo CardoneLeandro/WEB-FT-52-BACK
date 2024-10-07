@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
 import { status } from 'src/common/enum/status.enum';
 import { UUID } from 'crypto';
@@ -31,6 +31,7 @@ import { SelfProtectionGuard } from 'src/security/guards/self-protection.guard';
 //
 @UseGuards(AuthHeaderGuard, RolesGuard)
 @ApiTags('Auth')
+@ApiBearerAuth()
 @Controller('auth')
 export class AuthController {
   constructor(

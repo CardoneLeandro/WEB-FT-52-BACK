@@ -69,7 +69,7 @@ export class SeederService {
         continue;
       }
       const newUser = { ...user };
-      await this.userService.createNewUser(newUser);
+      await this.userService.createUser(newUser);
     }
   }
 }
