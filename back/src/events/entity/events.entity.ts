@@ -43,7 +43,7 @@ export class Event {
   eventLocation: string;
 
   @Column({ type: 'varchar', length: 500, nullable: false })
-  eventAdress: string;
+  eventAddress: string;
 
   @Column({ type: 'int', nullable: false })
   price: number;

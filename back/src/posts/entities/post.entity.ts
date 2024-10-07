@@ -16,7 +16,7 @@ export class Post {
   id: string;
 
   @ManyToOne(() => UserInformation, (userInformation) => userInformation.posts)
-  @JoinColumn({ name: 'userInformationId' })
+  @JoinColumn()
   creator: UserInformation;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
@@ -31,6 +31,9 @@ export class Post {
   @Column({ type: 'text', nullable: false })
   content: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: false })
+  @Column({ type: 'varchar', length: 100, nullable: true, default: [] })
   image: string[];
+
+  @Column({ type: 'varchar', length: 100, nullable: true, default: [] })
+  file: string[];
 }

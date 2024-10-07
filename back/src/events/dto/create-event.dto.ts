@@ -68,7 +68,7 @@ export class CreateEventDto {
   })
   @IsNotEmpty()
   @IsString()
-  eventAdress: string;
+  eventAddress: string;
 
   @ApiProperty({
     description: 'Precio del evento',

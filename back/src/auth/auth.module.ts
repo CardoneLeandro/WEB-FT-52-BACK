@@ -5,7 +5,7 @@ import { UsersRepository } from 'src/users/users.repository';
 import { UsersService } from 'src/users/users.service';
 import { UserInformationService } from 'src/user-information/user-information.service';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { JsonWebTokenService } from './jsonWebToken/jsonWebToken.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
@@ -17,6 +17,8 @@ import { EventAssistantsRepository } from 'src/events/event-assistants.repositor
 import { DonationsService } from 'src/donations/donations.service';
 import { DonationsRepository } from 'src/donations/donations.repository';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { PostsService } from 'src/posts/posts.service';
+import { PostsRepository } from 'src/posts/posts.repository';
 
 @Module({
   controllers: [AuthController],
@@ -34,6 +36,8 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     EventAssistantsRepository,
     DonationsService,
     DonationsRepository,
+    PostsService,
+    PostsRepository,
   ],
   imports: [
     ConfigModule.forRoot({

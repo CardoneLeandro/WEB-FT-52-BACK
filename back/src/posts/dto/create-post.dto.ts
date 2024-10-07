@@ -1,13 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsArray,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUrl,
   IsUUID,
   MaxLength,
 } from 'class-validator';
 import { UUID } from 'crypto';
-import { UserInformation } from 'src/user-information/entities/user-information.entity';
 
 export class CreatePostDto {
   @ApiProperty({
@@ -16,7 +17,8 @@ export class CreatePostDto {
     type: String,
   })
   @IsNotEmpty()
-  creator: string;
+  @IsUUID()
+  creator: UUID;
 
   @ApiProperty({
     description: 'Titulo del post',
@@ -41,9 +43,18 @@ export class CreatePostDto {
     description: 'Imagen del post',
     example:
       'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png',
-    type: String,
+    type: [String],
   })
-  @IsNotEmpty()
-  @IsUrl()
+  @IsOptional()
+  @IsArray()
   image: string[];
+
+  @ApiProperty({
+    description: 'Archivo del post',
+    example: 'https://www.files-cloud.com/file/1.pdf',
+    type: [String],
+  })
+  @IsOptional()
+  @IsUrl()
+  file: string[];
 }

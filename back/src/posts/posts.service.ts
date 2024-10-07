@@ -10,43 +10,28 @@ export class PostsService {
     private readonly postRepo: PostsRepository,
     private readonly userInfoRepo: UserInformationRepository,
   ) {}
-  async create(createPostDto: CreatePostDto) {
+  async create(params) {
     const userInformation = await this.userInfoRepo.findOne({
-      where: { id: createPostDto.creator },
+      where: { id: params.creator },
     });
-    if (!userInformation)
-      throw new BadRequestException(
-        `UserInformation with id:${createPostDto.creator} not found`,
-      );
-    // console.log('GAMMA ==> PostsService, create, userInformation', userInformation);
-    const createdPost = await this.postRepo.create({
-      ...createPostDto,
-      creator: userInformation,
-    });
-    // console.log('GAMMA ==> PostsService, create, createdPost', createdPost)
+    if (!userInformation) throw new BadRequestException(`Invalid Credentials`);
+    const createdPost = this.postRepo.create(params);
     const savedPost = await this.postRepo.save(createdPost);
-    // console.log('GAMMA ==> PostsService, create, savedPost', savedPost);
     return savedPost;
   }
 
-  async findAll() {
-    const posts = await this.postRepo.find();
-    return posts;
-  }
-
-  async findOne(id: string) {
+  async updatePost(params) {
     const post = await this.postRepo.findOne({
-      where: { id: id },
+      where: { id: params.id },
     });
-    if (!post) throw new BadRequestException(`Post with id:${id} not found`);
-    return post;
+    if (!post) {
+      throw new BadRequestException(`Invalid Request`);
+    }
+    const updatedPost = await this.postRepo.update({ id: params.id }, params);
+    return updatedPost;
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  async findAll() {
+    return await this.postRepo.find();
   }
 }

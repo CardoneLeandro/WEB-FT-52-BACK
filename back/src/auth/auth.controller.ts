@@ -27,6 +27,9 @@ import { AuthHeaderGuard } from 'src/security/guards/auth-headers.guard';
 import { RolesGuard } from 'src/security/guards/roles.guard';
 import { SuperAdminProtectionGuard } from 'src/security/guards/super-admin-protection.guard';
 import { SelfProtectionGuard } from 'src/security/guards/self-protection.guard';
+import { CreatePostDto } from 'src/posts/dto/create-post.dto';
+import { PostsService } from 'src/posts/posts.service';
+import { UpdatePostDto } from 'src/posts/dto/update-post.dto';
 
 //
 @UseGuards(AuthHeaderGuard, RolesGuard)
@@ -38,6 +41,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly eventService: EventsService,
     private readonly donationService: DonationsService,
+    private readonly postService: PostsService,
   ) {}
   // retornar ok:true como response para recargar y volver a solicitar la lista de usuarios
   @UseGuards(SuperAdminProtectionGuard, SelfProtectionGuard)
@@ -174,6 +178,29 @@ export class AuthController {
         id: id,
         status: status.REJECTED,
       });
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
+
+  @Post('post/create')
+  async createPost(@Body() createPostDto: CreatePostDto) {
+    try {
+      const newPost = await this.postService.create(createPostDto);
+      return newPost;
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
+
+  @Post('post/edit/:id')
+  async editPost(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() params: UpdatePostDto,
+  ) {
+    try {
+      const editPost = await this.postService.updatePost({ id, params });
+      return editPost;
     } catch (e) {
       throw new BadRequestException(e.message);
     }
