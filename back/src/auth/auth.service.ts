@@ -14,6 +14,7 @@ import * as bcrypt from 'bcrypt';
 import { DataSource } from 'typeorm';
 import { EventsRepository } from 'src/events/events.repository';
 import { Event } from 'src/events/entity/events.entity';
+import { JsonWebTokenService } from './jsonWebToken/jsonWebToken.service';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +25,7 @@ export class AuthService {
     private readonly mailerService: MailerService,
     private readonly dSource: DataSource,
     private readonly eventRepo: EventsRepository,
+    private readonly jwrService: JsonWebTokenService,
   ) {}
 
   async superAdminSeeder() {

@@ -13,7 +13,10 @@ import * as bcrypt from 'bcrypt';
 //! Y SE ENCRIPTA EL PASSWORD
 @Injectable()
 export class CompareAndRemovePasswordInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  async intercept(
+    context: ExecutionContext,
+    next: CallHandler,
+  ): Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
     if (
       !request.body ||
@@ -28,7 +31,7 @@ export class CompareAndRemovePasswordInterceptor implements NestInterceptor {
       throw new BadRequestException('Passwords do not match');
     }
     delete request.body.confirmPassword;
-    request.body.password = bcrypt.hashSync(request.body.password, 10);
+    request.body.password = await bcrypt.hashSync(request.body.password, 10);
     return next.handle();
   }
 }

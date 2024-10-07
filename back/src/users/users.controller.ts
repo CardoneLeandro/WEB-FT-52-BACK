@@ -6,6 +6,7 @@ import {
   UsePipes,
   BadRequestException,
   UseGuards,
+  Param,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -20,6 +21,7 @@ import { CompleteRegisterAuth0Dto } from 'src/auth/dto/complete-register-auth0.d
 import { SignUpDto } from 'src/auth/dto/signUp-user.dto';
 import { LoginUserDto } from 'src/auth/dto/login-user.dto';
 import { AuthHeaderGuard } from 'src/security/guards/auth-headers.guard';
+import { GenerateNewPasswordFromParamsInterceptor } from 'src/security/interceptors/generate-password-from-params.interceptor';
 
 @ApiTags('Users')
 @Controller('users')
@@ -90,6 +92,43 @@ export class UsersController {
   async login(@Body() params: LoginUserDto): Promise<any> {
     try {
       return await this.usersService.loginUser(params);
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
+
+  // =================== ELIMINAR LAS RESPUESTAS Y CAMBIARLAS POR OK ===================
+  // ingresar el email del usuario que solicita el cambio de contraseña
+  // esto debe generar un token y cargarlo en el ususario ademas de retornarlo por email
+  @Post('user/request-new-password/:email')
+  async requestNewPassword(@Param('email') email: string) {
+    try {
+      const request = await this.usersService.requestNewPassword(email);
+      return request;
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
+
+  // ingresar el email del usuario que solicita el cambio de contraseña
+  // buscar al usuario por email y comparar el token
+  // si coincide, cambiar la contraseña
+
+  @UseInterceptors(GenerateNewPasswordFromParamsInterceptor)
+  @Post('user/change-password/:email/:token/:password')
+  async changePassword(
+    @Param('email') email: string,
+    @Param('token') token: string,
+    @Param('password') password: string,
+    @Body() newPassword: string,
+  ) {
+    try {
+      const request = await this.usersService.changePassword({
+        email,
+        token,
+        newPassword,
+      });
+      return request;
     } catch (e) {
       throw new BadRequestException(e.message);
     }

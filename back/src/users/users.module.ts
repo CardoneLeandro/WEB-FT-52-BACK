@@ -14,6 +14,7 @@ import { EventsService } from 'src/events/events.service';
 import { JwtService } from '@nestjs/jwt';
 import { EventAssistantsRepository } from 'src/events/event-assistants.repository';
 import { JwtStrategy } from 'src/auth/strategies/jwt.strategy';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   controllers: [UsersController],
@@ -32,7 +33,7 @@ import { JwtStrategy } from 'src/auth/strategies/jwt.strategy';
     JsonWebTokenService,
     JwtStrategy,
   ],
-  imports: [TypeOrmModule.forFeature([User])],
-  exports: [UsersRepository, UsersService],
+  imports: [TypeOrmModule.forFeature([User]), AuthModule],
+  exports: [UsersRepository, UsersService, AuthModule],
 })
 export class UsersModule {}

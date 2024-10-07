@@ -11,6 +11,7 @@ import { MailerService } from 'src/mailer/mailer.service';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
 import { encriptProviderAccIdCompare } from 'src/common/utils/encript-providerAccIdCompare.util';
 import { encriptPasswordCompare } from 'src/common/utils/encript-passwordCompare.util';
+import { JsonWebTokenService } from 'src/auth/jsonWebToken/jsonWebToken.service';
 @Injectable()
 export class UsersService {
   constructor(
@@ -19,6 +20,7 @@ export class UsersService {
     private readonly infoService: UserInformationService,
     private readonly infoRepo: UserInformationRepository,
     private readonly mailerService: MailerService,
+    private readonly jwrService: JsonWebTokenService,
   ) {}
   // =====================> LOGGIN CON AUTH0 <=======================
 
@@ -135,7 +137,7 @@ export class UsersService {
     }
   }
 
-  //-------------------------------------------------------------------------------
+  // ========================> REGISTER <========================
 
   async createNewUser(params) {
     const existingUser = await this.foundExistingUser(params);
@@ -202,5 +204,33 @@ export class UsersService {
   ) {
     await this.userRepo.update(user.id, param);
     return;
+  }
+
+  async requestNewPassword(email) {
+    const user = await this.userRepo.findOneBy({ email });
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+    const token = await this.jwrService.generateCPT(user);
+    await this.userRepo.update(user.id, { token });
+    const updatedUser = await this.userRepo.findOneBy({ token });
+    await this.mailerService.sendEmailChangePasswordRequest(updatedUser);
+    return updatedUser;
+  }
+
+  async changePassword(params) {
+    const user = await this.userRepo.findOneBy({ email: params.email });
+    if (!user) {
+      throw new BadRequestException('Invalid Credentials');
+    }
+    if (user.token !== params.token) {
+      throw new BadRequestException('Invalid Credentials');
+    }
+    await this.userRepo.update(user.id, {
+      password: params.newPassword,
+      token: '',
+    });
+    const updatedUser = await this.userRepo.findOneBy({ email: params.email });
+    return updatedUser;
   }
 }

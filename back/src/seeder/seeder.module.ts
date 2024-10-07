@@ -11,6 +11,7 @@ import { EventsService } from 'src/events/events.service';
 import { EventsRepository } from 'src/events/events.repository';
 import { MailerService } from 'src/mailer/mailer.service';
 import { EventAssistantsRepository } from 'src/events/event-assistants.repository';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   controllers: [SeederController],
@@ -28,5 +29,6 @@ import { EventAssistantsRepository } from 'src/events/event-assistants.repositor
     MailerService,
   ],
   exports: [SeederService],
+  imports: [AuthModule],
 })
 export class SeederModule {}
