@@ -60,6 +60,14 @@ export class EventsRepository extends Repository<Event> {
   }
 
   createEvent(event) {
+    const currentDate = new Date()
+    const eventDate = new Date(event.eventDate);
+    
+    if (currentDate > eventDate){
+      event.status = status.INACTIVE
+    } else {
+      event.status = status.ACTIVE
+    }
     return this.create(event);
   }
 
