@@ -116,6 +116,7 @@ export class AuthController {
 
   // ruta para editar eventos, retornar ok:true como response
   @Patch('events/edit/:id')
+  @UseInterceptors(ParseEventDataInterceptor)
   @UsePipes(new DTOValidationPipe())
   @ApiOperation({
     summary:
