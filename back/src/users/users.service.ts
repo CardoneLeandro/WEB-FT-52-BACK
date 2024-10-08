@@ -214,7 +214,7 @@ export class UsersService {
     const token = await this.jwrService.generateCPT(user);
     await this.userRepo.update(user.id, { token });
     const updatedUser = await this.userRepo.findOneBy({ token });
-    await this.mailerService.sendEmailChangePasswordRequest(updatedUser);
+    await this.mailerService.sendEmailChangePasswordRequest({name: updatedUser.name, email: updatedUser.email, token: updatedUser.token});
     return updatedUser;
   }
 
@@ -227,7 +227,7 @@ export class UsersService {
       throw new BadRequestException('Invalid Credentials');
     }
     await this.userRepo.update(user.id, {
-      password: params.newPassword,
+      password: params.newPassword.newPassword,
       token: '',
     });
     const updatedUser = await this.userRepo.findOneBy({ email: params.email });
