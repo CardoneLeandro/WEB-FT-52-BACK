@@ -89,9 +89,9 @@ export class SeederService {
        } else {
          parsedDonation = {status: status.ACTIVE, creator: user.id, ...donations[i]}
        }
-       await this.paymentService.newDonation(parsedDonation);
+       await this.donationService.createDonation(parsedDonation);
       }
     }
-  }
+   }
   }
 }
