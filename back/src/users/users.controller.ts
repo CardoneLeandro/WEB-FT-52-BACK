@@ -9,7 +9,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { status } from 'src/common/enum/status.enum';
 import { addJWTInterceptor } from 'src/security/interceptors/addJWT.interceptor';
 import { RemovePropertiesInterceptor } from 'src/security/interceptors/remove-properties.interceptor';
@@ -43,6 +43,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthHeaderGuard)
+  @ApiBearerAuth()
   @Post('auth0/completeregister')
   @ApiOperation({
     summary:

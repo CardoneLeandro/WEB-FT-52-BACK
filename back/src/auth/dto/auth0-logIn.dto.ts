@@ -12,7 +12,7 @@ export class Auth0LogInDto {
 
   @ApiProperty({
     description: 'Email de la cuenta de Auth0 a loguear',
-    example: 'tomascampellone@gmail.com',
+    example: 'tomascampellone2@gmail.com',
     type: String,
   })
   @IsEmail()

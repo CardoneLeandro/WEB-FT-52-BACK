@@ -27,6 +27,7 @@ export class CompareAndRemovePasswordInterceptor implements NestInterceptor {
         'Bouth "password" and "confirmPassword" are required',
       );
     }
+
     if (request.body.password !== request.body.confirmPassword) {
       throw new BadRequestException('Passwords do not match');
     }
