@@ -34,6 +34,19 @@ export class EventsService {
     return savedEvent;
   }
 
+  async getAllEvents() {
+    return await this.eventRepo.find();
+  }
+
+  async getActiveAndInactiveHighlight() {
+    return await this.eventRepo.find({
+      where: [
+        {status: status.ACTIVE},
+        {status: status.INACTIVE, highlight: true}
+      ]
+    })
+  }
+
   async findAll(
     page: number,
     limit: number,
