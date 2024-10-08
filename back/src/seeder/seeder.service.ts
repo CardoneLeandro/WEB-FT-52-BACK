@@ -6,6 +6,9 @@ import { ProductsRepository } from 'src/products/products.repository';
 import { EventsRepository } from 'src/events/events.repository';
 import { AuthService } from 'src/auth/auth.service';
 import { UsersService } from 'src/users/users.service';
+import { DonationsService } from 'src/donations/donations.service';
+import { PaymentsService } from 'src/payments/payments.service';
+import { status } from 'src/common/enum/status.enum';
 
 @Injectable()
 export class SeederService {
@@ -15,6 +18,8 @@ export class SeederService {
     private readonly productRepo: ProductsRepository,
     private readonly eventRepo: EventsRepository,
     private readonly userService: UsersService,
+    private readonly donationService: DonationsService,
+    private readonly paymentService: PaymentsService,
   ) {}
 
   async superAdmin() {
@@ -71,5 +76,22 @@ export class SeederService {
       const newUser = { ...user };
       await this.userService.createUser(newUser);
     }
+  }
+
+  async addDonationSeeder(donations, users) {
+   const foundDonation =  await this.donationService.getDonations()
+   if (foundDonation.length === 0){
+    for (const user of users){
+      for(let i = 0; i < donations.length; i++){
+       let parsedDonation
+       if(i === 1){
+         parsedDonation = {status: status.PENDING, creator: user.id, ...donations[i]}
+       } else {
+         parsedDonation = {status: status.ACTIVE, creator: user.id, ...donations[i]}
+       }
+       await this.donationService.createDonation(parsedDonation);
+      }
+    }
+   }
   }
 }

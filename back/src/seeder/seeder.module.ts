@@ -12,6 +12,10 @@ import { EventsRepository } from 'src/events/events.repository';
 import { MailerService } from 'src/mailer/mailer.service';
 import { EventAssistantsRepository } from 'src/events/event-assistants.repository';
 import { AuthModule } from 'src/auth/auth.module';
+import { DonationsService } from 'src/donations/donations.service';
+import { DonationsRepository } from 'src/donations/donations.repository';
+import { PaymentsService } from 'src/payments/payments.service';
+import { PaymentsRepository } from 'src/payments/payments.repository';
 
 @Module({
   controllers: [SeederController],
@@ -27,6 +31,10 @@ import { AuthModule } from 'src/auth/auth.module';
     EventsRepository,
     EventAssistantsRepository,
     MailerService,
+    DonationsService,
+    DonationsRepository,
+    PaymentsService,
+    PaymentsRepository
   ],
   exports: [SeederService],
   imports: [AuthModule],

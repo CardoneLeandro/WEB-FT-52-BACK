@@ -7,4 +7,9 @@ export class DonationsRepository extends Repository<Donation> {
   constructor(private readonly dSource: DataSource) {
     super(Donation, dSource.getRepository(Donation).manager);
   }
+
+  async getDonations(){
+    const donations = await this.find({relations: {user: true}})
+    return donations
+  }
 }
