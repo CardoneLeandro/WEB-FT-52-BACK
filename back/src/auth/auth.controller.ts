@@ -42,6 +42,7 @@ export class AuthController {
     private readonly eventService: EventsService,
     private readonly donationService: DonationsService,
     private readonly postService: PostsService,
+    private readonly donationsSv: DonationsService
   ) {}
   // retornar ok:true como response para recargar y volver a solicitar la lista de usuarios
   @UseGuards(SuperAdminProtectionGuard, SelfProtectionGuard)
@@ -203,6 +204,15 @@ export class AuthController {
       return editPost;
     } catch (e) {
       throw new BadRequestException(e.message);
+    }
+  }
+
+  @Get('donations')
+  async getDonations(){
+    try {
+      return await this.donationsSv.getDonations()
+    } catch (error) {
+      throw new BadRequestException()
     }
   }
 }

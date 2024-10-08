@@ -20,7 +20,7 @@ export class AppService {
     await this.seederSv.addEventSeeder(id, eventSeeder);
     await this.seederSv.addUserSeeder(userSeeder);
     const allUsers= await this.userInfoRepo.find()
-    await this.seederSv.addDonationSeeder(donationSeeder,allUsers[0])
+    await this.seederSv.addDonationSeeder(donationSeeder,allUsers)
 
     // const allRelations = await this.userInfoRepo.findOne({
     //   where: { id },

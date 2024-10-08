@@ -9,7 +9,7 @@ export class EventsRepository extends Repository<Event> {
   constructor(private readonly dSource: DataSource) {
     super(Event, dSource.getRepository(Event).manager);
   }
-  async findAndCountProducts(
+    async findAndCountProducts(
     page: number,
     limit: number,
     sortBy: string,

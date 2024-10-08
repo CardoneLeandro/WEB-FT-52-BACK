@@ -16,15 +16,6 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 @ApiTags('WorkInProgress')
 @Controller('donations')
 export class DonationsController {
-  constructor(private readonly donationsSv: DonationsService) {}
+  constructor() {}
 
-  
-  @Get()
-  async getDonations(){
-    try {
-      return await this.donationsSv.getDonations()
-    } catch (error) {
-      throw new BadRequestException()
-    }
-  }
 }

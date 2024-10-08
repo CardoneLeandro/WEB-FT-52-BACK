@@ -10,7 +10,6 @@ export class DonationsRepository extends Repository<Donation> {
 
   async getDonations(){
     const donations = await this.find()
-    console.log('Donations:', donations);
-   return donations
+    return donations
   }
 }
