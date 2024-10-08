@@ -23,20 +23,4 @@ export class UserInformationService {
     }
     return savedUserInformationTable;
   }
-
-  findAll() {
-    return `This action returns all userInformation`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} userInformation`;
-  }
-
-  update(id: number, updateUserInformationDto) {
-    return `This action updates a #${id} userInformation`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} userInformation`;
-  }
 }
