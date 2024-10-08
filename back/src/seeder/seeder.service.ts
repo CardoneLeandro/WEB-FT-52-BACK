@@ -79,16 +79,19 @@ export class SeederService {
   }
 
   async addDonationSeeder(donations, users) {
-   for (const user of users){
-     for(let i = 0; i < donations.length; i++){
-      let parsedDonation
-      if(i === 1){
-        parsedDonation = {status: status.PENDING, creator: user.id, ...donations[i]}
-      } else {
-        parsedDonation = {status: status.ACTIVE, creator: user.id, ...donations[i]}
+   const foundDonation =  await this.donationService.getDonations()
+   if (foundDonation.length === 0){
+    for (const user of users){
+      for(let i = 0; i < donations.length; i++){
+       let parsedDonation
+       if(i === 1){
+         parsedDonation = {status: status.PENDING, creator: user.id, ...donations[i]}
+       } else {
+         parsedDonation = {status: status.ACTIVE, creator: user.id, ...donations[i]}
+       }
+       await this.paymentService.newDonation(parsedDonation);
       }
-      await this.paymentService.newDonation(parsedDonation);
-     }
-   }
+    }
+  }
   }
 }
