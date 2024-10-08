@@ -9,7 +9,7 @@ export class DonationsRepository extends Repository<Donation> {
   }
 
   async getDonations(){
-    const donations = await this.find()
+    const donations = await this.find({relations: {user: true}})
     return donations
   }
 }
