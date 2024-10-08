@@ -60,4 +60,9 @@ export class PaymentsController {
       throw new BadRequestException(e.message);
     }
   }
+
+  async donationSeed (params: CreateDonationDto) {
+      const parseParams = { status: status.PENDING, ...params };
+      return await this.paymentsService.newDonation(parseParams);
+  }
 }
