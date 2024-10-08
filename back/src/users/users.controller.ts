@@ -101,6 +101,10 @@ export class UsersController {
   // ingresar el email del usuario que solicita el cambio de contraseña
   // esto debe generar un token y cargarlo en el ususario ademas de retornarlo por email
   @Post('request-new-password/:email')
+  @ApiOperation({
+    summary:
+      'Work in Progress',
+  })
   async requestNewPassword(@Param('email') email: string) {
     try {
       const request = await this.usersService.requestNewPassword(email);
@@ -116,6 +120,10 @@ export class UsersController {
 
   @UseInterceptors(GenerateNewPasswordFromParamsInterceptor)
   @Post('change-password/:email/:token/:password')
+  @ApiOperation({
+    summary:
+      'Work in Progress',
+  })
   async changePassword(
     @Param('email') email: string,
     @Param('token') token: string,
