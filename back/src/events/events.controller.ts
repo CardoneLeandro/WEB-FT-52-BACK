@@ -149,6 +149,16 @@ export class EventsController {
     }
   }
 
+  @Get('getactiveandinactivehighlight')
+  @ApiOperation({ summary: 'Ruta para la obtención de todos los eventos activos y inactivos cuyo Highlight sea True' })
+  async getActiveAndInactiveHighlight() {
+    try {
+      return await this.eventsService.getActiveAndInactiveHighlight();
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
+
   @Post('switcheventstatus/:id')
   @ApiOperation({
     summary:

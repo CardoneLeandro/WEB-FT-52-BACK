@@ -106,6 +106,16 @@ export class AuthController {
     }
   }
 
+  @Get('events/get/all')
+  @ApiOperation({ summary: 'Ruta para obtener todos los eventos.' })
+  async getAllEvents() {
+    try {
+      return await this.eventService.getAllEvents();
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
+
   @Post('events/create')
   @ApiOperation({ summary: 'Ruta para la creación de eventos' })
   @UseInterceptors(ParseEventDataInterceptor)

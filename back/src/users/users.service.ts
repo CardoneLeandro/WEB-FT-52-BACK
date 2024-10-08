@@ -146,10 +146,12 @@ export class UsersService {
     }
 
     const newUser = await this.createUser(params);
-    await this.mailerService.sendEmailWelcome({
-      name: newUser.name,
-      email: newUser.email,
-    });
+    if (newUser.role !== UserRole.SUPERADMIN) {
+      await this.mailerService.sendEmailWelcome({
+        name: newUser.name,
+        email: newUser.email,
+      })
+    }
     return await this.infoRepo.loggedUser(newUser.id);
   }
 
@@ -214,7 +216,11 @@ export class UsersService {
     const token = await this.jwrService.generateCPT(user);
     await this.userRepo.update(user.id, { token });
     const updatedUser = await this.userRepo.findOneBy({ token });
-    await this.mailerService.sendEmailChangePasswordRequest({name: updatedUser.name, email: updatedUser.email, token: updatedUser.token});
+    await this.mailerService.sendEmailChangePasswordRequest({
+      name: updatedUser.name,
+      email: updatedUser.email,
+      token: updatedUser.token,
+    });
     return updatedUser;
   }
 
