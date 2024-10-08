@@ -9,7 +9,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { status } from 'src/common/enum/status.enum';
 import { addJWTInterceptor } from 'src/security/interceptors/addJWT.interceptor';
 import { RemovePropertiesInterceptor } from 'src/security/interceptors/remove-properties.interceptor';
@@ -43,6 +43,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthHeaderGuard)
+  @ApiBearerAuth()
   @Post('auth0/completeregister')
   @ApiOperation({
     summary:
@@ -103,6 +104,10 @@ export class UsersController {
 
   
   @Post('request-new-password/:email')
+  @ApiOperation({
+    summary:
+      'Work in Progress',
+  })
   async requestNewPassword(@Param('email') email: string) {
     try {
       const request = await this.usersService.requestNewPassword(email);
@@ -118,6 +123,10 @@ export class UsersController {
 
   @UseInterceptors(GenerateNewPasswordFromParamsInterceptor)
   @Post('change-password/:email/:token/:password')
+  @ApiOperation({
+    summary:
+      'Work in Progress',
+  })
   async changePassword(
     @Param('email') email: string,
     @Param('token') token: string,

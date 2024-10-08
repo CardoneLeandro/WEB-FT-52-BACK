@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
 import { status } from 'src/common/enum/status.enum';
 import { UUID } from 'crypto';
@@ -53,9 +53,7 @@ export class AuthController {
   })
   async ban(@Param('id', ParseUUIDPipe) id: string) {
     try {
-      console.log('controlador =>', id);
       const user = await this.authService.ban(id);
-      console.log('controlador previo al return, user', user);
       return user;
     } catch (e) {
       throw new BadRequestException(e.message);
@@ -80,6 +78,19 @@ export class AuthController {
   @ApiOperation({
     summary:
       'Ruta para obtener todos los usuarios. Por defecto se devuelve los usuarios ordenados por updateDate de manera Descendente',
+  })
+  @ApiQuery({
+    name: 'sortBy',
+    required: false,
+    example: 'updateDate',
+    description: 'Fecha de la última actualización del usuario',
+  })
+  @ApiQuery({
+    name: 'order',
+    required: false,
+    enum: ['ASC', 'DESC'],
+    example: 'DESC',
+    description: 'Orden de los resultados (ascendente o descendente)',
   })
   findAll(
     @Query('sortBy') sortBy: string = 'updateDate',
@@ -194,7 +205,24 @@ export class AuthController {
     }
   }
 
+  @Get('donations')
+  @ApiOperation({
+    summary:
+      'Ruta para obtener todas las donaciones',
+  })
+  async getDonations(){
+    try {
+      return await this.donationsSv.getDonations()
+    } catch (error) {
+      throw new BadRequestException()
+    }
+  }
+
   @Post('post/create')
+  @ApiOperation({
+    summary:
+      'Work in Progress',
+  })
   async createPost(@Body() createPostDto: CreatePostDto) {
     try {
       const newPost = await this.postService.create(createPostDto);
@@ -205,6 +233,10 @@ export class AuthController {
   }
 
   @Post('post/edit/:id')
+  @ApiOperation({
+    summary:
+      'Work in Progress',
+  })
   async editPost(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() params: UpdatePostDto,
@@ -217,12 +249,4 @@ export class AuthController {
     }
   }
 
-  @Get('donations')
-  async getDonations(){
-    try {
-      return await this.donationsSv.getDonations()
-    } catch (error) {
-      throw new BadRequestException()
-    }
-  }
 }

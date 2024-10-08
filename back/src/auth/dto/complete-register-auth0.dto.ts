@@ -3,6 +3,7 @@ import {
   IsInt,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
@@ -10,7 +11,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CompleteRegisterAuth0Dto {
   @ApiProperty({
     description: 'Dirección de correo electrónico del usuario',
-    example: 'example@gmail.com',
+    example: 'tomascampellone2@gmail.com',
     type: String,
   })
   @IsNotEmpty()
@@ -20,25 +21,20 @@ export class CompleteRegisterAuth0Dto {
 
   @ApiProperty({
     description: 'ID de la cuenta de Auth0 del usuario',
-    example: '12345678901234567890',
+    example: '102036134540783805687',
     type: String,
   })
   @IsString()
   providerAccountId: string;
 
+  @ApiProperty({
+    description: 'Contraseña del usuario',
+    example: 'Password123*',
+    type: String,
+  })
   @IsNotEmpty()
   @IsString()
   password: string;
-
-  // @ApiProperty({
-  //   description: 'Confirmación de la contraseña del usuario',
-  //   example: 'Password123*',
-  //   type: String,
-  // })
-  // @IsNotEmpty()
-  // @IsString()
-  // @Length(8, 15)
-  // confirmPassword: string;
 
   @ApiProperty({
     description: 'Dirección del usuario',
@@ -51,8 +47,8 @@ export class CompleteRegisterAuth0Dto {
 
   @ApiProperty({
     description: 'Teléfono de contacto del usuario',
-    example: '555-555-5555',
-    type: String,
+    example: 555-555-5555,
+    type: Number,
   })
   @IsNotEmpty()
   @IsNumber()
