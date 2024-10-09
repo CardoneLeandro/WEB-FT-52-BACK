@@ -26,6 +26,12 @@ export class EventsService {
       eventData.status = status.ACTIVE;
     }
 
+    if (eventData.stock !== 0) {
+      eventData.currentStock = eventData.stock;
+    } else {
+      eventData.currentStock = -1;
+    }
+
     const createdEvent = this.eventRepo.create(eventData);
     if (!createdEvent) {
       throw new Error('Could not create event');
@@ -127,20 +133,21 @@ export class EventsService {
       eventLocation: event.eventLocation,
     };
     if (attendance && attendance.status === status.ACTIVE) {
-      await this.eventAssistantsRepo.update(attendance.id, {
-        status: status.INACTIVE,
-      });
-      if (event.vacancy === false) {
-        await this.eventRepo.update(param.eventId, { vacancy: true });
+      await this.eventAssistantsRepo.update(attendance.id, {status: status.INACTIVE});
+      let vacancy = false;
+      if (event.stock !== 0 && event.vacancy === false) {
+        if (event.currentStock === 0) {
+          vacancy = true;
+        }
+        await this.eventRepo.update(param.eventId, {vacancy: vacancy, currentStock: event.currentStock + 1});
       }
       await this.mailerService.sendMailLeaveEvent(mailDto);
     }
     if (event.stock !== 0) {
-      const assistantsActive = event.assistants.filter(
-        (assistant) => assistant.status === status.ACTIVE,
-      );
-      if (assistantsActive.length >= event.stock)
-        throw new BadRequestException(`Event ${event.title} is full`);
+      const updatedEvent = await this.eventRepo.findOne({
+        where: { id: param.eventId }
+      })
+      if (updatedEvent.currentStock === 0) throw new BadRequestException(`Event ${event.title} is full`);
     }
     if (!attendance) {
       const newEventAttendant = await this.eventAssistantsRepo.create({
@@ -152,17 +159,12 @@ export class EventsService {
         status: status.ACTIVE,
       });
       await this.eventAssistantsRepo.save(newEventAttendant);
-      const updatedEvent = await this.eventRepo.findOne({
-        where: { id: param.eventId },
-        relations: { assistants: true }
-      })
-      if (updatedEvent.stock !== 0) {
-        const assistantsActive = updatedEvent.assistants.filter(
-          (assistant) => assistant.status === status.ACTIVE,
-        );
-        if (updatedEvent.vacancy === true && updatedEvent.stock === assistantsActive.length) {
-          await this.eventRepo.update(param.eventId, { vacancy: false });
+      let vacancy = true;
+      if (event.stock !== 0) {
+        if (event.currentStock === 1) {
+          vacancy = false;
         }
+        await this.eventRepo.update(param.eventId, { vacancy: vacancy, currentStock: event.currentStock - 1 });
       }
       await this.mailerService.sendMailJoininEvent(mailDto);
     } else if (attendance.status === status.INACTIVE) {
@@ -173,13 +175,12 @@ export class EventsService {
         where: { id: param.eventId },
         relations: { assistants: true }
       })
-      if (updatedEvent.stock !== 0) {
-        const assistantsActive = updatedEvent.assistants.filter(
-          (assistant) => assistant.status === status.ACTIVE,
-        );
-        if (updatedEvent.vacancy === true && updatedEvent.stock === assistantsActive.length) {
-          await this.eventRepo.update(param.eventId, { vacancy: false });
+      let vacancy = true;
+      if (event.stock !== 0) {
+        if (event.currentStock === 1) {
+          vacancy = false;
         }
+        await this.eventRepo.update(param.eventId, { vacancy: vacancy, currentStock: event.currentStock - 1 });
       }
       await this.mailerService.sendMailJoininEvent(mailDto);
     }
@@ -217,6 +218,17 @@ export class EventsService {
     const foundEvent = await this.eventRepo.findOneBy({ id });
     if (!foundEvent) {
       throw new BadRequestException('Event not found');
+    }
+    if (updateEventData.stock !== foundEvent.stock) {
+      if (updateEventData.stock > foundEvent.stock){
+        const plus = updateEventData.stock - foundEvent.stock
+        const currentStock = foundEvent.currentStock + plus
+        await this.eventRepo.update(id, { currentStock: currentStock })
+      } else if (updateEventData.stock < foundEvent.stock) {
+        const minus = foundEvent.stock - updateEventData.stock
+        const currentStock = foundEvent.currentStock - minus
+        await this.eventRepo.update(id, { currentStock: currentStock })
+      }
     }
     await this.eventRepo.updateEvent(id, updateEventData);
     const updatedEvent = await this.eventRepo.findOneBy({ id });

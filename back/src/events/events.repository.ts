@@ -68,6 +68,13 @@ export class EventsRepository extends Repository<Event> {
     } else {
       event.status = status.ACTIVE;
     }
+
+    if (event.stock > 0) {
+      event.currentStock = event.stock;
+    } else {
+      event.currentStock = -1;
+    }
+
     return this.create(event);
   }
 
