@@ -32,7 +32,7 @@ Puedes entrar a ver nuestra página web [haciendo click aquí!](https://web-ft-5
 
 ----
 ### Documentación:<p>
-Para ver nuestra documentación de Swagger  [haz click aquí!](https://web-ft-52-back-1.onrender.com/documentation "Heading link")
+Para ver nuestra documentación de Swagger  [haz click aquí!](https://web-ft-52-back-1.onrender.com/documentation "Heading link") <br>
 Para ver nuestro repositorio de Front-end [haz click aquí!](https://github.com/CardoneLeandro/WEB-FT-52-FRONT/tree/development "Heading link")
 </p>
 
