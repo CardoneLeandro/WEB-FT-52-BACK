@@ -195,6 +195,24 @@ export class EventsService {
     return user
   }
 
+  async seedAttendance(param) {
+    const event = await this.eventRepo.findOne({
+      where: { id: param.eventId }
+    })
+    const userInfo = await this.userInfoRepo.findOne({
+      where: { id: param.creator }
+    })
+    const newEventAttendant = await this.eventAssistantsRepo.create({
+      user: userInfo,
+      event,
+      eventId: param.eventId,
+      title: event.title,
+      eventDate: event.eventDate,
+      status: status.ACTIVE,
+    });
+    await this.eventAssistantsRepo.save(newEventAttendant);
+  }
+
   async updateEvent(id: string, updateEventData: UpdateEventDto) {
     const foundEvent = await this.eventRepo.findOneBy({ id });
     if (!foundEvent) {
