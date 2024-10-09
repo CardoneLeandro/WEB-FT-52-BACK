@@ -144,6 +144,8 @@ export class EventsService {
         user: userInfo,
         event,
         eventId: param.eventId,
+        title: event.title,
+        eventDate: event.eventDate,
         status: status.ACTIVE,
       });
       await this.eventAssistantsRepo.save(newEventAttendant);
