@@ -174,7 +174,7 @@ export class AuthController {
     }
   }
 
-  @Post('switcheventstatus/:id')
+  @Post('events/switch-status/:id')
   @ApiOperation({
     summary:
       'Ruta para cambiar el estado del evento de ACTIVE a INACTIVE y viceversa',
