@@ -6,6 +6,7 @@ import productsSeeder from './seeder/seeders/product.seed';
 import eventSeeder from './seeder/seeders/event.seed';
 import userSeeder from './seeder/seeders/user.seed';
 import donationSeeder from './seeder/seeders/donations.seed';
+import { assistantSeed } from './seeder/seeders/assistant.seed';
 
 @Injectable()
 export class AppService {
@@ -21,7 +22,7 @@ export class AppService {
     await this.seederSv.addUserSeeder(userSeeder);
     const allUsers= await this.userInfoRepo.find()
     await this.seederSv.addDonationSeeder(donationSeeder,allUsers)
-
+    await this.seederSv.addAssistantSeeder(assistantSeed) 
     // const allRelations = await this.userInfoRepo.findOne({
     //   where: { id },
     //   relations: {

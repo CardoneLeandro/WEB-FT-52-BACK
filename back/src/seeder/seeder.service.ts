@@ -9,6 +9,7 @@ import { UsersService } from 'src/users/users.service';
 import { DonationsService } from 'src/donations/donations.service';
 import { PaymentsService } from 'src/payments/payments.service';
 import { status } from 'src/common/enum/status.enum';
+import { EventsService } from 'src/events/events.service';
 
 @Injectable()
 export class SeederService {
@@ -20,6 +21,7 @@ export class SeederService {
     private readonly userService: UsersService,
     private readonly donationService: DonationsService,
     private readonly paymentService: PaymentsService,
+    private readonly eventService: EventsService,
   ) {}
 
   async superAdmin() {
@@ -93,5 +95,13 @@ export class SeederService {
       }
     }
    }
+  }
+
+  async addAssistantSeeder(events) {
+    const superAdmin = await this.userRepo.findOne({ where: { role: UserRole.SUPERADMIN }, relations: ['userInformation'] });
+    for (const eventName of events) {
+      const event = await this.eventRepo.findOne({ where: { title: eventName } });
+      await this.eventService.seedAttendance({ eventId: event.id, creator: superAdmin.userInformation.id });
+    }
   }
 }
