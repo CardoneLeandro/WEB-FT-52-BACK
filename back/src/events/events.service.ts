@@ -130,6 +130,9 @@ export class EventsService {
       await this.eventAssistantsRepo.update(attendance.id, {
         status: status.INACTIVE,
       });
+      if (event.vacancy === false) {
+        await this.eventRepo.update(param.eventId, { vacancy: true });
+      }
       await this.mailerService.sendMailLeaveEvent(mailDto);
     }
     if (event.stock !== 0) {
@@ -149,11 +152,35 @@ export class EventsService {
         status: status.ACTIVE,
       });
       await this.eventAssistantsRepo.save(newEventAttendant);
+      const updatedEvent = await this.eventRepo.findOne({
+        where: { id: param.eventId },
+        relations: { assistants: true }
+      })
+      if (updatedEvent.stock !== 0) {
+        const assistantsActive = updatedEvent.assistants.filter(
+          (assistant) => assistant.status === status.ACTIVE,
+        );
+        if (updatedEvent.vacancy === true && updatedEvent.stock === assistantsActive.length) {
+          await this.eventRepo.update(param.eventId, { vacancy: false });
+        }
+      }
       await this.mailerService.sendMailJoininEvent(mailDto);
     } else if (attendance.status === status.INACTIVE) {
       await this.eventAssistantsRepo.update(attendance.id, {
         status: status.ACTIVE,
       });
+      const updatedEvent = await this.eventRepo.findOne({
+        where: { id: param.eventId },
+        relations: { assistants: true }
+      })
+      if (updatedEvent.stock !== 0) {
+        const assistantsActive = updatedEvent.assistants.filter(
+          (assistant) => assistant.status === status.ACTIVE,
+        );
+        if (updatedEvent.vacancy === true && updatedEvent.stock === assistantsActive.length) {
+          await this.eventRepo.update(param.eventId, { vacancy: false });
+        }
+      }
       await this.mailerService.sendMailJoininEvent(mailDto);
     }
     const newUserInfo = await this.userInfoRepo.findOne({
