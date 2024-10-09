@@ -11,6 +11,7 @@ import {
   Query,
   UseInterceptors,
   UseGuards,
+  NotFoundException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
@@ -30,6 +31,7 @@ import { SelfProtectionGuard } from 'src/security/guards/self-protection.guard';
 import { CreatePostDto } from 'src/posts/dto/create-post.dto';
 import { PostsService } from 'src/posts/posts.service';
 import { UpdatePostDto } from 'src/posts/dto/update-post.dto';
+import { IsUUIDPipe } from 'src/common/pipes/isUUID.pipe';
 
 //
 @UseGuards(AuthHeaderGuard, RolesGuard)
@@ -42,7 +44,8 @@ export class AuthController {
     private readonly eventService: EventsService,
     private readonly donationService: DonationsService,
     private readonly postService: PostsService,
-    private readonly donationsSv: DonationsService
+    private readonly donationsSv: DonationsService,
+    private readonly eventsService: EventsService
   ) {}
   // retornar ok:true como response para recargar y volver a solicitar la lista de usuarios
   @UseGuards(SuperAdminProtectionGuard, SelfProtectionGuard)
@@ -171,6 +174,20 @@ export class AuthController {
     }
   }
 
+  @Post('switcheventstatus/:id')
+  @ApiOperation({
+    summary:
+      'Ruta para cambiar el estado del evento de ACTIVE a INACTIVE y viceversa',
+  })
+  async switchEventStatus(@Param('id', new IsUUIDPipe()) id: string) {
+    try {
+      return await this.eventsService.switchEventStatus(id);
+    } catch (error) {
+      throw new NotFoundException('Could not find the event');
+    }
+  }
+
+
   // CAMBIA EL ESTADO DE UNA DONACION DE PENDING A ACTIVE O REJECTED
   // retornar ok:true como response para recargar y volver a solicitar la lista de donaciones
   @Patch('payment/donation/confirm/:id')
@@ -248,5 +265,4 @@ export class AuthController {
       throw new BadRequestException(e.message);
     }
   }
-
 }
