@@ -8,11 +8,15 @@ Puedes entrar a ver nuestra página web [haciendo click aquí!](https://web-ft-5
 
 ----
 ### Funcionalidades:
-- Autenticación de 3ros:
-- Pasarela de pagos:
-- Dashboard admin:
-- Sistema de notificaciones por correo:
-- Manejo de stock avanzado:
+- Autenticación de terceros: Utilizamos Auth0 para el registro e inicio de sesión, lo que permite a los usuarios acceder a la página con sus cuentas de Google. Además, ofrecemos nuestro propio sistema de registro.
+
+- Pasarela de pagos: Para facilitar las donaciones a la iglesia, implementamos una pasarela utilizando la API de Mercado Pago. Esto permite a los usuarios contribuir de manera segura y rápida a la misión de la iglesia.
+
+- Dashboard de administración: La página incluye una sección denominada "Dashboard de Administrador", donde el administrador puede acceder a métodos CRUD específicos. Esto facilita la gestión de usuarios, eventos y donaciones de manera rápida e intuitiva.
+
+- Sistema de notificaciones por correo: Usamos la librería Mailer para enviar notificaciones, como mensajes de bienvenida a nuevos usuarios y agradecimientos a quienes realizan aportes económicos a través de nuestra sección de donaciones.
+
+- Manejo de stock: Implementamos un sistema de seguimiento de stock dinámico para gestionar la asistencia a eventos. Esto permite a los usuarios confirmar su asistencia, al administrador llevar un conteo de asistencias y gestionar la baja de usuarios en eventos, actualizando automáticamente el stock disponible.
 
 ----
 ### Tecnologías utilizadas:
