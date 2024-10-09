@@ -54,6 +54,9 @@ export class Event {
   @Column({ type: 'int', nullable: true })
   stock: number;
 
+  @Column({ type: 'int', nullable: true })
+  currentStock: number;
+
   @Column({ type: 'varchar', array: true, nullable: false })
   images: string[];
 
