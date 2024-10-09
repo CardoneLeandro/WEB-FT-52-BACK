@@ -1,4 +1,4 @@
-##  MOVIMIENTO JUVENIL PEREGRINOS
+##  MOVIMIENTO JUVENIL PEREGRINOS - Backend
 "Movimiento Juvenil Peregrinos"es una plataforma web diseñada para fortalecer la comunidad de la congregación. El sitio permite a los miembros explorar y registrarse para eventos, así como realizar donaciones a la iglesia de manera fácil y segura. Con un enfoque en la accesibilidad y la usabilidad, la página ofrece una navegación intuitiva y una experiencia visual atractiva. El objetivo es fomentar la participación activa de los jóvenes en la congregación, facilitando la asistencia a eventos y apoyando la misión de la iglesia.
 
 ----
