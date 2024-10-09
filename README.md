@@ -3,7 +3,7 @@
 
 ----
 ### Demo en vivo<p>
-Puedes entrar a ver nuestra página web [haciendo click aquí!](https://web-ft-52-front-deploy.vercel.app/) (se abrirá en una nueva pestaña).
+Puedes entrar a ver nuestra página web [haciendo click aquí!](https://web-ft-52-front-deploy.vercel.app/).
 </p>
 
 ----
