@@ -20,6 +20,12 @@ export class EventAssistants {
   @Column({ type: 'uuid', nullable: false })
   eventId: string;
 
+  @Column({ type: 'varchar', nullable: false })
+  title: string;
+
+  @Column({ type: 'timestamp', nullable: false })
+  eventDate: Date;
+
   @ManyToOne(
     () => UserInformation,
     (userInformation) => userInformation.assistantEvents,

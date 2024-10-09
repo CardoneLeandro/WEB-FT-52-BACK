@@ -15,12 +15,11 @@ export class addJWTInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map(async (result) => {
-        if (result && result.redirect === true) {
-          return result;
-        }
         try {
           const token = await this.jwtSv.generateJwt(result);
-          console.log('respuesta del interceptor', { user: result, token });
+          if (result && result.redirect === true) {
+            return { token, result}
+          }
           return { user: result, token };
         } catch (error) {
           throw new Error('Error al generar el token');

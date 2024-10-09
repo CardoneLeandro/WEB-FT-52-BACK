@@ -111,17 +111,17 @@ export class EventsService {
       relations: { assistants: true },
     });
     if (!event) throw new BadRequestException(`User or Event not found`);
-    const user = await this.userInfoRepo.findOne({
+    const userInfo = await this.userInfoRepo.findOne({
       where: { id: param.creator },
       relations: { user: true },
     });
-    if (!user) throw new BadRequestException(`User or Event not found`);
+    if (!userInfo) throw new BadRequestException(`User or Event not found`);
     const attendance = await this.eventAssistantsRepo.findOne({
-      where: { user: { id: user.id }, event: { id: event.id } },
+      where: { user: { id: userInfo.id }, event: { id: event.id } },
     });
     const mailDto = {
-      name: user.user.name,
-      email: user.user.email,
+      name: userInfo.user.name,
+      email: userInfo.user.email,
       title: event.title,
       eventDate: event.eventDate,
       eventLocation: event.eventLocation,
@@ -130,6 +130,9 @@ export class EventsService {
       await this.eventAssistantsRepo.update(attendance.id, {
         status: status.INACTIVE,
       });
+      if (event.vacancy === false) {
+        await this.eventRepo.update(param.eventId, { vacancy: true });
+      }
       await this.mailerService.sendMailLeaveEvent(mailDto);
     }
     if (event.stock !== 0) {
@@ -141,25 +144,55 @@ export class EventsService {
     }
     if (!attendance) {
       const newEventAttendant = await this.eventAssistantsRepo.create({
-        user,
+        user: userInfo,
         event,
         eventId: param.eventId,
+        title: event.title,
+        eventDate: event.eventDate,
         status: status.ACTIVE,
       });
       await this.eventAssistantsRepo.save(newEventAttendant);
+      const updatedEvent = await this.eventRepo.findOne({
+        where: { id: param.eventId },
+        relations: { assistants: true }
+      })
+      if (updatedEvent.stock !== 0) {
+        const assistantsActive = updatedEvent.assistants.filter(
+          (assistant) => assistant.status === status.ACTIVE,
+        );
+        if (updatedEvent.vacancy === true && updatedEvent.stock === assistantsActive.length) {
+          await this.eventRepo.update(param.eventId, { vacancy: false });
+        }
+      }
       await this.mailerService.sendMailJoininEvent(mailDto);
     } else if (attendance.status === status.INACTIVE) {
       await this.eventAssistantsRepo.update(attendance.id, {
         status: status.ACTIVE,
       });
+      const updatedEvent = await this.eventRepo.findOne({
+        where: { id: param.eventId },
+        relations: { assistants: true }
+      })
+      if (updatedEvent.stock !== 0) {
+        const assistantsActive = updatedEvent.assistants.filter(
+          (assistant) => assistant.status === status.ACTIVE,
+        );
+        if (updatedEvent.vacancy === true && updatedEvent.stock === assistantsActive.length) {
+          await this.eventRepo.update(param.eventId, { vacancy: false });
+        }
+      }
       await this.mailerService.sendMailJoininEvent(mailDto);
     }
-    const updatedEvent = await this.eventRepo.findOne({
-      where: { id: param.eventId },
-      relations: { assistants: true },
-    });
-    const updateUser = await this.userInfoRepo.loggedUser(user.user.id);
-    return { updatedEvent, updateUser };
+    const newUserInfo = await this.userInfoRepo.findOne({
+      where: { id: userInfo.id },
+      relations: { assistantEvents: true, user: true },
+    })
+    const assistantEventsActive = newUserInfo.assistantEvents.filter((assistant) => assistant.status === status.ACTIVE) 
+    const user = {
+      id: userInfo.user.id,
+      assistantEvents: assistantEventsActive
+    }
+    return user
   }
 
   async updateEvent(id: string, updateEventData: UpdateEventDto) {
