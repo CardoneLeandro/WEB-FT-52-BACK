@@ -48,6 +48,9 @@ export class Event {
   @Column({ type: 'int', nullable: false })
   price: number;
 
+  @Column({ type: 'boolean', default: true })
+  vacancy: boolean;
+
   @Column({ type: 'int', nullable: true })
   stock: number;
 
