@@ -1,25 +1,38 @@
-# WEB-FT-52-BACK
-Proyecto Final; Desarrollo API Fullstack Cohorte 52
+##  MOVIMIENTO JUVENIL PEREGRINOS
+"Movimiento Juvenil Peregrinos"es una plataforma web diseñada para fortalecer la comunidad de la congregación. El sitio permite a los miembros explorar y registrarse para eventos, así como realizar donaciones a la iglesia de manera fácil y segura. Con un enfoque en la accesibilidad y la usabilidad, la página ofrece una navegación intuitiva y una experiencia visual atractiva. El objetivo es fomentar la participación activa de los jóvenes en la congregación, facilitando la asistencia a eventos y apoyando la misión de la iglesia.
 
----------------------- PULL REQUEST ---------------------- 
-####### always check the destination branch!!!!! #######
+----
+### Demo en vivo<p>
+Puedes entrar a ver nuestra página web [haciendo click aquí!](https://web-ft-52-front-deploy.vercel.app/ "Heading link")
+</p>
 
-git add . git commit -m "commit message" git push origin <RAMA_PERSONAL>
+----
+### Funcionalidades:
+- Autenticación de 3ros:
+- Pasarela de pagos:
+- Dashboard admin:
+- Sistema de notificaciones por correo:
+- Manejo de stock avanzado:
 
-git pull origin backDev git pull origin frontDev
+----
+### Tecnologías utilizadas:
+- Framework: NestJS
+- Lenguaje: TypeScript
+- Base de datos: PostgreSQL
+- ORM: TypeORM
+- Autenticaciones: JWT, Bcrypt
+- Servicio de mailing: Nodemailer
+- Pasarela de pago: MercadoPago
+- Documentación: Swagger
+- Deployment: Render
 
-Testing: git pull origin development
+----
+### Documentación:<p>
+Para ver nuestra documentación de Swagger  [haz click aquí!](https://web-ft-52-back-1.onrender.com/documentation "Heading link")
+</p>
 
-GIT STASH <-- investigate
-
-//----------------------------------------------------------------------
-
-References: Rango de jerarquías 👇
-
-backstick --> `` (for template strings)
-
-single quotes --> ''
-
-double quotes --> ""
-
-Formato de escritura: cammelCase
+----
+### Autores:
+- [Leandro Cardone](https://github.com/CardoneLeandro "Heading link") 
+- [Santiago Gama](https://github.com/Gamma1404 "Heading link")
+- [Fernando Campellone](https://github.com/FernandoCampellone "Heading link") 
