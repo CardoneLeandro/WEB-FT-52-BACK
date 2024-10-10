@@ -38,7 +38,7 @@ const eventSeeder = [
     price: 3000,
     stock: 15,
     images: [
-      'https://img.freepik.com/foto-gratis/vista-frontal-mujer-rezando-al-aire-libre_23-2150870082.jpg?t=st=1727361866~exp=1727365466~hmac=7fe88fcdfc8c60d6861e85424494fba15da5942441a5f12fe1a6768935821525&w=740',
+      'https://img.freepik.com/foto-gratis/ninos-siendo-parte-escuela-dominical_23-2149582945.jpg?t=st=1728576065~exp=1728579665~hmac=f6659a58cc364263c074f47adbd3e6f321578b21763bb60a80df7ad1c217c025&w=1380',
     ],
   },
   {
