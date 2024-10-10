@@ -223,16 +223,17 @@ export class EventsService {
     await this.eventRepo.updateEvent(id, updateEventData);
   
     const dateUpdatedEvent = await this.eventRepo.findOneBy({ id });
-  
-    const currentDate = new Date();
-    const eventDate = new Date(dateUpdatedEvent.eventDate);
-  
-    if (currentDate > eventDate) {
-      dateUpdatedEvent.status = status.INACTIVE;
-    } else {
-      dateUpdatedEvent.status = status.ACTIVE;
+    if (updateEventData.eventDate){
+      const currentDate = new Date();
+      const eventDate = new Date(dateUpdatedEvent.eventDate);
+      if (currentDate > eventDate) {
+        dateUpdatedEvent.status = status.INACTIVE;
+      } else {
+        dateUpdatedEvent.status = status.ACTIVE;
+      }
+      await this.eventRepo.save(dateUpdatedEvent);
     }
-    await this.eventRepo.save(dateUpdatedEvent);
+    
 
     if (updateEventData.stock !== foundEvent.stock) {
       if (updateEventData.stock > foundEvent.stock){
