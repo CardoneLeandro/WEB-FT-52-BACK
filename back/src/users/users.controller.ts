@@ -1,266 +1,147 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { UsersRepository } from './users.repository';
-import { User } from './entities/user.entity';
-import { UserInformationService } from 'src/user-information/user-information.service';
-import { DataSource } from 'typeorm';
-import { UserRole } from 'src/common/enum/userRole.enum';
+import {
+  Controller,
+  Post,
+  Body,
+  UseInterceptors,
+  UsePipes,
+  BadRequestException,
+  UseGuards,
+  Param,
+} from '@nestjs/common';
+import { UsersService } from './users.service';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { status } from 'src/common/enum/status.enum';
+import { addJWTInterceptor } from 'src/security/interceptors/addJWT.interceptor';
+import { RemovePropertiesInterceptor } from 'src/security/interceptors/remove-properties.interceptor';
+import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
+import { Auth0LogInDto } from 'src/auth/dto/auth0-logIn.dto';
+import { CompareAndRemovePasswordInterceptor } from 'src/security/interceptors/compare&remove-password.interceptor';
+import { StringToNumberInterceptor } from 'src/security/interceptors/string-toNumber.interceptor';
 import { CompleteRegisterAuth0Dto } from 'src/auth/dto/complete-register-auth0.dto';
-import * as bcrypt from 'bcrypt';
-import { MailerService } from 'src/mailer/mailer.service';
-import { UserInformationRepository } from 'src/user-information/user-information.repository';
-import { encriptProviderAccIdCompare } from 'src/common/utils/encript-providerAccIdCompare.util';
-import { encriptPasswordCompare } from 'src/common/utils/encript-passwordCompare.util';
-import { JsonWebTokenService } from 'src/auth/jsonWebToken/jsonWebToken.service';
+import { SignUpDto } from 'src/auth/dto/signUp-user.dto';
+import { LoginUserDto } from 'src/auth/dto/login-user.dto';
+import { AuthHeaderGuard } from 'src/security/guards/auth-headers.guard';
+import { GenerateNewPasswordFromParamsInterceptor } from 'src/security/interceptors/generate-password-from-params.interceptor';
 
-@Injectable()
-export class UsersService {
-  constructor(
-    private readonly dsource: DataSource,
-    private readonly userRepo: UsersRepository,
-    private readonly infoService: UserInformationService,
-    private readonly infoRepo: UserInformationRepository,
-    private readonly mailerService: MailerService,
-    private readonly jwrService: JsonWebTokenService,
-  ) {}
+@ApiTags('Users')
+@Controller('users')
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
 
-  // =====================> LOGGIN CON AUTH0 <=======================
-  async logginWithAuth0(params) {
-    const existingUser = await this.foundExistingUser(params);
-    if (existingUser === null) {
-      const { providerAccountId, ...rest } = params;
-      const hashedProviderAccId = bcrypt.hashSync(providerAccountId, 10);
-      const createUserData = {
-        status: status.PENDING,
-        providerAccountId: hashedProviderAccId,
-        ...rest,
-      };
-      const newUser = await this.createNewUser(createUserData);
-      return await this.infoRepo.loggedUser(newUser.id);
-    }
-
-    // Verificaciones de estado
-    if (existingUser.status === status.BANNED) {
-      throw new BadRequestException('Access denied');
-    }
-    if (existingUser.status === status.INACTIVE) {
-      throw new BadRequestException('Access denied');
-    }
-
-    // SE RETORNA EL USUARIO PENDIENTE
-    if (existingUser.status === status.PENDING) {
-      if (
-        (await encriptProviderAccIdCompare(
-          existingUser,
-          params.providerAccountId,
-        )) === false
-      ) {
-        throw new BadRequestException('Invalid Credentials');
-      }
-      return await this.infoRepo.loggedUser(existingUser.id);
-    }
-
-    // SE AGREGA EL PAID + IMAGEN
-    if (existingUser.status === status.PARTIALACTIVE) {
-      const hashedProviderAccId = bcrypt.hashSync(params.providerAccountId, 10);
-      await this.userRepo.update(existingUser.id, {
-        status: status.ACTIVE,
-        providerAccountId: hashedProviderAccId,
-        image: params.image,
-      });
-      return await this.infoRepo.loggedUser(existingUser.id);
-    }
-
-    // SE INICIA SESION
-    if (existingUser.status === status.ACTIVE) {
-      if (
-        (await encriptProviderAccIdCompare(
-          existingUser,
-          params.providerAccountId,
-        )) === false
-      ) {
-        throw new BadRequestException('Invalid Credentials');
-      }
-      return await this.infoRepo.loggedUser(existingUser.id);
+  @Post('auth0/signup')
+  @ApiOperation({
+    summary: 'Ruta para el SignUp con cuentas de Google usando Auth0',
+  })
+  @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
+  @UsePipes(new DTOValidationPipe())
+  async signup(@Body() auth0Data: Auth0LogInDto) {
+    try {
+      return await this.usersService.logginWithAuth0(auth0Data);
+    } catch (e) {
+      throw new BadRequestException(e.message);
     }
   }
 
-  // =================> COMPLETE REGISTER AUTH0 <====================
-  async completeRegister(params) {
-    const incompleteUser = await this.userRepo.findOneBy({
-      email: params.email,
-    });
-    if (!incompleteUser) {
-      throw new BadRequestException('User not found');
-    }
-
-    // Verificaciones de estado
-    if (incompleteUser.status === status.BANNED) {
-      throw new BadRequestException('Access denied');
-    }
-    if (incompleteUser.status === status.INACTIVE) {
-      throw new BadRequestException('Access denied');
-    }
-    if (incompleteUser.status !== status.PENDING) {
-      throw new BadRequestException('User register is already completed');
-    }
-
-    await this.mailerService.sendEmailWelcome({
-      name: incompleteUser.name,
-      email: incompleteUser.email,
-    });
-
-    if (
-      (await encriptProviderAccIdCompare(
-        incompleteUser,
-        params.providerAccountId,
-      )) === false
-    ) {
-      throw new BadRequestException('Invalid Credentials');
-    }
-
-    const { providerAccountId, email, ...updateParams } = params;
-
-    const userData = {
-      status: status.ACTIVE,
-      ...updateParams,
-    };
-
-    await this.updateUserInformation(incompleteUser, userData);
-
-    return await this.infoRepo.loggedUser(incompleteUser.id);
-  }
-
-  // ========================> LOGIN <========================
-  async loginUser(params) {
-    const existingUser = await this.foundExistingUser(params);
-    if (existingUser === null) {
-      throw new BadRequestException('Invalid Credentials');
-    }
-
-    // Verificaciones de estado
-    if (existingUser.status === status.BANNED) {
-      throw new BadRequestException('Access denied');
-    }
-    if (existingUser.status === status.INACTIVE) {
-      throw new BadRequestException('Access denied');
-    }
-
-    if (existingUser.status === status.PENDING) {
-      return { redirect: true };
-    }
-
-    if (
-      existingUser.status === status.ACTIVE ||
-      existingUser.status === status.PARTIALACTIVE
-    ) {
-      if (
-        (await encriptPasswordCompare(existingUser, params.password)) === false
-      ) {
-        throw new BadRequestException('Invalid Credentials');
-      }
-
-      return await this.infoRepo.loggedUser(existingUser.id);
+  @UseGuards(AuthHeaderGuard)
+  @ApiBearerAuth()
+  @Post('auth0/completeregister')
+  @ApiOperation({
+    summary:
+      'Ruta para completar los datos del usuario una vez que se haya registrado con Google usando Auth0',
+  })
+  @UseInterceptors(
+    CompareAndRemovePasswordInterceptor,
+    StringToNumberInterceptor,
+  ) //INTERCEPTOPS APLICADOS AL REQUEST
+  @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor) // INTERCEPTORS APLICADOS AL RESPONSE
+  @UsePipes(new DTOValidationPipe())
+  async completeRegister(@Body() params: CompleteRegisterAuth0Dto) {
+    try {
+      return await this.usersService.completeRegister(params);
+    } catch (e) {
+      throw new BadRequestException(e.message);
     }
   }
 
-  // ========================> REGISTER <========================
-  async createNewUser(params) {
-    const existingUser = await this.foundExistingUser(params);
-    if (existingUser) {
-      throw new BadRequestException('Email already in use');
+  @Post('auth/signup')
+  @ApiOperation({
+    summary: 'Ruta para el SignUp usando el formulario dado por la aplicación',
+  })
+  @UsePipes(new DTOValidationPipe())
+  @UseGuards()
+  @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
+  @UseInterceptors(
+    CompareAndRemovePasswordInterceptor,
+    StringToNumberInterceptor,
+  )
+  async signupUser(@Body() params: SignUpDto) {
+    try {
+      const parseParams = { status: status.PARTIALACTIVE, ...params };
+      return await this.usersService.createNewUser(parseParams);
+    } catch (e) {
+      throw new BadRequestException(e.message);
     }
-
-    const newUser = await this.createUser(params);
-    if (newUser.role !== UserRole.SUPERADMIN) {
-      await this.mailerService.sendEmailWelcome({
-        name: newUser.name,
-        email: newUser.email,
-      });
-    }
-    return await this.infoRepo.loggedUser(newUser.id);
   }
 
-  async createUser(params): Promise<Partial<User>> {
-    return await this.dsource.transaction(async (manager) => {
-      const createdUser = this.userRepo.createUser(params);
-      const savedUser = await this.userRepo.saveUser(createdUser);
-      await this.infoService.createUserInformationTable(savedUser, manager);
-      return savedUser;
-    });
-  }
-
-  //-------------------------------------------------------------------------------
-  async findAll(sortBy, order) {
-    const allUsers: User[] = await this.userRepo.findUsers(sortBy, order);
-    return allUsers.map((user) => {
-      const {
-        userInformation,
-        password,
-        providerAccountId,
-        address,
-        phone,
-        updateDate,
-        ...rest
-      } = user;
-      return rest;
-    });
-  }
-
-  //-------------------------------------------------------------------------------
-  // Solo retorna al usuario si no existe, o si su estado es cualquiera excepto BANNED o INACTIVE, en cuyo caso lanza una excepcion
-  async foundExistingUser({ email }): Promise<User | null> {
-    const existingUser = await this.userRepo.findUserByEmail(email);
-    if (!existingUser) {
-      return null;
+  @Post('auth/login')
+  @ApiOperation({
+    summary:
+      'Ruta para el LogIn usando los datos dado por el formulario de la aplicación',
+  })
+  @UseInterceptors(addJWTInterceptor, RemovePropertiesInterceptor)
+  @UsePipes(new DTOValidationPipe())
+  async login(@Body() params: LoginUserDto): Promise<any> {
+    try {
+      return await this.usersService.loginUser(params);
+    } catch (e) {
+      throw new BadRequestException(e.message);
     }
-    if (
-      (existingUser && existingUser.status === status.BANNED) ||
-      existingUser.status === status.INACTIVE
-    ) {
-      throw new BadRequestException('Access denied');
-    }
-    return existingUser;
   }
 
-  //-------------------------------------------------------------------------------
-  async updateUserInformation(
-    user: User,
-    param: Partial<CompleteRegisterAuth0Dto>,
+  // =================== ELIMINAR LAS RESPUESTAS Y CAMBIARLAS POR OK ===================
+  // ingresar el email del usuario que solicita el cambio de contraseña
+  // esto debe generar un token y cargarlo en el ususario ademas de retornarlo por email
+
+  
+  @Post('request-new-password/:email')
+  @ApiOperation({
+    summary:
+      'Work in Progress',
+  })
+  async requestNewPassword(@Param('email') email: string) {
+    try {
+      const request = await this.usersService.requestNewPassword(email);
+      return request;
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
+
+  // ingresar el email del usuario que solicita el cambio de contraseña
+  // buscar al usuario por email y comparar el token
+  // si coincide, cambiar la contraseña
+
+  @UseInterceptors(GenerateNewPasswordFromParamsInterceptor)
+  @Post('change-password/:email/:token/:password')
+  @ApiOperation({
+    summary:
+      'Work in Progress',
+  })
+  async changePassword(
+    @Param('email') email: string,
+    @Param('token') token: string,
+    @Param('password') password: string,
+    @Body() newPassword,
   ) {
-    await this.userRepo.update(user.id, param);
-    return;
-  }
-
-  async requestNewPassword(email) {
-    const user = await this.userRepo.findOneBy({ email });
-    if (!user) {
-      throw new BadRequestException('User not found');
+    try {
+      const request = await this.usersService.changePassword({
+        email,
+        token,
+        newPassword,
+      });
+      return request;
+    } catch (e) {
+      throw new BadRequestException(e.message);
     }
-    const token = await this.jwrService.generateCPT(user);
-    await this.userRepo.update(user.id, { token });
-    const updatedUser = await this.userRepo.findOneBy({ token });
-    await this.mailerService.sendEmailChangePasswordRequest({
-      name: updatedUser.name,
-      email: updatedUser.email,
-      token: updatedUser.token,
-    });
-    return updatedUser;
-  }
-
-  async changePassword(params) {
-    const user = await this.userRepo.findOneBy({ email: params.email });
-    if (!user) {
-      throw new BadRequestException('Invalid Credentials');
-    }
-    if (user.token !== params.token) {
-      throw new BadRequestException('Invalid Credentials');
-    }
-    await this.userRepo.update(user.id, {
-      password: params.newPassword.newPassword,
-      token: '',
-    });
-    const updatedUser = await this.userRepo.findOneBy({ email: params.email });
-    return updatedUser;
   }
 }

@@ -15,6 +15,7 @@ export class UserBannedRestriction implements NestMiddleware {
   ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
+    if( !req.headers['authorization'] ) {next(); return}
     const authorizationHeader = req.headers['authorization'];
     const token = authorizationHeader.split(' ')[1];
     
@@ -30,7 +31,7 @@ export class UserBannedRestriction implements NestMiddleware {
       if (user.status === 'banned') {
         return res.status(441).json({ message: 'Your account has been banned' });
       }
-
+      console.log('CARDONE =========> UserBannedRestriction, user', user);
       next();
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
