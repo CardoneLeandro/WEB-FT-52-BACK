@@ -15,7 +15,6 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type,Authorization', // Encabezados permitidos
   });
 
-  app.use(UserBannedRestriction)
 
   const apiDocumentation = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('documentation', app, apiDocumentation);
