@@ -1,36 +1,39 @@
 import {
-  ExecutionContext,
   Injectable,
-  NestInterceptor,
   NestMiddleware,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { InterceptorsConsumer } from '@nestjs/core/interceptors';
 import { Request, Response, NextFunction } from 'express';
+import { JsonWebTokenService } from 'src/auth/jsonWebToken/jsonWebToken.service';
+import { UsersRepository } from 'src/users/users.repository';
 
-let now = new Date().toLocaleString('es-AR', {
-  timeZone: 'America/Argentina/Buenos_Aires',
-});
-let dataEntry = '';
 @Injectable()
-export class loggerMiddleware implements NestMiddleware {
-  intercept(context: ExecutionContext, next: NextFunction) {
-    const interceptRequest = context.switchToHttp().getRequest();
-    dataEntry = JSON.stringify(interceptRequest.body);
-    next();
-  }
+export class UserBannedRestriction implements NestMiddleware {
+  constructor(
+    private readonly userRepo: UsersRepository,
+    private readonly jwtService: JsonWebTokenService,
+  ) {}
 
-  use(req: Request, _res: Response, next: NextFunction) {
-    console.log(
-      `logger ==> ${req.method} on http://localhost:${process.env.APP_PORT}${req.url}`,
-    );
-    next();
-  }
-}
+  async use(req: Request, res: Response, next: NextFunction) {
+    const authorizationHeader = req.headers['authorization'];
+    const token = authorizationHeader.split(' ')[1];
+    
+    try {
+      const decodedToken = await this.jwtService.verifyJwt(token);
 
-export function loggerGlobal(req: Request, _res: Response, next: NextFunction) {
-  //console.log('====================>',dataEntry);
-  console.log(
-    `${req.method} on http://localhost:${process.env.APP_PORT}${req.url}`,
-  );
-  next();
+      const user = await this.userRepo.findOneBy({ id: decodedToken.id });
+
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      if (user.status === 'banned') {
+        return res.status(441).json({ message: 'Your account has been banned' });
+      }
+
+      next();
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
 }

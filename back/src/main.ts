@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule } from '@nestjs/swagger';
 import { swaggerConfig } from 'config/swagger.config';
 import { config as dotenvConfig } from 'dotenv';
-import { loggerGlobal } from './security/middlewares/logger.middleware';
+import { UserBannedRestriction } from './security/middlewares/logger.middleware';
 import { ValidationPipe } from '@nestjs/common';
 dotenvConfig({ path: './.env' });
 
@@ -15,7 +15,7 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type,Authorization', // Encabezados permitidos
   });
 
-  //app.use(loggerGlobal);
+  app.use(UserBannedRestriction)
 
   const apiDocumentation = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('documentation', app, apiDocumentation);

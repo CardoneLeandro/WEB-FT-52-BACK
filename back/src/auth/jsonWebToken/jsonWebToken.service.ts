@@ -11,6 +11,7 @@ interface JWTPayload {
   creatorId: string;
   role: UserRole;
 }
+
 @Injectable()
 export class JsonWebTokenService {
   constructor(
@@ -18,8 +19,8 @@ export class JsonWebTokenService {
     private readonly configService: ConfigService,
   ) {}
 
-  //*     PARAMETROS PARA LA GENERACION DE JSON WEB TOKEN
   async generateJwt(user: JWTPayload): Promise<string> {
+    
     const payload = {
       //! parametros para crear el JWT
       //! con esto se puede implementar un guardian que busque en base de datos la
@@ -42,5 +43,9 @@ export class JsonWebTokenService {
     const secret = this.configService.get<string>('jwt.secret');
     const signOptions = this.configService.get<object>('jwt.signOptions');
     return this.jwtService.sign(payload, { secret, ...signOptions });
+  }
+
+  async verifyJwt(token: string): Promise<any> {
+    return this.jwtService.verifyAsync(token);
   }
 }
