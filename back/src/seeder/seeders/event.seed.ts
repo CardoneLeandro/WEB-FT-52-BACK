@@ -10,14 +10,14 @@ const eventSeeder = [
     price: 1500,
     stock: 0,
     images: [
-      'https://img.freepik.com/foto-gratis/gente-tiro-medio-cantando-juntos_23-2149535685.jpg?t=st=1727361921~exp=1727365521~hmac=63e2f1c5913d923ed75f503c4a3b99d96658e748a882a1ce0e9763fbad7402c3&w=1380',
+      'https://img.freepik.com/foto-gratis/gente-tiro-medio-cantando-juntos_23-2149535685.jpg?t=st=1728479320~exp=1728482920~hmac=90d7b0509ba17fbe806ccccb9ea9ba4bbb329d00e116cddd20fe1b8634c99dbf&w=1380',
     ],
   },
   {
     title: 'Taller de Oración',
     description:
       'Una jornada de reflexión y oración dirigida por el padre Juan.',
-    eventDate: '2024-02-15',
+    eventDate: '2024-12-15',
     eventAddress: 'Parroquia San Pablo',
     eventLocation:
       'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
@@ -31,7 +31,7 @@ const eventSeeder = [
     title: 'Retiro Espiritual',
     description:
       'Tres días de retiro espiritual en las montañas para reconectar con la fe.',
-    eventDate: '2024-03-10',
+    eventDate: '2024-12-10',
     eventAddress: 'Casa de Retiros Los Pinos',
     eventLocation:
       'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
@@ -52,14 +52,14 @@ const eventSeeder = [
     price: 0,
     stock: 100,
     images: [
-      'https://img.freepik.com/foto-gratis/concepto-comunion-comida_23-2149337571.jpg?t=st=1727361828~exp=1727365428~hmac=229b78307ec928068a0bc187d0f7269811f0fe0d8a0f017eccfacfd5ab108b79&w=740',
+      'https://img.freepik.com/foto-gratis/concepto-comunion-comida_23-2149337573.jpg?t=st=1728573168~exp=1728576768~hmac=106549599bc454a845b9c8aaaba9c12571634e0034602187bd2f1df7ce318d40&w=740',
     ],
   },
   {
     title: 'Seminario de Fe y Familia',
     description:
       'Un seminario dedicado a fortalecer los lazos familiares a través de la fe.',
-    eventDate: '2024-06-20',
+    eventDate: '2025-06-20',
     eventAddress: 'Auditorio Juan XXIII',
     eventLocation:
       'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
@@ -73,7 +73,7 @@ const eventSeeder = [
     title: 'Peregrinación a Santiago',
     description:
       'Peregrinación por el Camino de Santiago con la comunidad parroquial.',
-    eventDate: '2024-07-15',
+    eventDate: '2025-07-15',
     eventAddress: 'Santiago de Compostela',
     eventLocation:
       'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
@@ -129,7 +129,7 @@ const eventSeeder = [
     title: 'Convivencia Juvenil',
     description:
       'Encuentro juvenil de un día lleno de actividades para reflexionar sobre la fe.',
-    eventDate: '2024-08-25',
+    eventDate: '2024-10-25',
     eventAddress: 'Centro de Pastoral',
     eventLocation:
       'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
@@ -143,7 +143,7 @@ const eventSeeder = [
     title: 'Encuentro de Coros Parroquiales',
     description:
       'Una reunión para compartir y disfrutar de los coros de las parroquias locales.',
-    eventDate: '2023-05-12',
+    eventDate: '2024-05-12',
     eventAddress: 'Capilla San José',
     eventLocation:
       'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
