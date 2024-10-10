@@ -250,4 +250,7 @@ export class EventsService {
     }
     return await this.eventRepo.switchEventStatus(id, event);
   }
+
+
+  
 }

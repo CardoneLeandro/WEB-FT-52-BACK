@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UsePipes,
   BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
@@ -20,6 +21,7 @@ import { StringToNumberInterceptor } from 'src/security/interceptors/string-toNu
 import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
 import { DonationFormaterInterceptor } from 'src/security/interceptors/donation-formater.interceptor';
 import { status } from 'src/common/enum/status.enum';
+import { AuthHeaderGuard } from 'src/security/guards/auth-headers.guard';
 @ApiTags('Payments')
 @Controller('payments')
 export class PaymentsController {
@@ -49,6 +51,7 @@ export class PaymentsController {
     summary:
       'Ruta para guardar una donación que venga desde la página de "pending" de Mercado Pago',
   })
+  @UseGuards(AuthHeaderGuard)
   @UseInterceptors(StringToNumberInterceptor)
   @UseInterceptors(DonationFormaterInterceptor)
   @UsePipes(new DTOValidationPipe())

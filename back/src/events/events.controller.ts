@@ -12,15 +12,13 @@ import {
   BadRequestException,
   ParseUUIDPipe,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
-import { CreateEventDto } from './dto/create-event.dto';
 import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { DTOValidationPipe } from 'src/common/pipes/DTO-Validation.pipe';
-import { IsUUIDPipe } from 'src/common/pipes/isUUID.pipe';
-import { ParseEventDataInterceptor } from 'src/security/interceptors/parse-event-data.interceptor';
 import { EventsRepository } from './events.repository';
 import { ConfirmAssistEventDto } from './dto/asistance-event.dts';
+import { AuthHeaderGuard } from 'src/security/guards/auth-headers.guard';
 
 @ApiTags('Events')
 @Controller('events')
@@ -124,6 +122,7 @@ export class EventsController {
     return await this.eventsService.findHighlightInactive();
   }
 
+  @UseGuards(AuthHeaderGuard)
   @Post('updateattendance/:id')
   @ApiOperation({
     summary:

@@ -12,6 +12,8 @@ import { userInfo } from 'os';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
 import { MailerService } from 'src/mailer/mailer.service';
 import { status } from 'src/common/enum/status.enum';
+import { create } from 'domain';
+import { createDecipheriv } from 'crypto';
 
 @Injectable()
 export class PaymentsService {
@@ -46,9 +48,10 @@ export class PaymentsService {
           amount: newDonation.amount,
         });
       }
-      return await this.donationsRepo.findOne({
+      const createdDonation = await this.donationsRepo.findOne({
         where: { id: newDonation.id },
       });
+      return {email: user.user.email, ...createdDonation};
     });
   }
 }

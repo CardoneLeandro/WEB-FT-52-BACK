@@ -13,7 +13,14 @@ export class DonationsService {
   }
 
   async getDonations(){
-    return this.donationsRepo.getDonations()
+    const allDonations = await this.donationsRepo.getDonations()
+    const formatedDonations = allDonations.map((donation) => {
+      const newdate = new Date(donation.date);
+        const formattedDate = `${String(newdate.getDate()).padStart(2, '0')}/${String(newdate.getMonth() + 1).padStart(2, '0')}/${newdate.getFullYear()}`;
+      const { user, date, ...rest } = donation;
+      return {email:user.user.email,date:formattedDate, ...rest};
+    }) 
+    return formatedDonations
   }
 
   async updateDonation(params: { id: string; status: status }) {
