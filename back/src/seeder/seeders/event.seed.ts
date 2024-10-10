@@ -10,7 +10,7 @@ const eventSeeder = [
     price: 1500,
     stock: 0,
     images: [
-      'https://img.freepik.com/foto-gratis/gente-tiro-medio-cantando-juntos_23-2149535685.jpg?t=st=1728479320~exp=1728482920~hmac=90d7b0509ba17fbe806ccccb9ea9ba4bbb329d00e116cddd20fe1b8634c99dbf&w=1380',
+      'https://img.freepik.com/foto-gratis/celebracion-semana-santa-colores-vivos_23-2151195213.jpg?t=st=1728574570~exp=1728578170~hmac=9336a570f17b6dc9d59cdc50e012b30d57670dd9aa9105c49ac5d190bfdc8593&w=826',
     ],
   },
   {
@@ -38,7 +38,7 @@ const eventSeeder = [
     price: 3000,
     stock: 15,
     images: [
-      'https://img.freepik.com/foto-gratis/vista-frontal-mujer-rezando-al-aire-libre_23-2150870082.jpg?t=st=1727361866~exp=1727365466~hmac=7fe88fcdfc8c60d6861e85424494fba15da5942441a5f12fe1a6768935821525&w=740',
+      'https://img.freepik.com/foto-gratis/familia-feliz-rezando-antes-cenar-juntos_23-2149117514.jpg?t=st=1728574858~exp=1728578458~hmac=65ebefda6f04faa49a113f9d006ae5ebdedec205eeff5fca78811a1165561292&w=1380',
     ],
   },
   {
@@ -62,7 +62,7 @@ const eventSeeder = [
     eventDate: '2025-06-20',
     eventAddress: 'Auditorio Juan XXIII',
     eventLocation:
-      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+      'https://img.freepik.com/foto-gratis/ninos-siendo-parte-escuela-dominical_23-2149582946.jpg?t=st=1728574636~exp=1728578236~hmac=17a407265d24058ad870b81064d0713cfe092e32c760f9e90d923c35133f661a&w=1380',
     price: 2000,
     stock: 30,
     images: [
@@ -80,7 +80,7 @@ const eventSeeder = [
     price: 5000,
     stock: 25,
     images: [
-      'https://img.freepik.com/foto-gratis/celebracion-evento-miercoles-ceniza_23-2151424046.jpg?t=st=1727361701~exp=1727365301~hmac=2c87e588706185b3dbc69103459d72a153bd59a557384ad5d6b66702f0758124&w=1380',
+      'https://img.freepik.com/foto-gratis/celebracion-semana-santa-colores-vivos_23-2151195270.jpg?t=st=1728574720~exp=1728578320~hmac=3ecec993ad80889b384692577e35042423d493d065ca0430788cbe8ebca5e6e0&w=826',
     ],
   },
   {
@@ -132,7 +132,7 @@ const eventSeeder = [
     eventDate: '2024-10-25',
     eventAddress: 'Centro de Pastoral',
     eventLocation:
-      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
+      'https://img.freepik.com/foto-gratis/multitud-mejores-amigos_329181-8417.jpg?t=st=1728574773~exp=1728578373~hmac=68caf6db73611589f895be5da98aaa61d346666ec1650665d85c0187dea6924e&w=1380',
     price: 800,
     stock: 50,
     images: [
