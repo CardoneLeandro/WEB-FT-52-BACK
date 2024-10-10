@@ -10,7 +10,7 @@ const eventSeeder = [
     price: 1500,
     stock: 0,
     images: [
-      'https://img.freepik.com/foto-gratis/gente-tiro-medio-cantando-juntos_23-2149535685.jpg?t=st=1728479320~exp=1728482920~hmac=90d7b0509ba17fbe806ccccb9ea9ba4bbb329d00e116cddd20fe1b8634c99dbf&w=1380',
+      'https://img.freepik.com/foto-gratis/celebracion-semana-santa-colores-vivos_23-2151195213.jpg?t=st=1728574570~exp=1728578170~hmac=9336a570f17b6dc9d59cdc50e012b30d57670dd9aa9105c49ac5d190bfdc8593&w=826',
     ],
   },
   {
@@ -38,7 +38,7 @@ const eventSeeder = [
     price: 3000,
     stock: 15,
     images: [
-      'https://img.freepik.com/foto-gratis/vista-frontal-mujer-rezando-al-aire-libre_23-2150870082.jpg?t=st=1727361866~exp=1727365466~hmac=7fe88fcdfc8c60d6861e85424494fba15da5942441a5f12fe1a6768935821525&w=740',
+      'https://img.freepik.com/foto-gratis/ninos-siendo-parte-escuela-dominical_23-2149582945.jpg?t=st=1728576065~exp=1728579665~hmac=f6659a58cc364263c074f47adbd3e6f321578b21763bb60a80df7ad1c217c025&w=1380',
     ],
   },
   {
@@ -66,7 +66,7 @@ const eventSeeder = [
     price: 2000,
     stock: 30,
     images: [
-      'https://img.freepik.com/foto-gratis/estilo-vida-personas-que-participan-terapia-psicologica_52683-151587.jpg?t=st=1727361767~exp=1727365367~hmac=49928f47e07e3c99a067d66d36bf8b06a26650187a022d06294e1026d78ed9de&w=1380',
+      'https://img.freepik.com/foto-gratis/familia-feliz-rezando-antes-cenar-juntos_23-2149117514.jpg?t=st=1728574858~exp=1728578458~hmac=65ebefda6f04faa49a113f9d006ae5ebdedec205eeff5fca78811a1165561292&w=1380',
     ],
   },
   {
@@ -80,7 +80,7 @@ const eventSeeder = [
     price: 5000,
     stock: 25,
     images: [
-      'https://img.freepik.com/foto-gratis/celebracion-evento-miercoles-ceniza_23-2151424046.jpg?t=st=1727361701~exp=1727365301~hmac=2c87e588706185b3dbc69103459d72a153bd59a557384ad5d6b66702f0758124&w=1380',
+      'https://img.freepik.com/foto-gratis/celebracion-semana-santa-colores-vivos_23-2151195270.jpg?t=st=1728574720~exp=1728578320~hmac=3ecec993ad80889b384692577e35042423d493d065ca0430788cbe8ebca5e6e0&w=826',
     ],
   },
   {
@@ -136,7 +136,7 @@ const eventSeeder = [
     price: 800,
     stock: 50,
     images: [
-      'https://colbifficartagena.edu.co/es/wp-content/uploads/2022/04/3-scaled.jpg',
+      'https://img.freepik.com/foto-gratis/multitud-mejores-amigos_329181-8417.jpg?t=st=1728574773~exp=1728578373~hmac=68caf6db73611589f895be5da98aaa61d346666ec1650665d85c0187dea6924e&w=1380',
     ],
   },
   {
