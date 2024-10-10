@@ -19,6 +19,8 @@ import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { EventsRepository } from './events.repository';
 import { ConfirmAssistEventDto } from './dto/asistance-event.dts';
 import { AuthHeaderGuard } from 'src/security/guards/auth-headers.guard';
+import { BannedUserGuard } from 'src/security/guards/banned.guard';
+
 
 @ApiTags('Events')
 @Controller('events')
@@ -122,7 +124,7 @@ export class EventsController {
     return await this.eventsService.findHighlightInactive();
   }
 
-  @UseGuards(AuthHeaderGuard)
+  @UseGuards(AuthHeaderGuard, BannedUserGuard)
   @Post('updateattendance/:id')
   @ApiOperation({
     summary:

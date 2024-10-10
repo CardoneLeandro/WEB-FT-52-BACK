@@ -20,7 +20,6 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { PostsService } from 'src/posts/posts.service';
 import { PostsRepository } from 'src/posts/posts.repository';
 
-
 @Module({
   controllers: [AuthController],
   providers: [
@@ -42,7 +41,7 @@ import { PostsRepository } from 'src/posts/posts.repository';
   ],
   imports: [
     ConfigModule.forRoot({
-      load: [jwtConfig], // here we load the jwt config
+      load: [jwtConfig],
     }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -54,6 +53,6 @@ import { PostsRepository } from 'src/posts/posts.repository';
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
-  exports: [AuthService, JsonWebTokenService, JwtStrategy],
+  exports: [AuthService, JsonWebTokenService, JwtStrategy, JwtModule], // Asegúrate de exportar el JwtModule
 })
 export class AuthModule {}
