@@ -20,4 +20,8 @@ export class UserJoininEventDto {
   @IsNotEmpty()
   @IsString()
   eventLocation: string;
+
+  @IsNotEmpty()
+  @IsString()
+  eventAddress: string;
 }

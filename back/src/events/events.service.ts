@@ -131,6 +131,7 @@ export class EventsService {
       title: event.title,
       eventDate: event.eventDate,
       eventLocation: event.eventLocation,
+      eventAddress: event.eventAddress
     };
     if (attendance && attendance.status === status.ACTIVE) {
       await this.eventAssistantsRepo.update(attendance.id, {status: status.INACTIVE});

@@ -54,10 +54,10 @@ export const eventTemplate = (param) => {
             <ul>
                 <li><strong>Fecha:</strong> ${param.eventDate.toLocaleDateString()}</li>
                 <li><strong>Hora:</strong> ${param.eventDate.toLocaleTimeString()}</li>
-                <li><strong>Lugar:</strong> ${param.eventLocation}</li>
+                <li><strong>Lugar:</strong> <a href="${param.eventLocation}">${param.eventAddress}</a></li>
             </ul>
             <p>Si necesitas más información o deseas modificar tu asistencia, no dudes en contactarnos o visitar nuestra página web.</p>
-            <a href="[ENLACE_DEL_EVENTO]" class="button">Ver detalles del evento</a>
+            <a href="https://web-ft-52-front-deploy-git-development-felipesdisenos-projects.vercel.app/" class="button">Ir a la página</a>
             <p>¡Nos vemos pronto!</p>
             <div class="footer">
                 <p>&copy; 2024 Movimiento Juvenil Peregrinos. Todos los derechos reservados.</p>

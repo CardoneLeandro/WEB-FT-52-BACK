@@ -20,4 +20,8 @@ export class UserLeaveEventDto {
   @IsNotEmpty()
   @IsString()
   eventLocation: string;
+
+  @IsNotEmpty()
+  @IsString()
+  eventAddress: string;
 }
