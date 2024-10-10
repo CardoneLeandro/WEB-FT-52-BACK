@@ -38,7 +38,7 @@ const eventSeeder = [
     price: 3000,
     stock: 15,
     images: [
-      'https://img.freepik.com/foto-gratis/familia-feliz-rezando-antes-cenar-juntos_23-2149117514.jpg?t=st=1728574858~exp=1728578458~hmac=65ebefda6f04faa49a113f9d006ae5ebdedec205eeff5fca78811a1165561292&w=1380',
+      'https://img.freepik.com/foto-gratis/vista-frontal-mujer-rezando-al-aire-libre_23-2150870082.jpg?t=st=1727361866~exp=1727365466~hmac=7fe88fcdfc8c60d6861e85424494fba15da5942441a5f12fe1a6768935821525&w=740',
     ],
   },
   {
@@ -62,11 +62,11 @@ const eventSeeder = [
     eventDate: '2025-06-20',
     eventAddress: 'Auditorio Juan XXIII',
     eventLocation:
-      'https://img.freepik.com/foto-gratis/ninos-siendo-parte-escuela-dominical_23-2149582946.jpg?t=st=1728574636~exp=1728578236~hmac=17a407265d24058ad870b81064d0713cfe092e32c760f9e90d923c35133f661a&w=1380',
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 2000,
     stock: 30,
     images: [
-      'https://img.freepik.com/foto-gratis/estilo-vida-personas-que-participan-terapia-psicologica_52683-151587.jpg?t=st=1727361767~exp=1727365367~hmac=49928f47e07e3c99a067d66d36bf8b06a26650187a022d06294e1026d78ed9de&w=1380',
+      'https://img.freepik.com/foto-gratis/familia-feliz-rezando-antes-cenar-juntos_23-2149117514.jpg?t=st=1728574858~exp=1728578458~hmac=65ebefda6f04faa49a113f9d006ae5ebdedec205eeff5fca78811a1165561292&w=1380',
     ],
   },
   {
@@ -132,11 +132,11 @@ const eventSeeder = [
     eventDate: '2024-10-25',
     eventAddress: 'Centro de Pastoral',
     eventLocation:
-      'https://img.freepik.com/foto-gratis/multitud-mejores-amigos_329181-8417.jpg?t=st=1728574773~exp=1728578373~hmac=68caf6db73611589f895be5da98aaa61d346666ec1650665d85c0187dea6924e&w=1380',
+      'https://www.google.com.ar/maps/place/Cdad.+de+Tampa+1980,+X5008+Córdoba/@-31.3877345,-64.2074597,17z/data=!3m1!4b1!4m6!3m5!1s0x943298f1ad4c1d37:0x652a02761aca6e0d!8m2!3d-31.3877345!4d-64.2048794!16s%2Fg%2F11kp8qzwmp?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D',
     price: 800,
     stock: 50,
     images: [
-      'https://colbifficartagena.edu.co/es/wp-content/uploads/2022/04/3-scaled.jpg',
+      'https://img.freepik.com/foto-gratis/multitud-mejores-amigos_329181-8417.jpg?t=st=1728574773~exp=1728578373~hmac=68caf6db73611589f895be5da98aaa61d346666ec1650665d85c0187dea6924e&w=1380',
     ],
   },
   {
