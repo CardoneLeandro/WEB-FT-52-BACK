@@ -8,6 +8,8 @@ import { UserInformationRepository } from 'src/user-information/user-information
 import { MailerService } from 'src/mailer/mailer.service';
 import { EventAssistantsRepository } from './event-assistants.repository';
 import { EventAssistants } from './entity/event-assistants.entity';
+import { UsersRepository } from 'src/users/users.repository';
+import { AuthModule } from 'src/auth/auth.module'; // Asegúrate de usar la ruta correcta
 
 @Module({
   controllers: [EventsController],
@@ -17,7 +19,11 @@ import { EventAssistants } from './entity/event-assistants.entity';
     UserInformationRepository,
     EventAssistantsRepository,
     MailerService,
+    UsersRepository,
   ],
-  imports: [TypeOrmModule.forFeature([Event, EventAssistants])],
+  imports: [
+    TypeOrmModule.forFeature([Event, EventAssistants]),
+    AuthModule, // Importa el módulo de autenticación aquí
+  ],
 })
 export class EventsModule {}

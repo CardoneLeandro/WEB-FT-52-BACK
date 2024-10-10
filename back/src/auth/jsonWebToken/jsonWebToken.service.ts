@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { User } from 'src/users/entities/user.entity';
 import { UserRole } from 'src/common/enum/userRole.enum';
 
-interface JWTPayload {
+export interface JWTPayload {
   id: string;
   creatorId: string;
   role: UserRole;
