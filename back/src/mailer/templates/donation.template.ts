@@ -51,7 +51,7 @@ export const donationTemplate = (param) => {
         <p>Hola <strong>${param.name}</strong>,</p>
         <p>Queremos expresarte nuestro más profundo agradecimiento por tu reciente donación de <strong>${param.amount}</strong>.</p>
         <p>Tu apoyo es fundamental para que podamos continuar con nuestra misión. Gracias a personas como tú, podemos seguir haciendo una diferencia.</p>
-        <a href="[ENLACE_DE_TU_PAGINA]" class="button">Visita nuestra página</a>
+        <a href="https://web-ft-52-front-deploy-git-development-felipesdisenos-projects.vercel.app/" class="button">Ir a la página</a>
         <p>De nuevo, ¡muchas gracias por tu apoyo!</p>
         <div class="footer">
             <p>&copy; 2024 Movimiento Juvenil Peregrinos. Todos los derechos reservados.</p>

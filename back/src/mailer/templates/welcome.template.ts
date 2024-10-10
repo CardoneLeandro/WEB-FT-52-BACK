@@ -51,7 +51,7 @@ export const welcomeTemplate = (userName: string) => {
             <p>Hola <strong>${userName}</strong>,</p>
             <p>Gracias por registrarte en nuestra pagina. Nos alegra mucho tenerte con nosotros. Estamos comprometidos en ofrecerte la mejor experiencia posible.</p>
             <p>Puedes empezar a explorar nuestros servicios y disfrutar de todas las ventajas que ofrecemos.</p>
-            <a href="[ENLACE_PAGINA]" class="button">Ir a la página</a>
+            <a href="https://web-ft-52-front-deploy-git-development-felipesdisenos-projects.vercel.app/" class="button">Ir a la página</a>
             <div class="footer">
                 <p>&copy; 2024 Movimiento Juvenil Peregrinos. Todos los derechos reservados.</p>
             </div>

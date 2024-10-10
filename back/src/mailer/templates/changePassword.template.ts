@@ -52,7 +52,7 @@ export const changePasswordTemplate = (param) => {
         <p>Hola <strong>${param.name}</strong>,</p>
         <p>Recibimos una solicitud para cambiar la contraseña de tu cuenta.</p>
         <p>Si no solicitaste este cambio, puedes ignorar este mensaje. De lo contrario, haz clic en el botón a continuación para cambiar tu contraseña:</p>
-        <a href="http://localhost:3000/users/change-password/${param.email}/${param.token}/${'Mango123*'}" class="button">Cambiar Contraseña</a>
+        <a href="https://web-ft-52-front-deploy-git-development-felipesdisenos-projects.vercel.app/users/change-password/${param.email}/${param.token}/${'Mango123*'}" class="button">Cambiar Contraseña</a>
         <p>Si tienes alguna pregunta o necesitas asistencia, no dudes en contactarnos.</p>
         <div class="footer">
             <p>&copy; 2024 Movimiento Juvenil Peregrinos. Todos los derechos reservados.</p>
