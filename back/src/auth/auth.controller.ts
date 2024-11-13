@@ -32,9 +32,10 @@ import { CreatePostDto } from 'src/posts/dto/create-post.dto';
 import { PostsService } from 'src/posts/posts.service';
 import { UpdatePostDto } from 'src/posts/dto/update-post.dto';
 import { IsUUIDPipe } from 'src/common/pipes/isUUID.pipe';
+import { BannedUserGuard } from 'src/security/guards/banned.guard';
 
 //
-@UseGuards(AuthHeaderGuard, RolesGuard)
+@UseGuards(AuthHeaderGuard, RolesGuard, BannedUserGuard)
 @ApiTags('Auth')
 @ApiBearerAuth()
 @Controller('auth')
