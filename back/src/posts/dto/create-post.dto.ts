@@ -47,8 +47,7 @@ export class CreatePostDto {
   })
   @IsOptional()
   @IsArray()
-  image: string[];
-
+  images: string[];
   @ApiProperty({
     description: 'Archivo del post',
     example: 'https://www.files-cloud.com/file/1.pdf',
@@ -56,5 +55,5 @@ export class CreatePostDto {
   })
   @IsOptional()
   @IsUrl()
-  file: string[];
+  files: string[];
 }

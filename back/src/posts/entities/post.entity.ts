@@ -32,8 +32,8 @@ export class Post {
   content: string;
 
   @Column({ type: 'varchar', length: 100, nullable: true, default: [] })
-  image: string[];
+  images: string[];
 
   @Column({ type: 'varchar', length: 100, nullable: true, default: [] })
-  file: string[];
+  files: string[];
 }
