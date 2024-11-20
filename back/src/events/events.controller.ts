@@ -149,14 +149,18 @@ export class EventsController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() user: ConfirmAssistEventDto,
   ) {
+    //--------------------------------------------------------------------------
     const event = await this.eventRepo.findOne({where: { id }})
     console.log('controlador de asistencias, peticion de evento', event);
     if (!event) throw new BadRequestException(`User or Event not found`);
+    //--------------------------------------------------------------------------
     const userInfo = await this.userInfoRepo.findOne({
         where: { id: user.creator },
         relations: { user: true },
       });
+      console.log('controlador de asistencias, petifcion de user', userInfo);
     if (!userInfo) throw new BadRequestException(`User or Event not found`);
+    //--------------------------------------------------------------------------
     try {
       return await this.eventsService.updateAttendanceStatus({
         event, userInfo
