@@ -23,7 +23,6 @@ import { BannedUserGuard } from 'src/security/guards/banned.guard';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
 import { EventAssistantsRepository } from './event-assistants.repository';
 
-
 @ApiTags('Events')
 @Controller('events')
 export class EventsController {
@@ -128,10 +127,6 @@ export class EventsController {
     return await this.eventsService.findHighlightInactive();
   }
 
-
-
-
-
   //! =====================================================>
   @UseGuards(AuthHeaderGuard, BannedUserGuard)
   @Post('updateattendance/:id')
@@ -150,15 +145,13 @@ export class EventsController {
     @Body() user: ConfirmAssistEventDto,
   ) {
     //--------------------------------------------------------------------------
-    const event = await this.eventRepo.findOne({where: { id }})
-    console.log('controlador de asistencias, peticion de evento', event);
+    const event = await this.eventRepo.findOne({ where: { id } });
     if (!event) throw new BadRequestException(`User or Event not found`);
     //--------------------------------------------------------------------------
     const userInfo = await this.userInfoRepo.findOne({
-        where: { id: user.creator },
-        relations: { user: true },
-      });
-      console.log('controlador de asistencias, petifcion de user', userInfo);
+      where: { id: user.creator },
+      relations: { user: true },
+    });
     if (!userInfo) throw new BadRequestException(`User or Event not found`);
     //--------------------------------------------------------------------------
     try {
@@ -169,13 +162,13 @@ export class EventsController {
       throw new BadRequestException(error.message);
     }
   }
-//! =====================================================>
-
-
-
+  //! =====================================================>
 
   @Get('getactiveandinactivehighlight')
-  @ApiOperation({ summary: 'Ruta para la obtención de todos los eventos activos y inactivos cuyo Highlight sea True' })
+  @ApiOperation({
+    summary:
+      'Ruta para la obtención de todos los eventos activos y inactivos cuyo Highlight sea True',
+  })
   async getActiveAndInactiveHighlight() {
     try {
       return await this.eventsService.getActiveAndInactiveHighlight();
@@ -183,5 +176,4 @@ export class EventsController {
       throw new BadRequestException(e.message);
     }
   }
-
 }

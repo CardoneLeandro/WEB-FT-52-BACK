@@ -121,9 +121,8 @@ export class EventsService {
     }
     return event;
   }
-
+ //! =========================================================================>
   async updateAttendanceStatus(param) {
-    console.log('servicio de eventos, funcion de gestion de asistencias');
     const { event, userInfo } = param;
 
     const mailDto = {
@@ -138,7 +137,6 @@ export class EventsService {
     const attendance = await this.eventAssistantsRepo.findOne({
       where: { user: { id: userInfo.id }, event: { id: event.id } },
     });
-    console.log('servicio de eventos, turno =>', attendance);
 
     //? Crea nueva asistencia
     if (!attendance) {
@@ -172,7 +170,6 @@ export class EventsService {
         }
       }
     }
-
     //? Activar la asistencia
     if (attendance.status === status.INACTIVE) {
       if (event.vacancy === false) {
@@ -202,7 +199,6 @@ export class EventsService {
       await this.eventAssistantsRepo.update(attendance.id, {
         status: status.INACTIVE,
       });
-
       if (event.stock !== 0) {
         event.currentStock = Math.min(event.stock, event.currentStock + 1);
         event.vacancy = true;
