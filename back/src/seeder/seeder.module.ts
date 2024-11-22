@@ -16,6 +16,8 @@ import { DonationsService } from 'src/donations/donations.service';
 import { DonationsRepository } from 'src/donations/donations.repository';
 import { PaymentsService } from 'src/payments/payments.service';
 import { PaymentsRepository } from 'src/payments/payments.repository';
+import { PostsRepository } from 'src/posts/posts.repository';
+import { PostsService } from 'src/posts/posts.service';
 
 @Module({
   controllers: [SeederController],
@@ -34,7 +36,9 @@ import { PaymentsRepository } from 'src/payments/payments.repository';
     DonationsService,
     DonationsRepository,
     PaymentsService,
-    PaymentsRepository
+    PaymentsRepository,
+    PostsRepository,
+    PostsService
   ],
   exports: [SeederService],
   imports: [AuthModule],
