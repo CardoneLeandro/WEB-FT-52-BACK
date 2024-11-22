@@ -7,6 +7,7 @@ import eventSeeder from './seeder/seeders/event.seed';
 import userSeeder from './seeder/seeders/user.seed';
 import donationSeeder from './seeder/seeders/donations.seed';
 import { assistantSeed } from './seeder/seeders/assistant.seed';
+import postsSeeder from './seeder/seeders/post.seed';
 
 @Injectable()
 export class AppService {
@@ -19,6 +20,7 @@ export class AppService {
     const id = await this.authSv.superAdminSeeder();
     await this.seederSv.addProductSeeder(id, productsSeeder);
     await this.seederSv.addEventSeeder(id, eventSeeder);
+    await this.seederSv.addPostsSeeder(id, postsSeeder);
     await this.seederSv.addUserSeeder(userSeeder);
     const allUsers= await this.userInfoRepo.find()
     await this.seederSv.addDonationSeeder(donationSeeder,allUsers)

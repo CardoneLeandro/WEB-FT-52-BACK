@@ -10,6 +10,9 @@ import { DonationsService } from 'src/donations/donations.service';
 import { PaymentsService } from 'src/payments/payments.service';
 import { status } from 'src/common/enum/status.enum';
 import { EventsService } from 'src/events/events.service';
+import { PostsService } from 'src/posts/posts.service';
+import { Post } from 'src/posts/entities/post.entity';
+import { PostsRepository } from 'src/posts/posts.repository';
 
 @Injectable()
 export class SeederService {
@@ -18,10 +21,12 @@ export class SeederService {
     private readonly userRepo: UsersRepository,
     private readonly productRepo: ProductsRepository,
     private readonly eventRepo: EventsRepository,
+    private readonly postsRepo: PostsRepository,
     private readonly userService: UsersService,
     private readonly donationService: DonationsService,
     private readonly paymentService: PaymentsService,
     private readonly eventService: EventsService,
+    private readonly postsService: PostsService,
   ) {}
 
   async superAdmin() {
@@ -95,6 +100,20 @@ export class SeederService {
       }
     }
    }
+  }
+  async addPostsSeeder( id, posts) {
+    for (const post of posts) {
+      const existingPost = await this.postsRepo.findOne({
+        where: { title: post.title },
+      });
+      if (existingPost) {
+        console.log(`Post with title ${post.title} already exists`);
+        continue;
+      }
+      const newPost = { ...post, creator: id };
+      await this.postsService.create(newPost);
+    }
+
   }
 
   async addAssistantSeeder(events) {
