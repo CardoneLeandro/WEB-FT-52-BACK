@@ -31,6 +31,9 @@ export class Post {
   @Column({ type: 'text', nullable: false })
   content: string;
 
+  @Column({ type: 'varchar', length: 100, nullable: false})
+  author: string;
+
   @Column({ type: 'varchar', length: 100, nullable: true, default: [] })
   images: string[];
 

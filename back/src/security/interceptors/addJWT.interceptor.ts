@@ -20,7 +20,7 @@ export class addJWTInterceptor implements NestInterceptor {
           if (result && result.redirect === true) {
             return { token, result}
           }
-          return { user: result, token };
+          return { token, user: result };
         } catch (error) {
           throw new Error('Error al generar el token');
         }

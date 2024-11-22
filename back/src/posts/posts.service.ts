@@ -13,9 +13,11 @@ export class PostsService {
   async create(params) {
     const userInformation = await this.userInfoRepo.findOne({
       where: { id: params.creator },
+      relations: { user :true }
     });
     if (!userInformation) throw new BadRequestException(`Invalid Credentials`);
-    const createdPost = this.postRepo.create(params);
+    const newPost = {author: userInformation.user.name, ...params};
+    const createdPost = this.postRepo.create(newPost);
     const savedPost = await this.postRepo.save(createdPost);
     return savedPost;
   }
