@@ -1,6 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsRepository } from './posts.repository';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
 
@@ -35,5 +33,22 @@ export class PostsService {
 
   async findAll() {
     return await this.postRepo.find();
+  }
+
+
+  async setFavorites(params) {
+    let user = await this.userInfoRepo.findOne({ where: { id: params.creator } });    
+    if (!user) {
+      throw new BadRequestException('Invalid Credentials');
+    }
+    if (user.favorites.includes(params.id)) {
+      user.favorites = user.favorites.filter(favorite => favorite !== params.id);
+      await this.userInfoRepo.update(user.id, { favorites: user.favorites });
+      return await this.userInfoRepo.favorites(params.creator);
+    } else {
+      user.favorites.push(params.id);
+      await this.userInfoRepo.update(user.id, { favorites: user.favorites });
+      return await this.userInfoRepo.favorites(params.creator);
+    }
   }
 }

@@ -5,12 +5,15 @@ import { Payment } from 'src/payments/entities/payment.entity';
 import { Post } from 'src/posts/entities/post.entity';
 import { Product } from 'src/products/entity/products.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'userInformation' })
 export class UserInformation {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column({ type: 'varchar', array: true, nullable: false , default: []})
+  favorites: string[];
 
   @OneToOne(() => User, (user) => user.userInformation)
   user: User;

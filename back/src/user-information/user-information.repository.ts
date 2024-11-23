@@ -29,7 +29,7 @@ export class UserInformationRepository extends Repository<UserInformation> {
         assistantEvents: true,
       },
     });
-    const { id, user, donations, events, assistantEvents } = loggedUser;
+    const { id, user, donations, events, assistantEvents, favorites } = loggedUser;
     const assistantsConfirmet = assistantEvents.filter(
       (assistant) => assistant.status === status.ACTIVE,
     );
@@ -39,6 +39,7 @@ export class UserInformationRepository extends Repository<UserInformation> {
       donations,
       events,
       assistantEvents: assistantsConfirmet,
+      favorites
     };
   }
 
@@ -51,5 +52,10 @@ export class UserInformationRepository extends Repository<UserInformation> {
       where: { user: { id } },
       relations: allRelation,
     });
+  }
+
+  async favorites(id) {
+    const user = await this.findOneBy({id: id});
+    return user.favorites
   }
 }
