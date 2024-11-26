@@ -33,6 +33,7 @@ import { PostsService } from 'src/posts/posts.service';
 import { UpdatePostDto } from 'src/posts/dto/update-post.dto';
 import { IsUUIDPipe } from 'src/common/pipes/isUUID.pipe';
 import { BannedUserGuard } from 'src/security/guards/banned.guard';
+import { ChildEntity } from 'typeorm';
 
 //
 @UseGuards(AuthHeaderGuard, RolesGuard, BannedUserGuard)
@@ -250,7 +251,9 @@ export class AuthController {
     }
   }
 
-  @Post('post/edit/:id')
+
+  @UsePipes(new DTOValidationPipe())
+  @Patch('post/edit/:id')
   @ApiOperation({
     summary:
       'Work in Progress',
@@ -260,8 +263,20 @@ export class AuthController {
     @Body() params: UpdatePostDto,
   ) {
     try {
-      const editPost = await this.postService.updatePost({ id, params });
-      return editPost;
+      return await this.postService.updatePost({ id, ...params });
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
+
+  @Get('post/get/all')
+  @ApiOperation({
+    summary:
+      'Work in Progress',
+  })
+  async getAllPosts() {
+    try {
+      return await this.postService.findAllPosts();
     } catch (e) {
       throw new BadRequestException(e.message);
     }

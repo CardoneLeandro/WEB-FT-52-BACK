@@ -44,7 +44,6 @@ import {
       }
   
       const user = await this.userRepo.findOneBy({ id: decodedToken.id });
-      console.log('CARDONE => BannedUserGuard, canActivate, user', user);
   
       if (user && user.status === status.BANNED) {
         throw new HttpException(

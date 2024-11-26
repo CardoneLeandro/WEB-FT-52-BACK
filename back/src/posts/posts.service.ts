@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PostsRepository } from './posts.repository';
 import { UserInformationRepository } from 'src/user-information/user-information.repository';
+import { status } from 'src/common/enum/status.enum';
 
 @Injectable()
 export class PostsService {
@@ -21,17 +22,22 @@ export class PostsService {
   }
 
   async updatePost(params) {
+    const {id, newStatus, ...data} = params
     const post = await this.postRepo.findOne({
-      where: { id: params.id },
-    });
-    if (!post) {
-      throw new BadRequestException(`Invalid Request`);
-    }
-    const updatedPost = await this.postRepo.update({ id: params.id }, params);
-    return updatedPost;
+      where: { id },
+    })
+    if (!post) throw new BadRequestException(`Invalid Credentials`);
+    if (newStatus === 'active') data.status = status.ACTIVE;
+    if (newStatus === 'inactive') data.status = status.INACTIVE;
+    await this.postRepo.update(id, data);
+    return await this.postRepo.findOne({ where: { id } });
   }
 
   async findAll() {
+    return await this.postRepo.find({where: { status: status.ACTIVE }});
+  }
+
+  async findAllPosts() {
     return await this.postRepo.find();
   }
 

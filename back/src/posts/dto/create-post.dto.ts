@@ -9,6 +9,7 @@ import {
   MaxLength,
 } from 'class-validator';
 import { UUID } from 'crypto';
+import { status } from 'src/common/enum/status.enum';
 
 export class CreatePostDto {
   @ApiProperty({
@@ -56,4 +57,7 @@ export class CreatePostDto {
   @IsOptional()
   @IsUrl()
   files: string[];
+
+  @IsOptional() 
+  newStatus: string;
 }
